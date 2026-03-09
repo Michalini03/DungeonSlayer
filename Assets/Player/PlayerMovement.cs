@@ -12,12 +12,12 @@ public class PlayerMovement : MonoBehaviour
 
     private InputSystem_Actions inputAction;
 
-    
     float horizontalMove = 0f;
     float smoothedInputX = 0f;
     bool jump = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private float jumpCooldown = 0f;
+
     void Start()
     {
         Application.targetFrameRate = 120;
@@ -31,27 +31,22 @@ public class PlayerMovement : MonoBehaviour
     void OnEnable()
     {
         inputAction.Player.Enable();
-
         inputAction.Player.Jump.performed += OnJump;
-
-
     }
 
     void OnDisable()
     {
         inputAction.Player.Disable();
-
         inputAction.Player.Jump.performed -= OnJump;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Vector2 moveInput = inputAction.Player.Move.ReadValue<Vector2>();
 
-        bool isKeyboard = inputAction.Player.Move.activeControl!=null && inputAction.Player.Move.activeControl.device is Keyboard;
+        bool isKeyboard = inputAction.Player.Move.activeControl != null && inputAction.Player.Move.activeControl.device is Keyboard;
 
-        if(isKeyboard )
+        if (isKeyboard)
         {
             smoothedInputX = Mathf.MoveTowards(smoothedInputX, moveInput.x, acceleration * Time.deltaTime);
             horizontalMove = smoothedInputX * runSpeed;
@@ -61,38 +56,40 @@ public class PlayerMovement : MonoBehaviour
             smoothedInputX = moveInput.x;
             horizontalMove = moveInput.x * runSpeed;
         }
+
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        //jump = inputAction.Player.Jump.triggered;
 
-
-
+        // Count down the timer every frame
+        if (jumpCooldown > 0)
+        {
+            jumpCooldown -= Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump); // movement, crouch, jump
-
         jump = false;
     }
-
-
 
     private void OnJump(InputAction.CallbackContext context)
     {
         jump = true;
         animator.SetBool("IsJumping", true);
+
+        // Tell the script to ignore the ground for the next 0.2 seconds
+        jumpCooldown = 0.05f;
     }
 
     public void OnLanding()
     {
-        if (rb.linearVelocityY > 0.1f)
+        // If we just jumped, ignore this fake landing entirely!
+        if (jumpCooldown > 0f)
         {
-            Debug.Log("Fake Landing");
             return;
         }
+
         Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
     }
-
-
 }
