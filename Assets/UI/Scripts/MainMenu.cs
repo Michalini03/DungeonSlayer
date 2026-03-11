@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void StartRun()
     {
-        SceneManager.LoadScene("FirstMap");
+        SceneManager.LoadScene("DeepForest-FirstMap");
     }
 
     public void GoToSettingsMenu()
