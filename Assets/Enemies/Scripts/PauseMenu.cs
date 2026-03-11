@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -51,9 +52,8 @@ public class PauseMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        Debug.Log("Not implemented");
-        //Time.timeScale = 1f;
-        //SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitGame()

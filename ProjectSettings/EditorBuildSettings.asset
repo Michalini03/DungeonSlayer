@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 86d2ace8a7b286b409055adee5db13e0
+  - enabled: 1
+    path: Assets/Scenes/SettingsMenu.unity
+    guid: ac2919e92acbda346aff09fe1c2762e6
+  - enabled: 1
+    path: Assets/DeepForest/Scenes/FirstMap.unity
+    guid: 27ad9821af41b0c468fb43854d40cfa3
+  - enabled: 1
     path: Assets/Scenes/Player-movement-developmnet.unity
     guid: 9b99c131b11e7de439ca39284ee825a4
   m_configObjects:
