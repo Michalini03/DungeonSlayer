@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class EnemyMovement : MonoBehaviour
-{   
+{
     [Header("Movement Settings")]
     [SerializeField] private GameObject A;
     [SerializeField] private GameObject B;
@@ -10,23 +9,24 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private bool detachPatrolPointsOnStart = true;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject player;
-    [SerializeField] private float normalSpeed = 0.7f;
-    [SerializeField] private float chaseSpeed = 2.5f;
+    [SerializeField] private float normalSpeed = 2f; // Increased slightly for physics
+    [SerializeField] private float chaseSpeed = 4f;
+    [SerializeField] private float jumpForce = 6f;
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float insideTrigerRange = 5f;
     [SerializeField] private float outsideTrigerRange = 7f;
     [SerializeField] private float speedAnimationMultiplier = 2.0f;
 
-    // Attack cooldown management
+    private Rigidbody2D rb;
     private float attackCooldown = 1f;
     private float currentCooldown = 0f;
     private bool canWalk;
     private bool isTrigered = false;
     private bool isLastVisitedA = false;
-    
-    // Vzbudí se a nastaví animaci na chůzi
+
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
         if (detachPatrolPointsOnStart)
         {
             DetachPatrolPoint(A);
@@ -40,148 +40,162 @@ public class EnemyMovement : MonoBehaviour
 
     private void DetachPatrolPoint(GameObject patrolPoint)
     {
-        if (patrolPoint == null)
-        {
-            return;
-        }
-
-        // Keep world position/rotation while unparenting so patrol targets stay fixed in scene.
+        if (patrolPoint == null) return;
         patrolPoint.transform.SetParent(null, true);
     }
 
-    // Každý fram zkontroluje cooldown útoku, pohyb a trigger pro přepínání mezi chůzí a honěním hráče
     private void FixedUpdate()
     {
         manageAttackCooldown();
         Move();
         checkTrigger();
+        CheckForJump(); // New jump logic
     }
 
-    // Metoda pro řízení pohybu nepřítele, který se buď pohybuje mezi dvěma body, nebo honí hráče
     private void Move()
     {
-        // Pokud je nepřítel v dosahu útoku, nemůže chodit, ale pouze útočit
-        if (!canWalk){
-            Vector3 direction = moveTowardsPlayer();
+        Vector3 direction;
+        if (!canWalk)
+        {
+            // Stop horizontal movement when attacking
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            direction = moveTowardsPlayer();
             flipCharacter(direction);
             return;
         }
 
-        // Pokud není v dosahu útoku, ale je v dosahu triggeru, honí hráče, jinak chodí mezi body A a B
-        if(!isTrigered)
+        float currentSpeed = isTrigered ? chaseSpeed : normalSpeed;
+
+        if (!isTrigered)
         {
-            Vector3 direction = walkBetweenPoints();
-            flipCharacter(direction);
-            transform.Translate(direction.normalized * normalSpeed * Time.fixedDeltaTime);
+            direction = walkBetweenPoints();
+        }
+        else
+        {
+            direction = moveTowardsPlayer();
         }
 
-        // Pokud je v dosahu triggeru, ale není v dosahu útoku, honí hráče
-        else if(isTrigered)
+        flipCharacter(direction);
+
+        // Physics-based movement (avoids the "curling" and "teleporting" issues)
+        float horizontalMove = direction.x > 0 ? 1 : -1;
+        rb.linearVelocity = new Vector2(horizontalMove * currentSpeed, rb.linearVelocity.y);
+    }
+
+    [Header("Detection Settings")]
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float wallCheckDistance = 1.0f;
+
+
+    private void CheckForJump()
+    {
+        float faceDir = transform.localScale.x > 0 ? 1 : -1;
+
+        Vector2 chestOrigin = (Vector2)transform.position + new Vector2(0f, 0.5f);
+        Vector2 wallEnd = chestOrigin + new Vector2(wallCheckDistance * faceDir, 0);
+        RaycastHit2D hitWall = Physics2D.Linecast(chestOrigin, wallEnd, groundLayer);
+
+        Vector2 footOrigin = (Vector2)transform.position + new Vector2(0.5f * faceDir, 0f);
+        Vector2 holeEnd = footOrigin + new Vector2(0, -2f);
+        RaycastHit2D hitFloor = Physics2D.Linecast(footOrigin, holeEnd, groundLayer);
+
+        Debug.DrawLine(chestOrigin, wallEnd, Color.red);
+        Debug.DrawLine(footOrigin, holeEnd, Color.blue);
+
+        if (IsGrounded())
         {
-            Vector3 direction = moveTowardsPlayer();
-            flipCharacter(direction);
-            transform.Translate(direction.normalized * chaseSpeed * Time.fixedDeltaTime);
+            if (hitWall.collider != null || hitFloor.collider == null)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
         }
     }
 
-    // Metoda pro kontrolu vzdálenosti mezi nepřítelem a hráčem, která určuje, zda se má přepnout mezi chůzí a honěním hráče
+    private bool IsGrounded()
+    {
+        Vector2 leftFoot = (Vector2)transform.position + new Vector2(-0.2f, 0f);
+        Vector2 rightFoot = (Vector2)transform.position + new Vector2(0.2f, 0f);
+
+        float checkDist = 1.1f; // Scale is 2, so feet are further down
+
+        Debug.DrawRay(leftFoot, Vector2.down * checkDist, Color.green);
+        Debug.DrawRay(rightFoot, Vector2.down * checkDist, Color.green);
+
+        bool left = Physics2D.Raycast(leftFoot, Vector2.down, checkDist, groundLayer);
+        bool right = Physics2D.Raycast(rightFoot, Vector2.down, checkDist, groundLayer);
+
+        return left || right;
+    }
+
     private void checkTrigger()
     {
-        if(Vector3.Distance(transform.position, player.transform.position) < insideTrigerRange)
+        float dist = Vector3.Distance(transform.position, player.transform.position);
+        if (dist < insideTrigerRange)
         {
-            // Pokud jsme v dosahu triggeru, ale ještě nejsme v dosahu útoku, zrychlíme animaci chůze a přepneme na honění hráče
             animator.SetFloat("walkSpeedMultiplier", speedAnimationMultiplier);
             isTrigered = true;
         }
-        else if(Vector3.Distance(transform.position, player.transform.position) > outsideTrigerRange)
+        else if (dist > outsideTrigerRange)
         {
-            // Pokud jsme mimo dosah triggeru, ale ještě nejsme v dosahu útoku, zpomalíme animaci chůze a přepneme na chůzi mezi body A a B
             animator.SetFloat("walkSpeedMultiplier", 1.0f);
             isTrigered = false;
         }
     }
 
-    // Metoda pro pohyb mezi dvěma body A a B, která vrací směr pohybu a aktualizuje, který bod byl naposledy navštíven
     private Vector3 walkBetweenPoints()
     {
-        // Směr, kterým se nepřítel bude pohybovta... ten vracíme
-        Vector3 direction;
-        
-        // Pokud jsme naposledy navštívili bod A, jdeme k bodu B, jinak jdeme k bodu A
-        if(isLastVisitedA)
-        {
-            direction = B.transform.position - transform.position;
-            if(Vector3.Distance(transform.position, B.transform.position) < 0.1f)
-            {
-                isLastVisitedA = false;
-            }
-        }
+        Vector3 targetPos = isLastVisitedA ? B.transform.position : A.transform.position;
+        Vector3 direction = targetPos - transform.position;
 
-        // Pokud jsme naposledy navštívili bod B, jdeme k bodu A, jinak jdeme k bodu B
-        else
+        if (Vector3.Distance(transform.position, targetPos) < 0.5f)
         {
-            direction = A.transform.position - transform.position;
-            if(Vector3.Distance(transform.position, A.transform.position) < 0.1f)
-            {
-                isLastVisitedA = true;
-            }
+            isLastVisitedA = !isLastVisitedA;
         }
         return direction;
     }
 
-    // Metoda pro pohyb směrem k hráči, která vrací směr pohybu
     private Vector3 moveTowardsPlayer()
     {
-        Vector3 direction = player.transform.position - transform.position;
-        return direction;
-    }
-    
-    // Metoda pro otočení postavy směrem k pohybu, která mění měřítko postavy podle směru pohybu
-    private void flipCharacter(Vector3 direction)
-    {
-        if (direction.x < 0)
-        {
-            transform.localScale = new Vector3(-2, 2, 2);
-        }
-        else
-        {
-            transform.localScale = new Vector3(2, 2, 2);
-        }
+        return player.transform.position - transform.position;
     }
 
-    // Metoda pro řízení cooldownu útoku, která kontroluje, zda je nepřítel v dosahu útoku a zda může útočit, a aktualizuje stav animace a pohybu podle toho
+    private void flipCharacter(Vector3 direction)
+    {
+        // Simplified flipping logic to maintain your localScale of 2
+        float x = direction.x < 0 ? -2f : 2f;
+        transform.localScale = new Vector3(x, 2f, 2f);
+    }
+
     private void manageAttackCooldown()
     {
-        //Jsme v dosahu útoku (poprve)
-        if(Vector3.Distance(transform.position, player.transform.position) < attackRange && currentCooldown <= 0)
+        float dist = Vector3.Distance(transform.position, player.transform.position);
+
+        if (dist < attackRange && currentCooldown <= 0)
         {
             animator.SetBool("Attack", true);
             currentCooldown = attackCooldown;
             canWalk = false;
-            return;
         }
-
-        //Jsme mimo dosah útoku, ale cooldown ještě nevypršel
         else if (currentCooldown > 0)
         {
             currentCooldown -= Time.fixedDeltaTime;
-            return;
         }
-
-        //Jsme mimo dosah útoku a cooldown vypršel
         else
         {
             animator.SetBool("Attack", false);
-            currentCooldown = 0f;
             canWalk = true;
         }
     }
 
-    public void EnableHitbox() {
-        attackHitbox.SetActive(true);
-    }
+    public void EnableHitbox() => attackHitbox.SetActive(true);
+    public void DisableHitbox() => attackHitbox.SetActive(false);
 
-    public void DisableHitbox() {
-        attackHitbox.SetActive(false);
+    // Visualize the jump detection in the editor
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Vector3 dir = transform.localScale.x > 0 ? Vector3.right : Vector3.left;
+        Gizmos.DrawRay(transform.position, dir * wallCheckDistance);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, -0.8f, 0), 0.2f);
     }
 }
