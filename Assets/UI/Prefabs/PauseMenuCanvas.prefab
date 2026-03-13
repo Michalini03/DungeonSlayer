@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1319888667667121641}
   - component: {fileID: 8700838038495355294}
   - component: {fileID: 5696204596705365091}
+  - component: {fileID: 3362361588339218083}
   m_Layer: 5
   m_Name: PauseMenuCanvas
   m_TagString: UI
@@ -102,6 +103,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3362361588339218083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727147638049211551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ff3323692ba0a4999df347e137bad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
+  pauseMenu: {fileID: 2745297462477381683}
 --- !u!1 &1716352727244079031
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,8 +190,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -554,11 +568,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-    m_SelectedColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0}
+    m_HighlightedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_PressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.19607843}
+    m_SelectedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_DisabledColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.09803922}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -577,7 +591,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3362361588339218083}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -663,8 +677,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -824,11 +838,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-    m_SelectedColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0}
+    m_HighlightedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_PressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.19607843}
+    m_SelectedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_DisabledColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.09803922}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -847,7 +861,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3362361588339218083}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
@@ -957,11 +971,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-    m_SelectedColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0}
+    m_HighlightedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_PressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.19607843}
+    m_SelectedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_DisabledColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.09803922}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -980,7 +994,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3362361588339218083}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: AugmentsMenu
         m_Mode: 1
@@ -1066,8 +1080,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1203,8 +1217,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1364,11 +1378,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
-    m_SelectedColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 0}
+    m_HighlightedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_PressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0.19607843}
+    m_SelectedColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.19607843}
+    m_DisabledColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 0.09803922}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1387,7 +1401,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3362361588339218083}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
