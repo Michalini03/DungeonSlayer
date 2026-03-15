@@ -11,5 +11,9 @@ AssetOrigin:
   productId: 280066
   packageName: Pixel Art Woods Tileset and Background
   packageVersion: 1.1
+<<<<<<< Updated upstream
   assetPath: Assets/karsiori/TileMap/Tiles/Tilesheet - WOODS_13.asset
+=======
+  assetPath: Assets/DeepForest/TileMap/Tiles/Tilesheet - WOODS_13.asset
+>>>>>>> Stashed changes
   uploadId: 670275
