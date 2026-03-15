@@ -11,9 +11,5 @@ AssetOrigin:
   productId: 280066
   packageName: Pixel Art Woods Tileset and Background
   packageVersion: 1.1
-<<<<<<< Updated upstream
   assetPath: Assets/karsiori/TileMap/Material/New Physics Material 2D.physicsMaterial2D
-=======
-  assetPath: Assets/DeepForest/TileMap/Material/New Physics Material 2D.physicsMaterial2D
->>>>>>> Stashed changes
   uploadId: 670275

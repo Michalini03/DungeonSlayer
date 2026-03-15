@@ -1,6 +1,5 @@
 fileFormatVersion: 2
 guid: b425613db706e0a49821a35253ec9db1
-<<<<<<< Updated upstream
 AssetOrigin:
   serializedVersion: 1
   productId: 280066
@@ -12,12 +11,6 @@ TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
-=======
-TextureImporter:
-  internalIDToNameTable: []
-  externalObjects: {}
-  serializedVersion: 12
->>>>>>> Stashed changes
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -81,11 +74,7 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-<<<<<<< Updated upstream
   - serializedVersion: 4
-=======
-  - serializedVersion: 3
->>>>>>> Stashed changes
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -98,11 +87,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream
   - serializedVersion: 4
-=======
-  - serializedVersion: 3
->>>>>>> Stashed changes
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -115,13 +100,8 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream
   - serializedVersion: 4
     buildTarget: WindowsStoreApps
-=======
-  - serializedVersion: 3
-    buildTarget: Windows Store Apps
->>>>>>> Stashed changes
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -133,11 +113,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-<<<<<<< Updated upstream
   - serializedVersion: 4
-=======
-  - serializedVersion: 3
->>>>>>> Stashed changes
     buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -164,10 +140,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -189,10 +162,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -214,10 +184,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -239,10 +206,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -264,10 +228,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -289,10 +250,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -314,10 +272,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -339,10 +294,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -364,10 +316,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -389,10 +338,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -414,10 +360,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -439,10 +382,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -464,10 +404,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -489,10 +426,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -514,10 +448,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -539,10 +470,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -564,10 +492,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -589,10 +514,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -614,10 +536,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -639,10 +558,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -664,10 +580,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -689,10 +602,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -714,10 +624,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -739,10 +646,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -764,10 +668,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -789,10 +690,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -814,10 +712,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -839,10 +734,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -864,10 +756,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -889,10 +778,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -914,10 +800,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -939,10 +822,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -964,10 +844,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -989,10 +866,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1014,10 +888,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1039,10 +910,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1064,10 +932,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1089,10 +954,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1114,10 +976,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1139,10 +998,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1164,10 +1020,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1189,10 +1042,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1214,10 +1064,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1239,10 +1086,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1264,10 +1108,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1289,10 +1130,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1314,10 +1152,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1339,10 +1174,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1364,10 +1196,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1389,10 +1218,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1414,10 +1240,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1439,10 +1262,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1464,10 +1284,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1489,10 +1306,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1514,10 +1328,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1539,10 +1350,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1564,10 +1372,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1589,10 +1394,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1614,10 +1416,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1639,10 +1438,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1664,10 +1460,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1689,10 +1482,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1714,10 +1504,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1739,10 +1526,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1764,10 +1548,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1789,10 +1570,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1814,10 +1592,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1839,10 +1614,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1864,10 +1636,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1889,10 +1658,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1914,10 +1680,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1939,10 +1702,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1964,10 +1724,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1989,10 +1746,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2014,10 +1768,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2039,10 +1790,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2064,10 +1812,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2089,10 +1834,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2114,10 +1856,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2139,10 +1878,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2164,10 +1900,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2189,10 +1922,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2214,10 +1944,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2239,10 +1966,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2264,10 +1988,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2289,10 +2010,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2314,10 +2032,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2339,10 +2054,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< Updated upstream
       customData: 
-=======
->>>>>>> Stashed changes
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -2354,10 +2066,7 @@ TextureImporter:
       edges: []
       weights: []
     outline: []
-<<<<<<< Updated upstream
     customData: 
-=======
->>>>>>> Stashed changes
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
@@ -2367,11 +2076,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-<<<<<<< Updated upstream
     spriteCustomMetadata:
       entries: []
-=======
->>>>>>> Stashed changes
     nameFileIdTable:
       Tilesheet - WOODS_0: 180598032
       Tilesheet - WOODS_1: -1054023020
@@ -2466,13 +2172,3 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-<<<<<<< Updated upstream
-=======
-AssetOrigin:
-  serializedVersion: 1
-  productId: 280066
-  packageName: Pixel Art Woods Tileset and Background
-  packageVersion: 1.1
-  assetPath: Assets/DeepForest/TileMap/Tiles/Tilesheet - WOODS.png
-  uploadId: 670275
->>>>>>> Stashed changes
