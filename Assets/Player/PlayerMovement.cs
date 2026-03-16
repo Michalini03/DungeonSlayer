@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -92,4 +93,40 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
     }
+
+    [Header("Teleport Boundaries")]
+    [SerializeField] private bool enableTeleport = false;
+    [SerializeField] private float leftX = -15f;
+    [SerializeField] private float rightX = 15f;
+    [SerializeField] private float leftY = 10f;
+    [SerializeField] private float rightY = -10f;
+    
+
+    private void LateUpdate()
+    {
+        if (enableTeleport)
+            HandleTeleport();
+    }
+
+    private void HandleTeleport()
+    {
+        Vector3 currentPos = transform.position;
+
+
+        // Horizontal Wrap (X)
+        if (currentPos.x > rightX)
+        {
+            currentPos.x = leftX;
+            currentPos.y = leftY;
+        }
+        else if (currentPos.x < leftX)
+        {
+            currentPos.x = rightX;
+            currentPos.y = rightY;
+        }
+
+        transform.position = currentPos;
+    }
+
+
 }
