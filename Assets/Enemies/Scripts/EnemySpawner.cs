@@ -36,6 +36,8 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject skeletonInstance = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
             EnemyMovement skeletonBehavior = skeletonInstance.GetComponent<EnemyMovement>();
+            Collider2D attackHitboxCollider = skeletonInstance.transform.Find("HitBox").GetComponent<Collider2D>();
+            skeletonBehavior.SetAttackHitboxCollider(attackHitboxCollider);
 
             if (skeletonBehavior != null && playerReference != null)
             {

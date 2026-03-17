@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1561328459272386640}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.04, y: -2.34, z: -7}
+  m_LocalPosition: {x: 4.05726, y: 2.00584, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -221,7 +221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   attackHitbox: {fileID: 6701359113069367566}
-  detachPatrolPointsOnStart: 1
   animator: {fileID: 5773097424544389076}
   player: {fileID: 0}
   normalSpeed: 0.7
@@ -231,13 +230,23 @@ MonoBehaviour:
   insideTrigerRange: 3
   outsideTrigerRange: 5
   speedAnimationMultiplier: 2
+  maxSpeedAdjustment: 1
+  minSpeedAdjustment: -1
   enemyLayerName: Enemy
   playerLayerName: Player
-  configureLayerCollisionsOnAwake: 1
+  walkDirection: {x: 1, y: 0, z: 0}
+  patrolProbeHeight: 0.5
+  patrolFootProbeForward: 0.45
+  patrolGroundCheckDistance: 1.2
+  patrolSlopeNormalThreshold: 0.98
+  patrolBlockedFramesToTurn: 3
+  patrolTurnCooldown: 0.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
   wallCheckDistance: 0.7
+  attackDamage: 1
+  attackHitboxCollider: {fileID: 0}
 --- !u!95 &5773097424544389076
 Animator:
   serializedVersion: 7
@@ -390,7 +399,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6701359113069367566}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
