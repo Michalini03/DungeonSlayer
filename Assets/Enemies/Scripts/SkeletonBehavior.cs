@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
+    [SerializeField] private int health = 100;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject player;
@@ -40,6 +41,10 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float wallCheckDistance = 1.0f;
 
+    [Header("Attack Hitbox")]
+    [SerializeField] private int attackDamage = 1;
+    [SerializeField] private Collider2D attackHitboxCollider;
+    
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
 
@@ -50,7 +55,7 @@ public class EnemyMovement : MonoBehaviour
         InitializeAnimator();
         adjustSpeed(minSpeedAdjustment, maxSpeedAdjustment);
         ConfigureCollisionRules();
-
+        DisableHitbox();
     }
 
     private void ConfigureCollisionRules()
@@ -64,12 +69,10 @@ public class EnemyMovement : MonoBehaviour
             return;
         }
 
-        // Ignore enemy vs enemy collisions globally.
         Physics2D.IgnoreLayerCollision(enemyLayer, enemyLayer, true);
 
         if (playerLayer != -1)
         {
-            // Ignore enemy vs player collisions globally.
             Physics2D.IgnoreLayerCollision(enemyLayer, playerLayer, true);
         }
         else
@@ -152,7 +155,7 @@ public class EnemyMovement : MonoBehaviour
         Vector2 leftFoot = (Vector2)transform.position + new Vector2(-0.2f, 0f);
         Vector2 rightFoot = (Vector2)transform.position + new Vector2(0.2f, 0f);
 
-        float checkDist = 1.1f; // Scale is 2, so feet are further down
+        float checkDist = 1.1f;
 
         Debug.DrawRay(leftFoot, Vector2.down * checkDist, Color.green);
         Debug.DrawRay(rightFoot, Vector2.down * checkDist, Color.green);
@@ -325,5 +328,51 @@ public class EnemyMovement : MonoBehaviour
     private void setRigidBody()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    // Jen nastavuje hitbox collider, pac je to debilne dany jako child objekt
+    public void SetAttackHitboxCollider(Collider2D collider)
+    {
+        attackHitboxCollider = collider;
+
+        if (attackHitboxCollider != null)
+        {
+            attackHitboxCollider.isTrigger = true;
+            int defaultLayer = LayerMask.NameToLayer("Default");
+            if (defaultLayer != -1)
+            {
+                attackHitboxCollider.gameObject.layer = defaultLayer;
+            }
+        }
+    }
+
+    //-----------------------------------------ENEMY GETTING HIT BY PLAYER LOGIC-----------------------------------------
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (attackHitbox == null || !attackHitbox.activeInHierarchy)
+        {
+            return;
+        }
+
+        GameObject hitObject = other.attachedRigidbody != null ? other.attachedRigidbody.gameObject : other.gameObject;
+        if (player != null && (hitObject == player || hitObject.transform.root.gameObject == player))
+        {
+            Debug.Log("Player hit by attack!");
+            // DisableHitbox() je tady dulezitej aby se nedal 2x hit. Pls pls nemazat  
+            DisableHitbox();
+        }
+    }
+    
+    // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
+    private void manageEnemyHit(int playerDamage)
+    {
+        health -= playerDamage;
+        
+        if (health <= 0)
+        {
+            // Zatim jen reseny takto :Dd
+            Destroy(gameObject);
+        }
     }
 }
