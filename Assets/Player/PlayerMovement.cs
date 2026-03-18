@@ -33,12 +33,14 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
+        inputAction.Player.Attack.performed += ctx => GetComponent<PlayerCombat>().Attack();
     }
 
     void OnDisable()
     {
         inputAction.Player.Disable();
         inputAction.Player.Jump.performed -= OnJump;
+        
     }
 
     void Update()
