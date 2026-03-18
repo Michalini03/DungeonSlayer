@@ -13,6 +13,9 @@ public class PlayerCombat : MonoBehaviour
     float cooldown = 0f;
     float attackcooldown = 0.5f;
 
+    public int maxHealth = 100;
+    public int playerDamage = 45;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -51,7 +54,7 @@ public class PlayerCombat : MonoBehaviour
                 if (!hitEnemyObjects.Contains(enemyObject))
                 {
                     hitEnemyObjects.Add(enemyObject);
-                    Debug.Log("Hit " + enemy.name);
+                    enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(playerDamage);
                 }
 
             }
@@ -59,6 +62,24 @@ public class PlayerCombat : MonoBehaviour
 
 
         
+    }
+
+    public void takeDamage(int damage)
+    {
+        if(maxHealth<= 0)
+        {
+            return;
+        }
+        
+        maxHealth -= damage;
+        if(maxHealth <= 0)
+        {
+            animator.SetTrigger("Death");
+        }
+        else
+        {
+            animator.SetTrigger("Hurt");
+        }
     }
 
     private void OnDrawGizmosSelected()

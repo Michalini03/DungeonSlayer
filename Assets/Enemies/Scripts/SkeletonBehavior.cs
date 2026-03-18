@@ -48,6 +48,11 @@ public class EnemyMovement : MonoBehaviour
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
 
+
+    //marek: tady je zdroj a range utoku kalibrovane na animaci, klidne se to muze nejak upravit, zatim prototyp
+    public Transform attackPoint;
+    public float trueAttackRange = 1f;
+
     private void Awake()
     {
         setRigidBody();
@@ -295,6 +300,10 @@ public class EnemyMovement : MonoBehaviour
         Vector3 dir = transform.localScale.x > 0 ? Vector3.right : Vector3.left;
         Gizmos.DrawRay(transform.position, dir * wallCheckDistance);
         Gizmos.DrawWireSphere(transform.position + new Vector3(0, -0.8f, 0), 0.2f);
+
+
+        //marek: vizualizace utoku
+        Gizmos.DrawWireSphere(attackPoint.position, trueAttackRange);
     }
 
     private float generateRandomNumber(float min, float max)
@@ -346,9 +355,19 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    //-----------------------------------------ENEMY GETTING HIT BY PLAYER LOGIC-----------------------------------------
+    // marek: dopsal jsem si tady aby enemak mohl mlatit i mecem
+    private void AttackHitboxLogic()
+    {
+        Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, trueAttackRange, LayerMask.GetMask(playerLayerName));
+        if (hitPlayers.Length > 0)
+        {
+            hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
+        }
+    }
 
-    private void OnTriggerEnter2D(Collider2D other)
+//-----------------------------------------ENEMY GETTING HIT BY PLAYER LOGIC-----------------------------------------
+
+private void OnTriggerEnter2D(Collider2D other)
     {
         if (attackHitbox == null || !attackHitbox.activeInHierarchy)
         {
@@ -365,14 +384,20 @@ public class EnemyMovement : MonoBehaviour
     }
     
     // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
-    private void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage)
     {
+        
         health -= playerDamage;
         
         if (health <= 0)
         {
             // Zatim jen reseny takto :Dd
+            // marek: todo: asi by to chtelo animaci s nejakym delayem aby to sedelo casove s animaci utoku hrace
             Destroy(gameObject);
+        }
+        else
+        {
+            animator.SetTrigger("tookHit");
         }
     }
 }

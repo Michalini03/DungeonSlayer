@@ -153,10 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02dd7338f3e66442a8a64d897666a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  A: {fileID: 1702314402}
-  B: {fileID: 1790426246}
+  health: 185
   attackHitbox: {fileID: 1018213714}
-  detachPatrolPointsOnStart: 1
   animator: {fileID: 260355546}
   player: {fileID: 592106641}
   normalSpeed: 0.7
@@ -166,10 +164,25 @@ MonoBehaviour:
   insideTrigerRange: 5
   outsideTrigerRange: 7
   speedAnimationMultiplier: 2
+  maxSpeedAdjustment: 1
+  minSpeedAdjustment: -1
+  enemyLayerName: Enemy
+  playerLayerName: Player
+  walkDirection: {x: 1, y: 0, z: 0}
+  patrolProbeHeight: 0.5
+  patrolFootProbeForward: 0.45
+  patrolGroundCheckDistance: 1.2
+  patrolSlopeNormalThreshold: 0.98
+  patrolBlockedFramesToTurn: 3
+  patrolTurnCooldown: 0.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
   wallCheckDistance: 1
+  attackDamage: 35
+  attackHitboxCollider: {fileID: 592106652}
+  attackPoint: {fileID: 1250060197}
+  trueAttackRange: 0.69
 --- !u!95 &260355546
 Animator:
   serializedVersion: 7
@@ -376,6 +389,7 @@ Transform:
   m_Children:
   - {fileID: 1341589490}
   - {fileID: 1018213716}
+  - {fileID: 1250060197}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &265714462 stripped
@@ -549,6 +563,13 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 512
+  maxHealth: 100
+  playerDamage: 45
+--- !u!61 &592106652 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 379786885025010802, guid: 444f9cfce1be5a64594ad3b512110c5c, type: 3}
+  m_PrefabInstance: {fileID: 598877239207815929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &686185574
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +777,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 260355551}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1250060196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1250060197}
+  m_Layer: 9
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1250060197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250060196}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.385, y: 0.058, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 260355551}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1341589489
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,7 +866,7 @@ Transform:
   m_GameObject: {fileID: 1663669309}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.57, y: 0.85, z: 0}
+  m_LocalPosition: {x: 0.57, y: 0.8499999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1042,13 +1094,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708658873}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.3014703, y: 0.80566674, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.28391156, w: 0.95885044}
+  m_LocalPosition: {x: 5.41, y: 0.6716, z: 0}
+  m_LocalScale: {x: 8.049518, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 32.988}
 --- !u!1 &1752476844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,10 +1463,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 379786885025010802, guid: 444f9cfce1be5a64594ad3b512110c5c, type: 3}
+      propertyPath: m_CompositeOperation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 883163713535114455, guid: 444f9cfce1be5a64594ad3b512110c5c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
+    - target: {fileID: 3332330449544598234, guid: 444f9cfce1be5a64594ad3b512110c5c, type: 3}
+      propertyPath: m_CompositeOperation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3901813598516384241, guid: 444f9cfce1be5a64594ad3b512110c5c, type: 3}
       propertyPath: m_Name
       value: Player
