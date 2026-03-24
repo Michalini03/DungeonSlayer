@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,12 +33,14 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
+        inputAction.Player.Attack.performed += ctx => GetComponent<PlayerCombat>().Attack();
     }
 
     void OnDisable()
     {
         inputAction.Player.Disable();
         inputAction.Player.Jump.performed -= OnJump;
+        
     }
 
     void Update()
@@ -110,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleTeleport()
     {
         Vector3 currentPos = transform.position;
+
 
         // Horizontal Wrap (X)
         if (currentPos.x > rightX)
