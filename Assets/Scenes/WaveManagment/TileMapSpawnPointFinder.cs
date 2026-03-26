@@ -4,10 +4,14 @@ using UnityEngine.Tilemaps;
 
 public class TileMapSpawnPointFinder : MonoBehaviour
 {
-    [SerializeField] private Tilemap spawnTilemap;
+    [SerializeField] private Tilemap skeletonSpawnTilemap;
+    [SerializeField] private Tilemap flyingEyeSpawnTilemap;
     [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] public GameObject player;
 
-    private readonly List<Vector3> spawnPoints = new List<Vector3>();
+    private readonly List<Vector3> skeletonSpawnPoints = new List<Vector3>();
+    private readonly List<Vector3> flyingEyeSpawnPoints = new List<Vector3>();
+    
     private bool hasFoundSpawnPoints = false;
 
     private void Awake()
@@ -17,47 +21,83 @@ public class TileMapSpawnPointFinder : MonoBehaviour
             FindSpawnPoints();
         }
     }
-    
-    /*
-    private void Update()
-    {
-        Vector3 randomSpawnPoint = GetRandomSpawnPoint();
-        Debug.Log("Random Spawn Point: " + randomSpawnPoint);
-    }
-    */
 
     private void FindSpawnPoints()
     {
-        spawnPoints.Clear();
+        skeletonSpawnPoints.Clear();
+        flyingEyeSpawnPoints.Clear();
 
-        if (spawnTilemap == null)
+        if (skeletonSpawnTilemap == null)
         {
-            Debug.LogWarning("Spawn Tilemap is not assigned.", this);
+            Debug.LogWarning("Skeleton Spawn Tilemap is not assigned.", this);
             return;
         }
 
-        BoundsInt bounds = spawnTilemap.cellBounds;
-        foreach (Vector3Int cellPosition in bounds.allPositionsWithin)
+        else if (flyingEyeSpawnTilemap == null)
         {
-            if (!spawnTilemap.HasTile(cellPosition))
+            Debug.LogWarning("Flying Eye Spawn Tilemap is not assigned.", this);
+            return;
+        }
+
+        BoundsInt SkeletonBounds = skeletonSpawnTilemap.cellBounds;
+        foreach (Vector3Int cellPosition in SkeletonBounds.allPositionsWithin)
+        {
+            if (!skeletonSpawnTilemap.HasTile(cellPosition))
             {
                 continue;
             }
 
-            Vector3 worldPoint = spawnTilemap.GetCellCenterWorld(cellPosition) + spawnOffset;
-            spawnPoints.Add(worldPoint);
+            Vector3 worldPoint = skeletonSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnOffset;
+            worldPoint.z = player.transform.position.z;
+            skeletonSpawnPoints.Add(worldPoint);
         }
+
+        BoundsInt FlyingEyeBounds = flyingEyeSpawnTilemap.cellBounds;
+        foreach (Vector3Int cellPosition in FlyingEyeBounds.allPositionsWithin)
+        {
+            if (!flyingEyeSpawnTilemap.HasTile(cellPosition))
+            {
+                continue;
+            }
+
+            Vector3 worldPoint = flyingEyeSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnOffset;
+            worldPoint.z = player.transform.position.z;
+            flyingEyeSpawnPoints.Add(worldPoint);
+        }
+        hasFoundSpawnPoints = true;
     }
 
-    public Vector3 GetRandomSpawnPoint()
+    public Vector3 GetRandomSpawnPoint(EnemyType enemyType)
     {
-        if (spawnPoints.Count == 0)
+        if (skeletonSpawnPoints.Count == 0 && flyingEyeSpawnPoints.Count == 0)
         {
             Debug.LogWarning("No spawn points found. Ensure the tilemap has tiles and is assigned.", this);
             return Vector3.zero;
         }
 
-        int randomIndex = Random.Range(0, spawnPoints.Count);
-        return spawnPoints[randomIndex];
+        int randomIndex = 0;
+        if(enemyType == EnemyType.Skeleton && skeletonSpawnPoints.Count > 0)
+        {
+            randomIndex = Random.Range(0, skeletonSpawnPoints.Count);
+        }
+        else if(enemyType == EnemyType.FlyingEye && flyingEyeSpawnPoints.Count > 0)
+        {
+            randomIndex = Random.Range(0, flyingEyeSpawnPoints.Count);
+        }
+        
+        switch (enemyType)
+        {
+            case EnemyType.Skeleton:
+                return skeletonSpawnPoints[randomIndex];
+            
+            case EnemyType.FlyingEye:
+                return flyingEyeSpawnPoints[randomIndex];
+            
+            default:
+                Debug.LogError("Unhandled enemy type.");
+                return Vector3.zero;
+        }        
     }
+
+
 }
