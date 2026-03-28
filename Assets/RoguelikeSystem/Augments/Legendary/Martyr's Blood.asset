@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
+  m_Name: Martyr's Blood
+  m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
+  id: martyrs_blood
+  displayName: Martyr's Blood
+  description: 'Hit Point maximum is permanently halved, but regain a small number
+    of hitpoints per second.
+
+    All regeneration can now regenerate up to 100%
+    of maximum HP.
+
+'
+  flavorText: '"While the Saint never stopped bleeding, they could never be felled."'
+  icon: {fileID: 0}
+  rarity: 3
+  baseWeight: 100
+  maxStacks: 1
+  tags: []
+  excludes: []
