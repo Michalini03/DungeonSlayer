@@ -12,10 +12,14 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private TileMapSpawnPointFinder spawnPointFinder;
-    [SerializeField] private float moveSpeed = 400f;
-    [SerializeField] private float maxSpeedAdjustment = 150f;
+    [SerializeField] private float moveSpeedChase = 300;
+    [SerializeField] private float moveSpeedPatrol = 170f;
+    [SerializeField] private float maxSpeedChaseAdjustment = 100f;
+    [SerializeField] private float maxSpeedPatrolAdjustment = 50f;
     [SerializeField] private float insideTrigerRange = 5f;
     [SerializeField] private float outsideTrigerRange = 8f;
+    [SerializeField] private float health = 100f;
+    [SerializeField] private bool isDead = false;
     private Vector3 targetPosition;
     private bool isPatrolling = true;
 
@@ -45,7 +49,11 @@ public class FlyingEyeBehavior : MonoBehaviour
     }
 
     void UpdatePath() {
-        
+        if (isDead)  
+        {
+            return;
+        }
+
         Vector3 targetPos = isPatrolling ? targetPosition : Player.position;
         if (seeker.IsDone()) {
             seeker.StartPath(transform.position, targetPos, OnPathComplete);
@@ -73,6 +81,10 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isDead)
+        {
+            return;
+        }
         managePatrolTarget();
         manageAttackCooldown();
         flipCharecter();
@@ -81,6 +93,10 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (path == null)
             return;
 
@@ -95,7 +111,7 @@ public class FlyingEyeBehavior : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Vector2 force = direction * moveSpeed * Time.deltaTime;
+        Vector2 force = direction * (isPatrolling ? moveSpeedPatrol : moveSpeedChase) * Time.deltaTime;
         rb.AddForce(force);
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance) {
@@ -120,7 +136,6 @@ public class FlyingEyeBehavior : MonoBehaviour
 
         if (dist < attackRange && currentCooldown <= 0)
         {   
-            Debug.Log("Attacking player!");
             animator.SetBool("Attack", true);
             currentCooldown = attackCooldown;
         }
@@ -136,7 +151,8 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     private void speedAdjustment()
     {
-        moveSpeed = 400f + Random.Range(-maxSpeedAdjustment, maxSpeedAdjustment);
+        moveSpeedPatrol = moveSpeedPatrol + Random.Range(-maxSpeedPatrolAdjustment, maxSpeedPatrolAdjustment);
+        moveSpeedChase = moveSpeedChase + Random.Range(-maxSpeedChaseAdjustment, maxSpeedChaseAdjustment);
     }
 
     private void managePatrolTarget()
@@ -145,9 +161,6 @@ public class FlyingEyeBehavior : MonoBehaviour
         Vector2 targetPos2D = new Vector2(targetPosition.x, targetPosition.y);
 
         float dist = Vector2.Distance(enemyPos2D, targetPos2D);
-        Debug.Log("Enemy Position: " + enemyPos2D);
-        Debug.Log("Target Position: " + targetPos2D);
-        Debug.Log("2D Distance to patrol target: " + dist);
 
         if (isPatrolling && (dist < nextWaypointDistance || reachedEndOfPath))
         {
@@ -177,6 +190,30 @@ public class FlyingEyeBehavior : MonoBehaviour
         {
             isPatrolling = true;
         }
+    }
+
+    // Stejne jako u skeletona
+    public void manageEnemyHit(int playerDamage)
+    {
+        health -= playerDamage;
+        
+        if (health <= 0)
+        {
+            animator.SetTrigger("tookHit");
+            
+            isDead = true;
+            animator.SetBool("isDead", true);
+        }
+        else
+        {
+            animator.SetTrigger("tookHit");
+        }
+    }
+
+    // Toto se muze volat na konci animace pro smrt. Vsechny potrebne animaci by tam mely byt.
+    public void destroyEnemy()
+    {
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()
