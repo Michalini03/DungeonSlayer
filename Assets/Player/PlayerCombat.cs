@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -14,6 +13,10 @@ public class PlayerCombat : MonoBehaviour
     float cooldown = 0f;
     float attackcooldown = 0.5f;
 
+    private bool IsInputBlocked()
+    {
+        return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,7 +28,10 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (IsInputBlocked() && animator != null)
+        {
+            animator.ResetTrigger("Attack");
+        }
     }
 
     private void FixedUpdate()
@@ -38,18 +44,22 @@ public class PlayerCombat : MonoBehaviour
 
     public void Attack()
     {
+        if (IsInputBlocked())
+            return;
+
         if (cooldown <= 0)
         {
             cooldown = attackcooldown;
             animator.SetTrigger("Attack");
-            
-            
         }
     }
 
     public void DetectEnemiesHit()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.AttackRange, enemyLayers);
+        if (IsInputBlocked())
+            return;
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
         List<GameObject> hitEnemyObjects = new List<GameObject>();
 
         foreach (Collider2D enemy in hitEnemies)
@@ -59,7 +69,7 @@ public class PlayerCombat : MonoBehaviour
             if (!hitEnemyObjects.Contains(enemyObject))
             {
                 hitEnemyObjects.Add(enemyObject);
-                enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(aController.Damage);
+                enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(aController.damage);
             }
 
         }
@@ -85,10 +95,9 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-
-        if(attackPoint == null)
+        if (attackPoint == null || aController == null)
             return;
 
-        Gizmos.DrawWireSphere(attackPoint.position, aController.AttackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, aController.attackRange);
     }
 }

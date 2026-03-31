@@ -6,6 +6,8 @@ public class RunState
 
     public int Seed { get; set; }
 
+    public IReadOnlyDictionary<string, int> OwnedStacks => ownedStacks;
+
     public void AddAugment(string id)
     {
         if (!ownedStacks.ContainsKey(id))
@@ -24,6 +26,17 @@ public class RunState
     public int GetStacks(string id)
     {
         return ownedStacks.TryGetValue(id, out int value) ? value : 0;
+    }
+
+    public void RemoveAugment(string id)
+    {
+        if (!ownedStacks.ContainsKey(id))
+            return;
+
+        ownedStacks[id]--;
+
+        if (ownedStacks[id] <= 0)
+            ownedStacks.Remove(id);
     }
 
     public RunSaveData ToSaveData()

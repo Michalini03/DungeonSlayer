@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AugmentSynergyDefinition
   id: the_holy_sword
   displayName: Branch of The Great Oak
-  description: 'Attack Speed Up. Damage Up. Knockback Up. Movement Speed Up, Range
+  description: 'Combo Bar Size Up. Damage Up. Knockback Up. Movement Speed Up, Range
     Up. '
   flavorText: '"The Branch of The Great Oak was sword wielded in the most dire times
     by the Saint. It has since been lost to time..."'

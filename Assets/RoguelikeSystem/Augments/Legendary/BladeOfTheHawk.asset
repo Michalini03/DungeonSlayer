@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
   id: griffith_attack
   displayName: Blade of the Hawk
-  description: Massive Attack Speed Up. Knockback Down. Total Damage halved.
+  description: Massive Combo Bar Size Up. Knockback Down. Total Damage halved.
   flavorText: '"The Saint struck with the swiftness of a white hawk."'
   icon: {fileID: 0}
   rarity: 3

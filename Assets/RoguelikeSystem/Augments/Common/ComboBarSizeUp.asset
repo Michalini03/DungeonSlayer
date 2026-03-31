@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: AttackSpeedUp
+  m_Name: ComboBarSizeUp
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: attack_up
+  id: combo_bar_size_up
   displayName: Divine Agility
-  description: Attack Speed Up.
+  description: Combo Bar Size Up.
   flavorText: '"The Saint struck with incredible swiftness, yet with all their strength."'
   icon: {fileID: 0}
   rarity: 0
   baseWeight: 100
-  maxStacks: 1
+  maxStacks: 10
   tags: []
   excludes: []

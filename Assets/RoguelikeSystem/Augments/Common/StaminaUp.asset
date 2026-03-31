@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: Dragonslayer
+  m_Name: StaminaUp
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: guts_attack
-  displayName: Dragonslayer
-  description: Massive Damage Up. Knockback Up. Attack Size Up. Total Combo Bar Size
-    halved.
-  flavorText: '"The Saint''s sword was too big to be called a sword. Massive, thick,
-    heavy, and far too rough. Indeed, it was a heap of raw iron."'
+  id: stamina_up
+  displayName: Blessing of Rest
+  description: Stamina Up.
+  flavorText: '"The Saint was granted a brief respite, refreshing their restless
+    body."'
   icon: {fileID: 0}
-  rarity: 3
+  rarity: 0
   baseWeight: 100
-  maxStacks: 1
+  maxStacks: 10
+  effectType: 0
   tags: []
-  excludes:
-  - griffith_attack
+  excludes: []

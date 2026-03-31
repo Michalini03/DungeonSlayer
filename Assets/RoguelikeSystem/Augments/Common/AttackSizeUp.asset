@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: RangeUp
+  m_Name: AttackSizeUp
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: range_up
+  id: attack_size_up
   displayName: Attack Projection
   description: Attack Size Up.
   flavorText: '"Powers of the Acorn projected the Saint''s attacks beyond their limits." '
@@ -20,5 +20,6 @@ MonoBehaviour:
   rarity: 0
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []
