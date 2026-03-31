@@ -4,12 +4,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController2D controller;
+    public CharacterController2D cController;
+    public AttributesController aController;
     public Rigidbody2D rb;
     public Animator animator;
 
-    public float runSpeed = 40f;
     public float acceleration = 10f;
+    private float runSpeedModifier = 4f;
 
     private InputSystem_Actions inputAction;
 
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 120;
+        
     }
 
     void Awake()
@@ -33,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
+        inputAction.Player.Interact.performed += ctx => animator.SetTrigger("BuffRitual");
         inputAction.Player.Attack.performed += ctx => GetComponent<PlayerCombat>().Attack();
     }
 
@@ -40,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Disable();
         inputAction.Player.Jump.performed -= OnJump;
-        
     }
 
     void Update()
@@ -52,12 +54,12 @@ public class PlayerMovement : MonoBehaviour
         if (isKeyboard)
         {
             smoothedInputX = Mathf.MoveTowards(smoothedInputX, moveInput.x, acceleration * Time.deltaTime);
-            horizontalMove = smoothedInputX * runSpeed;
+            horizontalMove = smoothedInputX * aController.movementSpeed*runSpeedModifier;
         }
         else
         {
             smoothedInputX = moveInput.x;
-            horizontalMove = moveInput.x * runSpeed;
+            horizontalMove = moveInput.x * aController.movementSpeed * runSpeedModifier;
         }
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
@@ -71,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump); // movement, crouch, jump
+        cController.Move(horizontalMove * Time.fixedDeltaTime, false, jump); // movement, crouch, jump
         jump = false;
     }
 
@@ -95,6 +97,8 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
     }
+
+    
 
     [Header("Teleport Boundaries")]
     [SerializeField] private bool enableTeleport = false;
