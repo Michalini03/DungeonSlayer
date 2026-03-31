@@ -8,14 +8,13 @@ public class EnemySpawner : MonoBehaviour
     [System.Serializable]
     public class EnemySpawnConfig
     {
-        public string Name;
+        public EnemyType Type;
         public GameObject Prefab;
         public int Count;
     }
 
     [Header("Spawning Setup")]
     [SerializeField] private TileMapSpawnPointFinder spawnPointFinder;
-    [SerializeField] private GameObject playerPrefab;
     [SerializeField] private EnemySpawnConfig[] enemyGroups;
 
     [Header("Scene Management & UI")]
@@ -66,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        GameObject playerReference = playerPrefab != null ? playerPrefab : GameObject.FindGameObjectWithTag("Player");
+        GameObject playerReference = spawnPointFinder.player;
 
         foreach (var group in enemyGroups)
         {
@@ -74,26 +73,21 @@ public class EnemySpawner : MonoBehaviour
 
             for (int i = 0; i < group.Count; i++)
             {
-                SpawnSingleEnemy(group.Prefab, playerReference);
+                SpawnSingleEnemy(group.Prefab, group.Type, playerReference);
             }
 
             group.Prefab.SetActive(false);
         }
     }
 
-    private void SpawnSingleEnemy(GameObject prefab, GameObject player)
+    private void SpawnSingleEnemy(GameObject prefab, EnemyType enemyType, GameObject player)
     {
-        Vector3 spawnPoint = spawnPointFinder.GetRandomSpawnPoint();
+        Vector3 spawnPoint = spawnPointFinder.GetRandomSpawnPoint(enemyType);
+        
         spawnPoint.z = player.transform.position.z;
 
         GameObject instance = Instantiate(prefab, spawnPoint, Quaternion.identity);
 
         activeEnemies.Add(instance);
-
-        EnemyMovement behavior = instance.GetComponent<EnemyMovement>();
-        if (behavior != null && player != null)
-        {
-            behavior.SetPlayer(player);
-        }
     }
 }

@@ -44,6 +44,9 @@ public class EnemyMovement : MonoBehaviour
     [Header("Attack Hitbox")]
     [SerializeField] private int attackDamage = 1;
     [SerializeField] private Collider2D attackHitboxCollider;
+
+    [Header("Deadh Settings")]
+    private bool isDead = false;
     
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
@@ -88,6 +91,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        
         manageAttackCooldown();
         Move();
         checkTrigger();
@@ -386,18 +395,34 @@ private void OnTriggerEnter2D(Collider2D other)
     // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
     public void manageEnemyHit(int playerDamage)
     {
-        
         health -= playerDamage;
         
         if (health <= 0)
         {
             // Zatim jen reseny takto :Dd
             // marek: todo: asi by to chtelo animaci s nejakym delayem aby to sedelo casove s animaci utoku hrace
-            Destroy(gameObject);
+            animator.SetTrigger("tookHit");
+            isDead = true;
+            animator.SetBool("isDead", true);
         }
         else
         {
             animator.SetTrigger("tookHit");
+        }
+    }
+
+    public void DestroyEnemy()
+    {
+        Debug.Log("Enemy destroyed!");
+        Destroy(gameObject);
+    }
+
+    public void disableColiders()
+    {
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
         }
     }
 }
