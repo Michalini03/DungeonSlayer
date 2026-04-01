@@ -87,7 +87,7 @@ public class EnemySpawner : MonoBehaviour
         spawnPoint.z = player.transform.position.z;
 
         GameObject instance = Instantiate(prefab, spawnPoint, Quaternion.identity);
-
+        
         activeEnemies.Add(instance);
     }
 }

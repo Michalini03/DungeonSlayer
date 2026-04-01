@@ -24,11 +24,14 @@ public class FlyingEyeBehavior : MonoBehaviour
     private bool isPatrolling = true;
 
     [Header("Attack Settings")]
+    [SerializeField] private int attackDamage = 20;
     [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private string playerLayerName = "Player";
     private float attackCooldown = 1f;
     private float currentCooldown = 0f;
 
-    public Transform Player;
+    public GameObject Player;
     public float nextWaypointDistance = 1f;
 
     private Path path;
@@ -41,7 +44,6 @@ public class FlyingEyeBehavior : MonoBehaviour
     void Start()
     {
         speedAdjustment();
-        setPosition();
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
@@ -54,7 +56,7 @@ public class FlyingEyeBehavior : MonoBehaviour
             return;
         }
 
-        Vector3 targetPos = isPatrolling ? targetPosition : Player.position;
+        Vector3 targetPos = isPatrolling ? targetPosition : Player.transform.position;
         if (seeker.IsDone()) {
             seeker.StartPath(transform.position, targetPos, OnPathComplete);
         }
@@ -119,10 +121,6 @@ public class FlyingEyeBehavior : MonoBehaviour
         }
     }
 
-    void setPosition()
-    {
-        transform.position = new Vector3(transform.position.x, transform.position.y, -7);
-    }
 
     private void manageAttackCooldown()
     {
@@ -182,6 +180,8 @@ public class FlyingEyeBehavior : MonoBehaviour
 
         float dist = Vector3.Distance(transform.position, Player.transform.position);
 
+        Debug.Log($"Distance to player: {dist}, isPatrolling: {isPatrolling}, inside triger range :{insideTrigerRange}");
+
         if (dist < insideTrigerRange)
         {
             isPatrolling = false;
@@ -195,6 +195,10 @@ public class FlyingEyeBehavior : MonoBehaviour
     // Stejne jako u skeletona
     public void manageEnemyHit(int playerDamage)
     {
+        if(health<= 0 || isDead)
+        {
+            return;
+        }
         health -= playerDamage;
         
         if (health <= 0)
@@ -207,6 +211,17 @@ public class FlyingEyeBehavior : MonoBehaviour
         else
         {
             animator.SetTrigger("tookHit");
+        }
+    }
+
+
+    // vola se v animaci utoku, v jeden frame
+    private void AttackHitboxLogic()
+    {
+        Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, LayerMask.GetMask(playerLayerName));
+        if (hitPlayers.Length > 0)
+        {
+            hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
         }
     }
 
@@ -224,5 +239,8 @@ public class FlyingEyeBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, insideTrigerRange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, outsideTrigerRange);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
