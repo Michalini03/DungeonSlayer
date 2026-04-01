@@ -1,6 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
     bool jump = false;
 
     private float jumpCooldown = 0f;
+
+    private bool IsGameplayBlocked()
+    {
+        return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
+    }
 
     void Start()
     {
@@ -47,6 +53,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (IsGameplayBlocked())
+        {
+            horizontalMove = 0f;
+            smoothedInputX = 0f;
+            jump = false;
+            animator.SetFloat("Speed", 0f);
+            return;
+        }
+
         Vector2 moveInput = inputAction.Player.Move.ReadValue<Vector2>();
 
         bool isKeyboard = inputAction.Player.Move.activeControl != null && inputAction.Player.Move.activeControl.device is Keyboard;
@@ -54,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         if (isKeyboard)
         {
             smoothedInputX = Mathf.MoveTowards(smoothedInputX, moveInput.x, acceleration * Time.deltaTime);
-            horizontalMove = smoothedInputX * aController.movementSpeed*runSpeedModifier;
+            horizontalMove = smoothedInputX * aController.movementSpeed * runSpeedModifier;
         }
         else
         {
@@ -73,12 +88,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (IsGameplayBlocked())
+        {
+            cController.Move(0f, false, false);
+            jump = false;
+            return;
+        }
+
         cController.Move(horizontalMove * Time.fixedDeltaTime, false, jump); // movement, crouch, jump
         jump = false;
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
+        if (!context.performed)
+            return;
+
+        if (IsGameplayBlocked())
+            return;
+
         jump = true;
         animator.SetBool("IsJumping", true);
 
@@ -88,6 +116,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnLanding()
     {
+        if (IsGameplayBlocked())
+            return;
+
         // If we just jumped, ignore this fake landing entirely!
         if (jumpCooldown > 0f)
         {
@@ -110,6 +141,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (IsGameplayBlocked())
+            return;
+
         if (enableTeleport)
             HandleTeleport();
     }
