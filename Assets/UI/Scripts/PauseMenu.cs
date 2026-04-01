@@ -38,9 +38,14 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
 
         if (RunController.Instance != null)
+        {
             RunController.Instance.RefreshPauseState();
+        }
+            
         else
+        {
             Time.timeScale = 0f;
+        }
     }
 
     public void ResumeGame()
@@ -49,9 +54,14 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
 
         if (RunController.Instance != null)
+        {
             RunController.Instance.RefreshPauseState();
+        }
         else
+        {
             Time.timeScale = 1f;
+        }
+            
     }
 
     public void AugmentsMenu()
