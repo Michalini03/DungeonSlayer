@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SettingsMenu.unity
     guid: ac2919e92acbda346aff09fe1c2762e6
+  - enabled: 1
+    path: Assets/Scenes/AboutPage.unity
+    guid: 0ddfcd85b719e584e8d97a13bd6c0522
   - enabled: 0
     path: Assets/DeepForest/Scenes/FirstMap.unity
     guid: 27ad9821af41b0c468fb43854d40cfa3
