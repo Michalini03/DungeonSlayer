@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -44,9 +45,18 @@ public class EnemyMovement : MonoBehaviour
     [Header("Attack Hitbox")]
     [SerializeField] private int attackDamage = 1;
     [SerializeField] private Collider2D attackHitboxCollider;
+
+    [Header("Deadh Settings")]
+    [SerializeField] private float deathAnimationLength = 1.2f;
+    private bool isDead = false;
     
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
+
+
+    //marek: tady je zdroj a range utoku kalibrovane na animaci, klidne se to muze nejak upravit, zatim prototyp
+    public Transform attackPoint;
+    public float trueAttackRange = 1f;
 
     private void Awake()
     {
@@ -83,6 +93,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        
         manageAttackCooldown();
         Move();
         checkTrigger();
@@ -295,6 +311,10 @@ public class EnemyMovement : MonoBehaviour
         Vector3 dir = transform.localScale.x > 0 ? Vector3.right : Vector3.left;
         Gizmos.DrawRay(transform.position, dir * wallCheckDistance);
         Gizmos.DrawWireSphere(transform.position + new Vector3(0, -0.8f, 0), 0.2f);
+
+
+        //marek: vizualizace utoku
+        Gizmos.DrawWireSphere(attackPoint.position, trueAttackRange);
     }
 
     private float generateRandomNumber(float min, float max)
@@ -346,9 +366,19 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    //-----------------------------------------ENEMY GETTING HIT BY PLAYER LOGIC-----------------------------------------
+    // marek: dopsal jsem si tady aby enemak mohl mlatit i mecem
+    private void AttackHitboxLogic()
+    {
+        Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, trueAttackRange, LayerMask.GetMask(playerLayerName));
+        if (hitPlayers.Length > 0)
+        {
+            hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
+        }
+    }
 
-    private void OnTriggerEnter2D(Collider2D other)
+//-----------------------------------------ENEMY GETTING HIT BY PLAYER LOGIC-----------------------------------------
+
+private void OnTriggerEnter2D(Collider2D other)
     {
         if (attackHitbox == null || !attackHitbox.activeInHierarchy)
         {
@@ -363,16 +393,59 @@ public class EnemyMovement : MonoBehaviour
             DisableHitbox();
         }
     }
-    
+
     // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
-    private void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage)
     {
+        // Prevent the enemy from taking more hits or triggering death twice
+        if (isDead) return;
+
         health -= playerDamage;
-        
+
         if (health <= 0)
         {
-            // Zatim jen reseny takto :Dd
-            Destroy(gameObject);
+            isDead = true;
+
+            // 1. Play death animations
+            animator.SetTrigger("tookHit");
+            animator.SetBool("isDead", true);
+
+            // 2. Disable hitboxes and colliders immediately
+            DisableHitbox();
+            disableColiders();
+
+            // Stop the Rigidbody so the enemy doesn't fall through the floor 
+            // now that its colliders are turned off
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+
+            // 3. Start the timer to destroy the object
+            StartCoroutine(DeathRoutine());
+        }
+        else
+        {
+            animator.SetTrigger("tookHit");
+        }
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(deathAnimationLength);
+        DestroyEnemy();
+    }
+
+    public void DestroyEnemy()
+    {
+        Debug.Log("Enemy destroyed!");
+        Destroy(gameObject);
+    }
+
+    public void disableColiders()
+    {
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
         }
     }
 }
