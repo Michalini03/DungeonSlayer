@@ -62,6 +62,8 @@ public class PlayerCombat : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
         List<GameObject> hitEnemyObjects = new List<GameObject>();
 
+        Debug.Log("Hit " + hitEnemies + " enemies!");
+
         foreach (Collider2D enemy in hitEnemies)
         {
             GameObject enemyObject = enemy.gameObject;

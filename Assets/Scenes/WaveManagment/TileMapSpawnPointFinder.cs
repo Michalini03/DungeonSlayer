@@ -76,7 +76,6 @@ public class TileMapSpawnPointFinder : MonoBehaviour
         switch (enemyType)
         {
             case EnemyType.Skeleton:
-                Debug.LogWarning("Requested Skeleton spawn point. Total available: " + skeletonSpawnPoints.Count);
                 if (skeletonSpawnPoints.Count > 0)
                 {
                     int randomIndex = Random.Range(0, skeletonSpawnPoints.Count);

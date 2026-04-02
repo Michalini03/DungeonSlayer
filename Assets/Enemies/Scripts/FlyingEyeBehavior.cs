@@ -1,6 +1,6 @@
-using UnityEngine;
-using System.Collections.Generic;
 using Pathfinding;
+using UnityEngine;
+using System.Collections;
 
 public class FlyingEyeBehavior : MonoBehaviour
 {
@@ -41,6 +41,9 @@ public class FlyingEyeBehavior : MonoBehaviour
     Seeker seeker;
     Rigidbody2D rb;
 
+    [Header("Death Settings")]
+    [SerializeField] private float deathAnimationLength = 1.0f;
+
     void Start()
     {
         speedAdjustment();
@@ -50,32 +53,36 @@ public class FlyingEyeBehavior : MonoBehaviour
         setNewPatrolTarget();
     }
 
-    void UpdatePath() {
-        if (isDead)  
+    void UpdatePath()
+    {
+        if (isDead)
         {
             return;
         }
 
         Vector3 targetPos = isPatrolling ? targetPosition : Player.transform.position;
-        if (seeker.IsDone()) {
+        if (seeker.IsDone())
+        {
             seeker.StartPath(transform.position, targetPos, OnPathComplete);
         }
     }
 
-    void OnPathComplete(Path p) {
-        if (!p.error) {
+    void OnPathComplete(Path p)
+    {
+        if (!p.error)
+        {
             path = p;
             currentWaypoint = 0;
         }
     }
-    
+
     void flipCharecter()
     {
-        if(rb.linearVelocity.x > 0.01f)
+        if (rb.linearVelocity.x > 0.01f)
         {
             transform.localScale = new Vector3(size, size, size);
         }
-        else if(rb.linearVelocity.x < -0.01f)
+        else if (rb.linearVelocity.x < -0.01f)
         {
             transform.localScale = new Vector3(-size, size, size);
         }
@@ -106,9 +113,10 @@ public class FlyingEyeBehavior : MonoBehaviour
         {
             reachedEndOfPath = true;
             return;
-        } 
-        
-        else {
+        }
+
+        else
+        {
             reachedEndOfPath = false;
         }
 
@@ -116,7 +124,8 @@ public class FlyingEyeBehavior : MonoBehaviour
         Vector2 force = direction * (isPatrolling ? moveSpeedPatrol : moveSpeedChase) * Time.deltaTime;
         rb.AddForce(force);
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-        if (distance < nextWaypointDistance) {
+        if (distance < nextWaypointDistance)
+        {
             currentWaypoint++;
         }
     }
@@ -133,7 +142,7 @@ public class FlyingEyeBehavior : MonoBehaviour
         float dist = Vector3.Distance(transform.position, Player.transform.position);
 
         if (dist < attackRange && currentCooldown <= 0)
-        {   
+        {
             animator.SetBool("Attack", true);
             currentCooldown = attackCooldown;
         }
@@ -168,9 +177,17 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     private void setNewPatrolTarget()
     {
-        if(isPatrolling)
+        if (isPatrolling && !isDead)
         {
-            targetPosition = spawnPointFinder.GetRandomSpawnPoint(EnemyType.FlyingEye);
+            if (!spawnPointFinder)
+            {
+                spawnPointFinder = FindAnyObjectByType<TileMapSpawnPointFinder>();
+            }
+
+            if (spawnPointFinder != null)
+            {
+                targetPosition = spawnPointFinder.GetRandomSpawnPoint(EnemyType.FlyingEye);
+            }
         }
     }
 
@@ -179,8 +196,6 @@ public class FlyingEyeBehavior : MonoBehaviour
         if (Player == null) return;
 
         float dist = Vector3.Distance(transform.position, Player.transform.position);
-
-        Debug.Log($"Distance to player: {dist}, isPatrolling: {isPatrolling}, inside triger range :{insideTrigerRange}");
 
         if (dist < insideTrigerRange)
         {
@@ -195,23 +210,36 @@ public class FlyingEyeBehavior : MonoBehaviour
     // Stejne jako u skeletona
     public void manageEnemyHit(int playerDamage)
     {
-        if(health<= 0 || isDead)
+        // Prevent taking damage if already dead
+        if (health <= 0 || isDead)
         {
             return;
         }
+
         health -= playerDamage;
-        
+
         if (health <= 0)
         {
-            animator.SetTrigger("tookHit");
-            
             isDead = true;
+            animator.SetTrigger("tookHit");
             animator.SetBool("isDead", true);
+
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 2f;
+            gameObject.layer = LayerMask.NameToLayer("Default");
+
+            StartCoroutine(DeathRoutine());
         }
         else
         {
             animator.SetTrigger("tookHit");
         }
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(deathAnimationLength);
+        destroyEnemy();
     }
 
 

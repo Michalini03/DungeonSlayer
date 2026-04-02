@@ -94,7 +94,8 @@ public static class BuildCalculator
     {
         switch (synergyId)
         {
-
+            default:
+                break;
         }
     }
 

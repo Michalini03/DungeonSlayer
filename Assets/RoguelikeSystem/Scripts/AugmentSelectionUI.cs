@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 public class AugmentSelectionUI : MonoBehaviour
 {
     [SerializeField] private AugmentCardUI[] cards;
+    [SerializeField] private EnemySpawner spawner;
+
+    public bool isSelecting = false;
 
     private List<AugmentDefinition> currentChoices = new();
 
@@ -45,7 +48,9 @@ public class AugmentSelectionUI : MonoBehaviour
             }
         }
 
+        isSelecting = true;
         RunController.Instance.SetAugmentMenuOpen(true);
+
     }
 
     public void Hide()
@@ -67,5 +72,7 @@ public class AugmentSelectionUI : MonoBehaviour
 
         RunController.Instance.GiveAugment(augment);
         Hide();
+        isSelecting = false;
+        spawner.selectedAugment = true;
     }
 }

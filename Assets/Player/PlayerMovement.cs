@@ -1,7 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerMovement : MonoBehaviour
 {

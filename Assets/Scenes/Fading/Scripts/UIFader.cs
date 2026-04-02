@@ -19,6 +19,9 @@ public class UIFader : MonoBehaviour
         if (canvasGroup == null) return;
         Debug.Log("Starting fade out...");
         StopAllCoroutines();
+
+        canvasGroup.blocksRaycasts = true;
+
         StartCoroutine(FadeCanvasGroup(canvasGroup.alpha, 1, duration));
     }
 
@@ -27,10 +30,16 @@ public class UIFader : MonoBehaviour
         float _elapsedTime = 0f;
         while (_elapsedTime < time)
         {
-            _elapsedTime += Time.deltaTime;
+            _elapsedTime += Time.unscaledDeltaTime;
             canvasGroup.alpha = Mathf.Lerp(start, end, _elapsedTime / time);
             yield return null;
         }
+
         canvasGroup.alpha = end;
+
+        if (end == 0f)
+        {
+            canvasGroup.blocksRaycasts = false;
+        }
     }
 }
