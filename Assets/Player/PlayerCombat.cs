@@ -69,7 +69,10 @@ public class PlayerCombat : MonoBehaviour
             if (!hitEnemyObjects.Contains(enemyObject))
             {
                 hitEnemyObjects.Add(enemyObject);
-                enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(aController.damage);
+                if(enemyObject.GetComponent<EnemyMovement>() != null)
+                    enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(aController.damage);
+                else if(enemyObject.GetComponent<FlyingEyeBehavior>() != null)
+                    enemyObject.GetComponent<FlyingEyeBehavior>().manageEnemyHit(aController.damage);
             }
 
         }
