@@ -34,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 7.64, y: 1.3, z: -7}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 578339348520378038}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9124303766633936440
@@ -202,9 +203,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEyeBehavior
   size: 3
   animator: {fileID: 8226531507621862871}
+  spawnPointFinder: {fileID: 0}
+  moveSpeedChase: 300
+  moveSpeedPatrol: 170
+  maxSpeedChaseAdjustment: 100
+  maxSpeedPatrolAdjustment: 50
+  insideTrigerRange: 5
+  outsideTrigerRange: 8
+  health: 100
+  isDead: 0
+  attackDamage: 20
   attackRange: 1.5
+  attackPoint: {fileID: 0}
+  playerLayerName: Player
   Player: {fileID: 0}
-  speed: 400
   nextWaypointDistance: 1
 --- !u!95 &8226531507621862871
 Animator:
@@ -228,3 +240,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8279228023647720585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 578339348520378038}
+  m_Layer: 9
+  m_Name: attackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &578339348520378038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8279228023647720585}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7041516604591444424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

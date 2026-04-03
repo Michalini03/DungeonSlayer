@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -44,6 +45,10 @@ public class EnemyMovement : MonoBehaviour
     [Header("Attack Hitbox")]
     [SerializeField] private int attackDamage = 1;
     [SerializeField] private Collider2D attackHitboxCollider;
+
+    [Header("Deadh Settings")]
+    [SerializeField] private float deathAnimationLength = 1.2f;
+    private bool isDead = false;
     
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
@@ -88,6 +93,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        
         manageAttackCooldown();
         Move();
         checkTrigger();
@@ -382,22 +393,59 @@ private void OnTriggerEnter2D(Collider2D other)
             DisableHitbox();
         }
     }
-    
+
     // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
     public void manageEnemyHit(int playerDamage)
     {
-        
+        // Prevent the enemy from taking more hits or triggering death twice
+        if (isDead) return;
+
         health -= playerDamage;
-        
+
         if (health <= 0)
         {
-            // Zatim jen reseny takto :Dd
-            // marek: todo: asi by to chtelo animaci s nejakym delayem aby to sedelo casove s animaci utoku hrace
-            Destroy(gameObject);
+            isDead = true;
+
+            // 1. Play death animations
+            animator.SetTrigger("tookHit");
+            animator.SetBool("isDead", true);
+
+            // 2. Disable hitboxes and colliders immediately
+            DisableHitbox();
+            disableColiders();
+
+            // Stop the Rigidbody so the enemy doesn't fall through the floor 
+            // now that its colliders are turned off
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+
+            // 3. Start the timer to destroy the object
+            StartCoroutine(DeathRoutine());
         }
         else
         {
             animator.SetTrigger("tookHit");
+        }
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(deathAnimationLength);
+        DestroyEnemy();
+    }
+
+    public void DestroyEnemy()
+    {
+        Debug.Log("Enemy destroyed!");
+        Destroy(gameObject);
+    }
+
+    public void disableColiders()
+    {
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
         }
     }
 }

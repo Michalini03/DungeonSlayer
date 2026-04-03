@@ -21,9 +21,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private string nextSceneName = "NextScene";
     [SerializeField] private UIFader sceneFader;
     [SerializeField] private float delayBeforeLoad = 1.5f;
+    [SerializeField] private AugmentSelectionUI augmentSelectionUI;
+
+    public bool selectedAugment = false;
 
     private List<GameObject> activeEnemies = new List<GameObject>();
     private bool allEnemiesSpawned = false;
+    private bool isTransitioning = false;
 
     private void Start()
     {
@@ -42,17 +46,23 @@ public class EnemySpawner : MonoBehaviour
 
         activeEnemies.RemoveAll(enemy => enemy == null);
 
-        if (activeEnemies.Count == 0)
+        if (activeEnemies.Count == 0 && !augmentSelectionUI.isSelecting && !selectedAugment)
         {
-            allEnemiesSpawned = false;
+            if (augmentSelectionUI.gameObject.activeSelf)
+                augmentSelectionUI.Hide();
+            else
+                augmentSelectionUI.ShowSelection();
+        }
+
+        if (activeEnemies.Count == 0 && selectedAugment && !isTransitioning)
+        {
+            isTransitioning = true;
             StartCoroutine(TransitionToNextLevel());
         }
     }
 
     private IEnumerator TransitionToNextLevel()
     {
-        Debug.Log("Level Complete! Fading out...");
-
         if (sceneFader != null)
         {
             sceneFader.FadeOut();
@@ -83,7 +93,7 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnSingleEnemy(GameObject prefab, EnemyType enemyType, GameObject player)
     {
         Vector3 spawnPoint = spawnPointFinder.GetRandomSpawnPoint(enemyType);
-        
+
         spawnPoint.z = player.transform.position.z;
 
         GameObject instance = Instantiate(prefab, spawnPoint, Quaternion.identity);
