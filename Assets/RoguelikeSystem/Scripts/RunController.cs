@@ -10,6 +10,7 @@ public class RunController : MonoBehaviour
     [SerializeField] private SynergyDatabase synergyDatabase;
 
     private AttributesController attributesController;
+    private AttributesController[] allAttributesControllers;
     private RunState runState = new();
     private AugmentDraftService draftService;
 
@@ -59,6 +60,7 @@ public class RunController : MonoBehaviour
     private void RebindSceneReferences()
     {
         attributesController = FindFirstObjectByType<AttributesController>();
+        allAttributesControllers = FindObjectsByType<AttributesController>(FindObjectsSortMode.None);
     }
 
     public void SetAugmentMenuOpen(bool isOpen)
@@ -104,13 +106,13 @@ public class RunController : MonoBehaviour
         switch (augment.id)
         {
             case "health_potion":
-                if (attributesController != null)
-                    attributesController.HealPercent(0.5f);
+                foreach (var ac in GetAllAttributesControllers())
+                    ac.HealPercent(0.5f);
                 return true;
 
             case "full_heal":
-                if (attributesController != null)
-                    attributesController.FullHeal();
+                foreach (var ac in GetAllAttributesControllers())
+                    ac.FullHeal();
                 return true;
 
             default:
@@ -118,16 +120,28 @@ public class RunController : MonoBehaviour
         }
     }
 
+    private AttributesController[] GetAllAttributesControllers()
+    {
+        if (allAttributesControllers == null || allAttributesControllers.Length == 0)
+            allAttributesControllers = FindObjectsByType<AttributesController>(FindObjectsSortMode.None);
+        return allAttributesControllers;
+    }
+
     public void RefreshBuild()
     {
-        if (attributesController == null || synergyDatabase == null)
+        if (synergyDatabase == null)
             return;
 
-        PlayerBuildStats stats = BuildCalculator.BuildStats(
-            attributesController,
-            runState,
-            synergyDatabase.GetAll());
+        foreach (var ac in GetAllAttributesControllers())
+        {
+            if (ac == null) continue;
 
-        attributesController.ApplyCalculatedStats(stats);
+            PlayerBuildStats stats = BuildCalculator.BuildStats(
+                ac,
+                runState,
+                synergyDatabase.GetAll());
+
+            ac.ApplyCalculatedStats(stats);
+        }
     }
 }

@@ -182,8 +182,18 @@ public class EnemyMovement : MonoBehaviour
         return left || right;
     }
 
+    private void UpdatePlayerTarget()
+    {
+        GameObject closest = PlayerRegistry.GetClosestPlayer(transform.position);
+        if (closest != null)
+        {
+            player = closest;
+        }
+    }
+
     private void checkTrigger()
     {
+        UpdatePlayerTarget();
         if (player == null) return;
 
         float dist = Vector3.Distance(transform.position, player.transform.position);

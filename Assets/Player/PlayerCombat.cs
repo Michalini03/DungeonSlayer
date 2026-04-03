@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -16,6 +17,11 @@ public class PlayerCombat : MonoBehaviour
     private bool IsInputBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
+    }
+
+    private bool IsMultiplayer()
+    {
+        return GameNetworkManager.Instance != null && GameNetworkManager.Instance.IsMultiplayer;
     }
 
 
@@ -51,6 +57,16 @@ public class PlayerCombat : MonoBehaviour
         {
             cooldown = attackcooldown;
             animator.SetTrigger("Attack");
+
+            // In multiplayer, broadcast attack animation to other clients
+            if (IsMultiplayer())
+            {
+                var netPlayer = GetComponent<NetworkPlayerController>();
+                if (netPlayer != null && netPlayer.IsOwner)
+                {
+                    netPlayer.AttackServerRpc();
+                }
+            }
         }
     }
 
@@ -59,6 +75,29 @@ public class PlayerCombat : MonoBehaviour
         if (IsInputBlocked())
             return;
 
+        // In multiplayer, only the server should do hit detection
+        if (IsMultiplayer())
+        {
+            var netPlayer = GetComponent<NetworkPlayerController>();
+            if (netPlayer != null)
+            {
+                if (netPlayer.IsServer)
+                {
+                    PerformHitDetection();
+                }
+                else if (netPlayer.IsOwner)
+                {
+                    netPlayer.DetectEnemiesHitServerRpc();
+                }
+                return;
+            }
+        }
+
+        PerformHitDetection();
+    }
+
+    public void PerformHitDetection()
+    {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
         List<GameObject> hitEnemyObjects = new List<GameObject>();
 
@@ -76,7 +115,6 @@ public class PlayerCombat : MonoBehaviour
                 else if(enemyObject.GetComponent<FlyingEyeBehavior>() != null)
                     enemyObject.GetComponent<FlyingEyeBehavior>().manageEnemyHit(aController.damage);
             }
-
         }
     }
 
@@ -87,6 +125,18 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        // In multiplayer, route damage through the network
+        if (IsMultiplayer())
+        {
+            var netPlayer = GetComponent<NetworkPlayerController>();
+            if (netPlayer != null)
+            {
+                netPlayer.TakeDamageNetwork(damage);
+                return;
+            }
+        }
+
+        // Single-player path
         aController.currentHealth -= (int)(damage*(1-aController.damageReduction));
         if(aController.currentHealth <= 0)
         {

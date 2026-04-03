@@ -73,6 +73,14 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+
+        // Disconnect from network session if in multiplayer
+        if (GameNetworkManager.Instance != null && GameNetworkManager.Instance.IsMultiplayer)
+        {
+            GameNetworkManager.Instance.Disconnect();
+            return;
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
 

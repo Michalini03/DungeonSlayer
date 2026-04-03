@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -29,11 +30,23 @@ public class EnemySpawner : MonoBehaviour
     private bool allEnemiesSpawned = false;
     private bool isTransitioning = false;
 
+    private bool IsMultiplayer()
+    {
+        return GameNetworkManager.Instance != null && GameNetworkManager.Instance.IsMultiplayer;
+    }
+
     private void Start()
     {
         if (sceneFader != null)
         {
             sceneFader.FadeIn();
+        }
+
+        // In multiplayer, only the host spawns enemies
+        if (IsMultiplayer() && !NetworkManager.Singleton.IsServer)
+        {
+            allEnemiesSpawned = true;
+            return;
         }
 
         SpawnEnemies();
@@ -70,12 +83,24 @@ public class EnemySpawner : MonoBehaviour
 
         yield return new WaitForSeconds(delayBeforeLoad);
 
-        SceneManager.LoadScene(nextSceneName);
+        if (IsMultiplayer() && NetworkManager.Singleton.IsServer)
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene(nextSceneName, LoadSceneMode.Single);
+        }
+        else if (!IsMultiplayer())
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 
     private void SpawnEnemies()
     {
         GameObject playerReference = spawnPointFinder.player;
+        if (playerReference == null)
+        {
+            // In multiplayer the scene player ref might not be set; use registry
+            playerReference = PlayerRegistry.GetFirstPlayer();
+        }
 
         foreach (var group in enemyGroups)
         {
@@ -94,9 +119,20 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector3 spawnPoint = spawnPointFinder.GetRandomSpawnPoint(enemyType);
 
-        spawnPoint.z = player.transform.position.z;
+        if (player != null)
+            spawnPoint.z = player.transform.position.z;
 
         GameObject instance = Instantiate(prefab, spawnPoint, Quaternion.identity);
+
+        // In multiplayer, spawn as network object so clients can see it
+        if (IsMultiplayer() && NetworkManager.Singleton.IsServer)
+        {
+            var netObj = instance.GetComponent<NetworkObject>();
+            if (netObj != null)
+            {
+                netObj.Spawn();
+            }
+        }
 
         activeEnemies.Add(instance);
     }

@@ -191,8 +191,18 @@ public class FlyingEyeBehavior : MonoBehaviour
         }
     }
 
+    private void UpdatePlayerTarget()
+    {
+        GameObject closest = PlayerRegistry.GetClosestPlayer(transform.position);
+        if (closest != null)
+        {
+            Player = closest;
+        }
+    }
+
     private void manageTrigerRange()
     {
+        UpdatePlayerTarget();
         if (Player == null) return;
 
         float dist = Vector3.Distance(transform.position, Player.transform.position);

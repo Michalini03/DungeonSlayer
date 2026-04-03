@@ -1,4 +1,5 @@
 using Unity.Cinemachine;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,15 @@ public class PlayerMovement : MonoBehaviour
 
     private float jumpCooldown = 0f;
 
+    private bool IsNetworkOwner()
+    {
+        var netObj = GetComponent<NetworkObject>();
+        // If no NetworkObject component, we're in single-player — always own
+        if (netObj == null) return true;
+        if (!netObj.IsSpawned) return true;
+        return netObj.IsOwner;
+    }
+
     private bool IsGameplayBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
@@ -28,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 120;
-        
+        PlayerRegistry.Register(gameObject);
     }
 
     void Awake()
@@ -40,18 +50,35 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
-        inputAction.Player.Interact.performed += ctx => animator.SetTrigger("BuffRitual");
-        inputAction.Player.Attack.performed += ctx => GetComponent<PlayerCombat>().Attack();
+        inputAction.Player.Interact.performed += OnInteract;
+        inputAction.Player.Attack.performed += OnAttack;
     }
 
     void OnDisable()
     {
         inputAction.Player.Disable();
         inputAction.Player.Jump.performed -= OnJump;
+        inputAction.Player.Interact.performed -= OnInteract;
+        inputAction.Player.Attack.performed -= OnAttack;
+        PlayerRegistry.Unregister(gameObject);
+    }
+
+    private void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (!IsNetworkOwner()) return;
+        animator.SetTrigger("BuffRitual");
+    }
+
+    private void OnAttack(InputAction.CallbackContext ctx)
+    {
+        if (!IsNetworkOwner()) return;
+        GetComponent<PlayerCombat>().Attack();
     }
 
     void Update()
     {
+        if (!IsNetworkOwner()) return;
+
         if (IsGameplayBlocked())
         {
             horizontalMove = 0f;
