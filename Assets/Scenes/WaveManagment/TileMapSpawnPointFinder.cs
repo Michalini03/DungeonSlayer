@@ -6,11 +6,15 @@ public class TileMapSpawnPointFinder : MonoBehaviour
 {
     [SerializeField] private Tilemap skeletonSpawnTilemap;
     [SerializeField] private Tilemap flyingEyeSpawnTilemap;
-    [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] private Tilemap ratSpawnTilemap;
+    [SerializeField] private Vector3 spawnSkeletonOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] private Vector3 spawnFlyingEyeOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] private Vector3 spawnRatOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] public GameObject player;
 
     private readonly List<Vector3> skeletonSpawnPoints = new List<Vector3>();
     private readonly List<Vector3> flyingEyeSpawnPoints = new List<Vector3>();
+    private readonly List<Vector3> ratSpawnPoints = new List<Vector3>();
 
     private bool hasFoundSpawnPoints = false;
 
@@ -26,7 +30,7 @@ public class TileMapSpawnPointFinder : MonoBehaviour
     {
         skeletonSpawnPoints.Clear();
         flyingEyeSpawnPoints.Clear();
-
+        ratSpawnPoints.Clear();
 
         // SKELETON SPAWN POINTS
         if (skeletonSpawnTilemap == null)
@@ -40,7 +44,7 @@ public class TileMapSpawnPointFinder : MonoBehaviour
             {
                 if (skeletonSpawnTilemap.HasTile(cellPosition))
                 {
-                    Vector3 worldPoint = skeletonSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnOffset;
+                    Vector3 worldPoint = skeletonSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnSkeletonOffset;
                     worldPoint.z = player.transform.position.z;
                     skeletonSpawnPoints.Add(worldPoint);
                 }
@@ -59,16 +63,35 @@ public class TileMapSpawnPointFinder : MonoBehaviour
             {
                 if (flyingEyeSpawnTilemap.HasTile(cellPosition))
                 {
-                    Vector3 worldPoint = flyingEyeSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnOffset;
+                    Vector3 worldPoint = flyingEyeSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnFlyingEyeOffset;
                     worldPoint.z = player.transform.position.z;
                     flyingEyeSpawnPoints.Add(worldPoint);
                 }
             }
         }
 
+        // RAT SPAWN POINTS
+        if (ratSpawnTilemap == null)
+        {
+            Debug.LogWarning("Rat Spawn Tilemap is not assigned.", this);
+        }
+        else
+        {
+            BoundsInt ratBounds = ratSpawnTilemap.cellBounds;
+            foreach (Vector3Int cellPosition in ratBounds.allPositionsWithin)
+            {
+                if (ratSpawnTilemap.HasTile(cellPosition))
+                {
+                    Vector3 worldPoint = ratSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnRatOffset;
+                    worldPoint.z = player.transform.position.z;
+                    ratSpawnPoints.Add(worldPoint);
+                }
+            }
+        }
+
         hasFoundSpawnPoints = true;
 
-        Debug.Log($"Found {skeletonSpawnPoints.Count} Skeleton points and {flyingEyeSpawnPoints.Count} Flying Eye points.");
+        Debug.Log($"Found {skeletonSpawnPoints.Count} Skeleton points, {flyingEyeSpawnPoints.Count} Flying Eye points, and {ratSpawnPoints.Count} Rat points.");
     }
 
     public Vector3 GetRandomSpawnPoint(EnemyType enemyType)
@@ -91,6 +114,15 @@ public class TileMapSpawnPointFinder : MonoBehaviour
                     return flyingEyeSpawnPoints[randomIndex];
                 }
                 Debug.LogWarning("Requested FlyingEye spawn, but no FlyingEye spawn points exist. Defaulting to Vector3.zero.");
+                return Vector3.zero;
+
+            case EnemyType.Rat:
+                if (ratSpawnPoints.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, ratSpawnPoints.Count);
+                    return ratSpawnPoints[randomIndex];
+                }
+                Debug.LogWarning("Requested Rat spawn, but no Rat spawn points exist. Defaulting to Vector3.zero.");
                 return Vector3.zero;
 
             default:
