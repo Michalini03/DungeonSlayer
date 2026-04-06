@@ -41,6 +41,20 @@ public class MainMenu : MonoBehaviour
         LoadSceneWithFade("DeepForest-FirstMap");
     }
 
+    public void GoToEncyclopedia()
+    {
+        LoadSceneWithFade("EncyclopediaPage");
+    }
+
+    public void GoToFoes()
+    {
+        LoadSceneWithFade("EncyclopediaFoePage");
+    }
+    public void GoToAugments()
+    {
+        LoadSceneWithFade("EncyclopediaAugmentPage");
+    }
+
     public void GoToSettingsMenu()
     {
         LoadSceneWithFade("SettingsMenu");
@@ -66,6 +80,7 @@ public class MainMenu : MonoBehaviour
         isTransitioning = true;
         StartCoroutine(QuitRoutine());
     }
+
 
     private void LoadSceneWithFade(string sceneName)
     {

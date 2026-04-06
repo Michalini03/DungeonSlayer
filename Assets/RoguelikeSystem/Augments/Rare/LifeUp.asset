@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Second Chance
   description: Life Up.
   flavorText: '"The Saint was blessed with a second chance to live." '
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1af29e2a8fd5afc40886050a41cdb567, type: 3}
   rarity: 2
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes: []

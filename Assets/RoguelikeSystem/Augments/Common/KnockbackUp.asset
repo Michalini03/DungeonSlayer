@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Divine Force
   description: Knockback Up.
   flavorText: '"The weight of the Saint''s mission carried through their attacks."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5407c4f8339eeb94bb92e06661397836, type: 3}
   rarity: 0
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []
