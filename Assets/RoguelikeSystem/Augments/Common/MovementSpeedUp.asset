@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Blessing of Forgiveness
   description: Movement Speed Up.
   flavorText: '"Though their effort, the Saint felt the weight they carried lift."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 213f2edc8a21b2c43ba3604cc8a3a586, type: 3}
   rarity: 0
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []

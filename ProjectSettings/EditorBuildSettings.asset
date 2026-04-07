@@ -9,13 +9,25 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/Menus/Intro.unity
+    guid: 2af3a706d5956cd40b5a2c6d868120c6
+  - enabled: 1
+    path: Assets/Scenes/Menus/MainMenu.unity
     guid: 86d2ace8a7b286b409055adee5db13e0
   - enabled: 1
-    path: Assets/Scenes/SettingsMenu.unity
+    path: Assets/Scenes/Menus/EncyclopediaPage.unity
+    guid: 9453163334af62543b50374539413efd
+  - enabled: 1
+    path: Assets/Scenes/Menus/EncyclopediaAugmentPage.unity
+    guid: 36c55ba1385457c4ba96f4b5008fa7e4
+  - enabled: 1
+    path: Assets/Scenes/Menus/EncyclopediaFoePage.unity
+    guid: d19872270ce707043b3c6af269ca47cb
+  - enabled: 1
+    path: Assets/Scenes/Menus/SettingsMenu.unity
     guid: ac2919e92acbda346aff09fe1c2762e6
   - enabled: 1
-    path: Assets/Scenes/AboutPage.unity
+    path: Assets/Scenes/Menus/AboutPage.unity
     guid: 0ddfcd85b719e584e8d97a13bd6c0522
   - enabled: 0
     path: Assets/DeepForest/Scenes/FirstMap.unity
@@ -27,7 +39,7 @@ EditorBuildSettings:
     path: Assets/Scenes/DeepForest-FirstMap.unity
     guid: 7e1d7e87fc5dbf843b61e802c19b0366
   - enabled: 0
-    path: Assets/Scenes/SceneTransition.unity
+    path: Assets/Scenes/Menus/SceneTransition.unity
     guid: 1497146395fe73b429a3ba3450b0dcb5
   - enabled: 1
     path: Assets/Scenes/Cave-First.unity

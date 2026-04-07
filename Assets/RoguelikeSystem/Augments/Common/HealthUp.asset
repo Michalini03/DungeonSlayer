@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Divine Health
   description: HP Up.
   flavorText: '"The Acorn blessed the Saint with enhanced health."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9baa37b3dfd5dc24eb8744121864a6f6, type: 3}
   rarity: 0
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []

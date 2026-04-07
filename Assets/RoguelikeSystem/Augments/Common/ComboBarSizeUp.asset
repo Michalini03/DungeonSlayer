@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Divine Agility
   description: Combo Bar Size Up.
   flavorText: '"The Saint struck with incredible swiftness, yet with all their strength."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 22eef87ce0cd80a4d87a347c85302215, type: 3}
   rarity: 0
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []
