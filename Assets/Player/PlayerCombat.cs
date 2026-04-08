@@ -13,6 +13,9 @@ public class PlayerCombat : MonoBehaviour
     float cooldown = 0f;
     float attackcooldown = 0.5f;
 
+    [Header("UI References")]
+    public GameObject deathCanvas; // Reference to the YOU DIED!
+
     private bool IsInputBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
@@ -28,6 +31,11 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (aController.currentHealth <= 0)
+        {
+            return;
+        }
+
         if (IsInputBlocked() && animator != null)
         {
             animator.ResetTrigger("Attack");
@@ -44,7 +52,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void Attack()
     {
-        if (IsInputBlocked())
+        if (IsInputBlocked() || aController.currentHealth <= 0)
             return;
 
         if (cooldown <= 0)
@@ -82,19 +90,29 @@ public class PlayerCombat : MonoBehaviour
 
     public void takeDamage(int damage)
     {
-        if(aController.currentHealth <= 0)
+        if (aController.currentHealth <= 0)
         {
             return;
         }
 
-        aController.currentHealth -= (int)(damage*(1-aController.damageReduction));
-        if(aController.currentHealth <= 0)
+        aController.currentHealth -= (int)(damage * (1 - aController.damageReduction));
+
+        if (aController.currentHealth <= 0)
         {
             animator.SetTrigger("Death");
+
         }
         else
         {
             animator.SetTrigger("Hurt");
+        }
+    }
+
+    public void ShowDeathCanvas()
+    {
+        if (deathCanvas != null)
+        {
+            deathCanvas.SetActive(true);
         }
     }
 

@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController2D cController;
     public AttributesController aController;
+    public PlayerCombat pCombat;
     public Rigidbody2D rb;
     public Animator animator;
 
@@ -52,6 +53,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (aController.currentHealth <= 0)
+        {
+            return;
+        }
+
         if (IsGameplayBlocked())
         {
             horizontalMove = 0f;
@@ -83,6 +89,12 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpCooldown -= Time.deltaTime;
         }
+
+        // Check if the player has fallen below the death threshold
+        if (rb.position.y < -10f)
+        {
+            pCombat.takeDamage(9999);
+        }
     }
 
     private void FixedUpdate()
@@ -103,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
         if (!context.performed)
             return;
 
-        if (IsGameplayBlocked())
+        if (IsGameplayBlocked() || aController.currentHealth <= 0)
             return;
 
         jump = true;
