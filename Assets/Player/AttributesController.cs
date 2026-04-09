@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Text;
 using UnityEngine;
+using System;
 
 public class AttributesController : MonoBehaviour
 {
+    public event Action<int, int> OnHealthChange; 
+    public event Action<int, int> OnStaminaChange;
+
     public int baseMaxHealth = 120;
+
+    
     public int baseDamage = 50;
     public int baseHealthRegen = 0;
     public int baseLives = 0;
@@ -14,6 +20,8 @@ public class AttributesController : MonoBehaviour
     public float baseKnockbackForce = 10f;
 
     public int baseMaxStamina = 100;
+    
+
     public int[] baseStaminaBar = new int[3] { 6, 3, 1 };
 
     public float baseIframesDuration = 0.5f;
@@ -38,8 +46,19 @@ public class AttributesController : MonoBehaviour
     public float minMovementSpeed = 1f;
     public float maxMovementSpeed = 20f;
 
-    public int maxHealth;
-    public int currentHealth;
+    private int _maxHealth;
+    public int maxHealth
+    {
+        get => _maxHealth;
+        set { _maxHealth = value; OnHealthChange?.Invoke(currentHealth, maxHealth); }
+    }
+
+    private int _currentHealth;
+    public int currentHealth
+    {
+        get => _currentHealth; 
+        set { _currentHealth = value; OnHealthChange?.Invoke(currentHealth,maxHealth);  }
+    }
     public int damage;
     public int healthRegen;
     public int lives;
@@ -48,8 +67,18 @@ public class AttributesController : MonoBehaviour
     public float attackRange;
     public float knockbackForce;
 
-    public int maxStamina;
-    public int currentStamina;
+    private int _maxStamina;
+    public int maxStamina
+    {
+        get => _maxStamina;
+        set { _maxStamina = value; OnStaminaChange?.Invoke(currentStamina, maxStamina); }
+    }
+    private int _currentStamina;
+    public int currentStamina
+    {
+        get => _currentStamina;
+        set { _currentStamina = value; OnStaminaChange?.Invoke(currentStamina, maxStamina); }
+    }
     public int[] staminaBar;
 
     public float iframesDuration;
@@ -102,12 +131,7 @@ public class AttributesController : MonoBehaviour
         currentHealth = maxHealth;
         currentStamina = maxStamina;
 
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        
     }
 
     public void ApplyCalculatedStats(PlayerBuildStats stats)
@@ -195,11 +219,7 @@ public class AttributesController : MonoBehaviour
 
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
 
-        //PlayerUI
-        if(playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        
     }
 
     public void HealPercent(float percent)
@@ -216,10 +236,7 @@ public class AttributesController : MonoBehaviour
         currentHealth = maxHealth;
 
         //PlayerUI - pozn. proc se neda pouzit Heal(maxHealth);????
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        
     }
 
     public void AddMaxHealth(int amount)
@@ -228,11 +245,7 @@ public class AttributesController : MonoBehaviour
             return;
         maxHealth += amount;
         currentHealth += amount;
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        
     }
 
     public void TakeDamage(int amount)
@@ -241,11 +254,7 @@ public class AttributesController : MonoBehaviour
             return;
         int effectiveDamage = Mathf.RoundToInt(amount * (1f - damageReduction));
         currentHealth = Mathf.Max(currentHealth - effectiveDamage, 0);
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        
     }
 
     public bool ConsumeStamina(int amount)
@@ -255,10 +264,7 @@ public class AttributesController : MonoBehaviour
         currentStamina -= amount;
         lastStaminaUseTime = Time.time;
 
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        
         return true;
     }
 
@@ -268,10 +274,7 @@ public class AttributesController : MonoBehaviour
             return;
         currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
 
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        
     }
 
     public void AddMaxStamina(int amount)
@@ -281,10 +284,7 @@ public class AttributesController : MonoBehaviour
         maxStamina += amount;
         currentStamina += amount;
         
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        
     }
 
     private IEnumerator RegenStaminaLoop()
