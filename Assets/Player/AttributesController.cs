@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ public class AttributesController : MonoBehaviour
     public float knockbackForce;
 
     public int maxStamina;
+    public int currentStamina;
     public int[] staminaBar;
 
     public float iframesDuration;
@@ -57,9 +59,24 @@ public class AttributesController : MonoBehaviour
     public bool canComboAttack3;
     public bool canAirComboAttack2;
 
+    //marek: for ui updated, will be on more lines marked by comment //PlayerUI
+    [Header("Player UI")]
+    public PlayerUI playerUI;
+
+    [Header("Stamina cost settings")]
+    public int attackStaminaCost = 20;
+    public int dashStaminaCost = 30;
+    public int jumpStaminaCost = 15;
+
+    [Header("Stamina Settings")]
+    public float regenRate = 15f;      // Stamina per second
+    public float regenDelay = 1f;      // Time to wait before starting regen
+    private float lastStaminaUseTime;
+
     private void Awake()
     {
         ResetToBaseStats();
+        StartCoroutine(RegenStaminaLoop());
     }
 
     public void ResetToBaseStats()
@@ -83,6 +100,14 @@ public class AttributesController : MonoBehaviour
         canAirComboAttack2 = false;
 
         currentHealth = maxHealth;
+        currentStamina = maxStamina;
+
+        //PlayerUI
+        if (playerUI != null)
+        {
+            playerUI.UpdateHealthBar(currentHealth, maxHealth);
+            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+        }
     }
 
     public void ApplyCalculatedStats(PlayerBuildStats stats)
@@ -169,6 +194,12 @@ public class AttributesController : MonoBehaviour
             return;
 
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+
+        //PlayerUI
+        if(playerUI != null)
+        {
+            playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        }
     }
 
     public void HealPercent(float percent)
@@ -183,7 +214,99 @@ public class AttributesController : MonoBehaviour
     public void FullHeal()
     {
         currentHealth = maxHealth;
+
+        //PlayerUI - pozn. proc se neda pouzit Heal(maxHealth);????
+        if (playerUI != null)
+        {
+            playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        }
     }
+
+    public void AddMaxHealth(int amount)
+    {
+        if (amount <= 0)
+            return;
+        maxHealth += amount;
+        currentHealth += amount;
+        //PlayerUI
+        if (playerUI != null)
+        {
+            playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (amount <= 0)
+            return;
+        int effectiveDamage = Mathf.RoundToInt(amount * (1f - damageReduction));
+        currentHealth = Mathf.Max(currentHealth - effectiveDamage, 0);
+        //PlayerUI
+        if (playerUI != null)
+        {
+            playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        }
+    }
+
+    public bool ConsumeStamina(int amount)
+    {
+        if (amount <= 0 || currentStamina < amount)
+            return false;
+        currentStamina -= amount;
+        lastStaminaUseTime = Time.time;
+
+        if (playerUI != null)
+        {
+            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+        }
+        return true;
+    }
+
+    public void RegenerateStamina(int amount)
+    {
+        if (amount <= 0)
+            return;
+        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
+
+        if (playerUI != null)
+        {
+            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+        }
+    }
+
+    public void AddMaxStamina(int amount)
+    {
+        if (amount <= 0)
+            return;
+        maxStamina += amount;
+        currentStamina += amount;
+        
+        if (playerUI != null)
+        {
+            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+        }
+    }
+
+    private IEnumerator RegenStaminaLoop()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.1f);
+
+        while (true)
+        {
+            // 1. Check if the delay has passed
+            if (Time.time - lastStaminaUseTime >= regenDelay)
+            {
+                if (currentStamina < maxStamina)
+                {
+                    RegenerateStamina((int)(regenRate * 0.1f));
+                }
+            }
+
+            // 3. Wait for 0.1 seconds before running again
+            yield return wait;
+        }
+    }
+
 
     public void DebugPrintStats()
     {

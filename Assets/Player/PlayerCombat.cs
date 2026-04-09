@@ -9,6 +9,9 @@ public class PlayerCombat : MonoBehaviour
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
+    
+
+
     // for animations, dont change
     float cooldown = 0f;
     float attackcooldown = 0.5f;
@@ -55,7 +58,7 @@ public class PlayerCombat : MonoBehaviour
         if (IsInputBlocked() || aController.currentHealth <= 0)
             return;
 
-        if (cooldown <= 0)
+        if (cooldown <= 0 && aController.ConsumeStamina(aController.attackStaminaCost))
         {
             cooldown = attackcooldown;
             animator.SetTrigger("Attack");
@@ -95,9 +98,8 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        aController.currentHealth -= (int)(damage * (1 - aController.damageReduction));
-
-        if (aController.currentHealth <= 0)
+        aController.TakeDamage(damage);
+        if(aController.currentHealth <= 0)
         {
             animator.SetTrigger("Death");
 

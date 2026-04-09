@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,6 +22,14 @@ public class PlayerMovement : MonoBehaviour
 
     private float jumpCooldown = 0f;
 
+    [Header("Dash Settings")]
+    [SerializeField] private float dashVelocity = 20f;
+    [SerializeField] private float dashTime = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+
+    private bool canDash = true;
+    private bool isDashing;
+
     private bool IsGameplayBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
@@ -41,6 +50,14 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
+        //dash input
+        inputAction.Player.Dash.performed += ctx =>
+        {
+            if (canDash && aController.ConsumeStamina(aController.dashStaminaCost))
+            {
+                StartCoroutine(Dash());
+            }
+        };
         inputAction.Player.Interact.performed += ctx => animator.SetTrigger("BuffRitual");
         inputAction.Player.Attack.performed += ctx => GetComponent<PlayerCombat>().Attack();
     }
@@ -99,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsGameplayBlocked())
+        if (IsGameplayBlocked() || isDashing)
         {
             cController.Move(0f, false, false);
             jump = false;
@@ -157,6 +174,39 @@ public class PlayerMovement : MonoBehaviour
 
         if (enableTeleport)
             HandleTeleport();
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        animator.SetTrigger("Dash");
+
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // Use a higher dashVelocity (try 30-40) because your normal
+        // run speed is already speed * modifier
+        float dashDirection = transform.localScale.x;
+        float startTime = Time.time;
+
+        while (Time.time < startTime + dashTime)
+        {
+            // Constantly re-apply velocity every frame to prevent friction decay
+            // and ensure we move the full distance.
+            rb.linearVelocity = new Vector2(dashDirection * dashVelocity, 0f);
+            yield return null;
+        }
+
+        // FIX FOR INCLINES: Reset velocity to zero (or your move speed) 
+        // at the end to stop the upward 'launch' force.
+        rb.linearVelocity = new Vector2(0f, 0f);
+
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 
     private void HandleTeleport()
