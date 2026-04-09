@@ -54,14 +54,12 @@ public class CharacterController2D : MonoBehaviour
             // Ignore the player AND any child objects attached to the player (swords, shields, etc.)
             if (colliders[i].gameObject != gameObject && !colliders[i].transform.IsChildOf(transform))
             {
-                // Only allow a landing if we are falling or standing still (NOT moving upward in a jump)
-                if (m_Rigidbody2D.linearVelocity.y <= 0.05f)
+                // Remove or loosen the y-velocity check. 
+                // Simply touching the ground should be enough.
+                m_Grounded = true;
+                if (!wasGrounded)
                 {
-                    m_Grounded = true;
-                    if (!wasGrounded)
-                    {
-                        OnLandEvent.Invoke();
-                    }
+                    OnLandEvent.Invoke();
                 }
             }
         }
