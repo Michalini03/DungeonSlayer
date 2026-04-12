@@ -303,13 +303,28 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 5990919696328780411, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4018976409727894886, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 110443513}
   m_SourcePrefab: {fileID: 100100000, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
 --- !u!1 &110443512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4018976409727894886, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
   m_PrefabInstance: {fileID: 110443511}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &110443513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110443512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67910e2b91f38d74ea138ada0c3ec6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitInfo
 --- !u!1001 &133415601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1237,7 +1252,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7041516604591444424, guid: ba8bf13d5579dc0499af343d72f54924, type: 3}
       insertIndex: -1
       addedObject: {fileID: 181407860}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5935336481567154101, guid: ba8bf13d5579dc0499af343d72f54924, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541529122}
   m_SourcePrefab: {fileID: 100100000, guid: ba8bf13d5579dc0499af343d72f54924, type: 3}
 --- !u!4 &541529120 stripped
 Transform:
@@ -1249,6 +1267,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5935336481567154101, guid: ba8bf13d5579dc0499af343d72f54924, type: 3}
   m_PrefabInstance: {fileID: 541529119}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &541529122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541529121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67910e2b91f38d74ea138ada0c3ec6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitInfo
 --- !u!213 &549270540
 Sprite:
   m_ObjectHideFlags: 0
