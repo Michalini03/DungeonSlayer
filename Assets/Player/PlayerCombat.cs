@@ -71,21 +71,22 @@ public class PlayerCombat : MonoBehaviour
             return;
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
-        List<GameObject> hitEnemyObjects = new List<GameObject>();
 
         Debug.Log("Hit " + hitEnemies + " enemies!");
 
+        // Pavel: Zde jsem si dovolil drobnou úpravu aby to rovnou fungovalo s novou komponentou
         foreach (Collider2D enemy in hitEnemies)
         {
-            GameObject enemyObject = enemy.gameObject;
+            EnemyHitInfo enemyHitInfo = enemy.gameObject.GetComponent<EnemyHitInfo>();
 
-            if (!hitEnemyObjects.Contains(enemyObject))
+            if (enemyHitInfo != null)
             {
-                hitEnemyObjects.Add(enemyObject);
-                if(enemyObject.GetComponent<EnemyMovement>() != null)
-                    enemyObject.GetComponent<EnemyMovement>().manageEnemyHit(aController.damage);
-                else if(enemyObject.GetComponent<FlyingEyeBehavior>() != null)
-                    enemyObject.GetComponent<FlyingEyeBehavior>().manageEnemyHit(aController.damage);
+                Debug.Log("EnemyHitInfo komponenta byla nalezena.");
+                enemyHitInfo.manageEnemyHit(aController.damage);
+            }
+            else
+            {
+                Debug.LogWarning("Neexistuje komponenta EnemyHitInfo na zasaženém objektu.");
             }
 
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RatBehavior : MonoBehaviour
@@ -10,8 +11,12 @@ public class RatBehavior : MonoBehaviour
     [SerializeField] private float playerTriggerDistance = 3.0f;
     [SerializeField] private int lookMinTime = 7;
     [SerializeField] private int lookMaxTime = 15;
+    private Rigidbody2D rb;
     private int direction = 1;
     private bool isMoving = true;
+    [SerializeField] private int health = 100;
+    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int healthRegenAmount = 30;
 
     [Header("Detekce země (Červená čára)")]
     [SerializeField] private float groundDistance = 0.5f;
@@ -28,8 +33,13 @@ public class RatBehavior : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private float lookAroundTimer;
 
+    [Header("Deadh Settings")]
+    [SerializeField] private float deathAnimationLength = 1.2f;
+    private bool isDead = false;
+
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         adjustSpeed();
         adjustLookAroundTimer();
     }
@@ -78,6 +88,11 @@ public class RatBehavior : MonoBehaviour
     private void move()
     {
         if(!isMoving)
+        {
+            return;
+        }
+
+        if (isDead)
         {
             return;
         }
@@ -147,5 +162,70 @@ public class RatBehavior : MonoBehaviour
     public void stopMoving()
     {
         isMoving = false;
+    }
+
+    public void manageEnemyHit(int playerDamage)
+    {
+        // Prevent the enemy from taking more hits or triggering death twice
+        if (isDead) return;
+
+        health -= playerDamage;
+
+        if (health <= 0)
+        {
+            isDead = true;
+
+            // 1. Play death animations
+            animator.SetTrigger("tookHit");
+            animator.SetBool("isDead", true);
+
+            // 2. Disable colliders immediately
+            disableColiders();
+
+            // Stop the Rigidbody so the enemy doesn't fall through the floor 
+            // now that its colliders are turned off
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = false;
+
+            // 3. Start the timer to destroy the object
+            StartCoroutine(DeathRoutine());
+        }
+        else
+        {
+            animator.SetTrigger("tookHit");
+        }
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(deathAnimationLength);
+        DestroyEnemy();
+    }
+
+    public void DestroyEnemy()
+    {
+        Debug.Log("Enemy destroyed!");
+        Destroy(gameObject);
+    }
+
+    private void healthRegen()
+    {
+        if (health + healthRegenAmount > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health += healthRegenAmount;
+        }
+    }
+
+    public void disableColiders()
+    {
+        Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D col in colliders)
+        {
+            col.enabled = false;
+        }
     }
 }
