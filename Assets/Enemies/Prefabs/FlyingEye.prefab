@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1544447307271137459}
   - component: {fileID: 7467968787438105009}
   - component: {fileID: 8226531507621862871}
+  - component: {fileID: -5051613172979726161}
   m_Layer: 9
   m_Name: FlyingEye
   m_TagString: Untagged
@@ -218,6 +219,7 @@ MonoBehaviour:
   playerLayerName: Player
   Player: {fileID: 0}
   nextWaypointDistance: 1
+  deathAnimationLength: 1
 --- !u!95 &8226531507621862871
 Animator:
   serializedVersion: 7
@@ -240,6 +242,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5051613172979726161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935336481567154101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67910e2b91f38d74ea138ada0c3ec6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitInfo
 --- !u!1 &8279228023647720585
 GameObject:
   m_ObjectHideFlags: 0

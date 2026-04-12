@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7870283130210890575}
   - component: {fileID: 761251386390053453}
   - component: {fileID: 7924357317882727493}
+  - component: {fileID: 629830827878730136}
   m_Layer: 9
   m_Name: Skeleton (1)
   m_TagString: Untagged
@@ -270,8 +271,21 @@ MonoBehaviour:
   wallCheckDistance: 1
   attackDamage: 35
   attackHitboxCollider: {fileID: 0}
+  deathAnimationLength: 1.2
   attackPoint: {fileID: 8997590816025204790}
   trueAttackRange: 0.69
+--- !u!114 &629830827878730136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706500082695888333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67910e2b91f38d74ea138ada0c3ec6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitInfo
 --- !u!1 &1536056352661515643
 GameObject:
   m_ObjectHideFlags: 0

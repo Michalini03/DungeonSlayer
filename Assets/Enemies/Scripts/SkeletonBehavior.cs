@@ -102,10 +102,11 @@ public class EnemyMovement : MonoBehaviour
         manageAttackCooldown();
         Move();
         checkTrigger();
+        checkEnemyMapPosition();
         
         if(isTrigered)
         {
-            CheckForJump();
+            //CheckForJump();
         }
     }
 
@@ -446,6 +447,14 @@ private void OnTriggerEnter2D(Collider2D other)
         foreach (Collider2D col in colliders)
         {
             col.enabled = false;
+        }
+    }
+
+    private void checkEnemyMapPosition()
+    {
+        if (transform.position.y < -10f)
+        {
+            DestroyEnemy();
         }
     }
 }
