@@ -139,7 +139,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
+  - time: 0.2
     functionName: stopMoving
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -148,6 +148,13 @@ AnimationClip:
     messageOptions: 0
   - time: 2.25
     functionName: flipVisuals
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.4
+    functionName: healthRegen
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
