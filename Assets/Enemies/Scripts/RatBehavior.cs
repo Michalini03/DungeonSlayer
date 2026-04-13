@@ -34,7 +34,7 @@ public class RatBehavior : MonoBehaviour
     [SerializeField] private float lookAroundTimer;
 
     [Header("Deadh Settings")]
-    [SerializeField] private float deathAnimationLength = 1.2f;
+    [SerializeField] private float deathAnimationLength = 2.0f;
     private bool isDead = false;
 
     void Start()
@@ -186,12 +186,10 @@ public class RatBehavior : MonoBehaviour
             // now that its colliders are turned off
             rb.linearVelocity = Vector2.zero;
             rb.simulated = false;
-
-            // 3. Start the timer to destroy the object
-            StartCoroutine(DeathRoutine());
         }
         else
         {
+            stopMoving();
             animator.SetTrigger("tookHit");
         }
     }
