@@ -5,17 +5,12 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [System.Serializable]
-    public class EnemySpawnConfig
-    {
-        public EnemyType Type;
-        public GameObject Prefab;
-        public int Count;
-    }
+    [SerializeField] private GameObject skeletonPrefab;
+    [SerializeField] private GameObject flyingEyePrefab;
+    [SerializeField] private GameObject ratPrefab;
 
     [Header("Spawning Setup")]
     [SerializeField] private TileMapSpawnPointFinder spawnPointFinder;
-    [SerializeField] private EnemySpawnConfig[] enemyGroups;
 
     [Header("Scene Management & UI")]
     [SerializeField] private string nextSceneName = "NextScene";
@@ -76,28 +71,17 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemies()
     {
         GameObject playerReference = spawnPointFinder.player;
-
-        foreach (var group in enemyGroups)
-        {
-            if (group.Prefab == null) continue;
-
-            for (int i = 0; i < group.Count; i++)
-            {
-                SpawnSingleEnemy(group.Prefab, group.Type, playerReference);
-            }
-
-            group.Prefab.SetActive(false);
-        }
+        SpawnSingleEnemy(spawnPointFinder.skeletonSpawnPoints, skeletonPrefab);
+        SpawnSingleEnemy(spawnPointFinder.flyingEyeSpawnPoints, flyingEyePrefab);
+        SpawnSingleEnemy(spawnPointFinder.ratSpawnPoints, ratPrefab);
     }
 
-    private void SpawnSingleEnemy(GameObject prefab, EnemyType enemyType, GameObject player)
+    private void SpawnSingleEnemy(List<Vector3> spawnPoints, GameObject prefab)
     {
-        Vector3 spawnPoint = spawnPointFinder.GetRandomSpawnPoint(enemyType);
-
-        spawnPoint.z = player.transform.position.z;
-
-        GameObject instance = Instantiate(prefab, spawnPoint, Quaternion.identity);
-
-        activeEnemies.Add(instance);
+        foreach (Vector3 spawnPoint in spawnPoints)
+        {
+            GameObject enemy = Instantiate(prefab, spawnPoint, Quaternion.identity);
+            activeEnemies.Add(enemy);
+        }
     }
 }
