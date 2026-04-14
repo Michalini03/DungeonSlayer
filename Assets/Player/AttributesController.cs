@@ -79,6 +79,40 @@ public class AttributesController : MonoBehaviour
         StartCoroutine(RegenStaminaLoop());
     }
 
+    private void RefreshUI()
+    {
+        if (playerUI == null)
+        {
+            return;
+        }
+
+        playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+    }
+
+    private void SetMaxHealthPreservePercent(int newMaxHealth)
+    {
+        float percent = maxHealth > 0 ? (float)currentHealth / maxHealth : 1f;
+
+        maxHealth = Mathf.Max(newMaxHealth, minMaxHealth);
+        currentHealth = Mathf.Clamp(
+            Mathf.RoundToInt(maxHealth * percent),
+            0,
+            maxHealth
+        );
+    }
+    private void SetMaxStaminaPreservePercent(int newMaxStamina)
+    {
+        float percent = maxStamina > 0 ? (float)currentStamina / maxStamina : 1f;
+
+        maxStamina = Mathf.Max(newMaxStamina, minMaxStamina);
+        currentStamina = Mathf.Clamp(
+            Mathf.RoundToInt(maxStamina * percent),
+            0,
+            maxStamina
+        );
+    }
+
     public void ResetToBaseStats()
     {
         maxHealth = baseMaxHealth;
@@ -102,58 +136,75 @@ public class AttributesController : MonoBehaviour
         currentHealth = maxHealth;
         currentStamina = maxStamina;
 
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        // PlayerUI
+        RefreshUI();
     }
-
     public void ApplyCalculatedStats(PlayerBuildStats stats)
     {
-        float healthPercent = maxHealth > 0 ? (float)currentHealth / maxHealth : 1f;
-
-        maxHealth = Mathf.Max(
+        int newMaxHealth = Mathf.Max(
             Mathf.RoundToInt(stats.maxHealth.FinalValue),
             minMaxHealth
         );
 
-        damage = Mathf.Max(
+        int newDamage = Mathf.Max(
             Mathf.RoundToInt(stats.damage.FinalValue),
             minDamage
         );
 
-        healthRegen = Mathf.Max(
+        int newHealthRegen = Mathf.Max(
             Mathf.RoundToInt(stats.healthRegen.FinalValue),
             minHealthRegen
         );
 
-        lives = Mathf.Max(
+        int newLives = Mathf.Max(
             Mathf.RoundToInt(stats.lives.FinalValue),
             minLives
         );
 
-        damageReduction = Mathf.Clamp(
+        float newDamageReduction = Mathf.Clamp(
             stats.damageReduction.FinalValue,
             minDamageReduction,
             maxDamageReduction
         );
 
-        attackRange = Mathf.Max(
+        float newAttackRange = Mathf.Max(
             stats.attackRange.FinalValue,
             minAttackRange
         );
 
-        knockbackForce = Mathf.Max(
+        float newKnockbackForce = Mathf.Max(
             stats.knockbackForce.FinalValue,
             minKnockbackForce
         );
 
-        maxStamina = Mathf.Max(
+        int newMaxStamina = Mathf.Max(
             Mathf.RoundToInt(stats.maxStamina.FinalValue),
             minMaxStamina
         );
+
+        float newIframesDuration = Mathf.Clamp(
+            stats.iframesDuration.FinalValue,
+            minIframesDuration,
+            maxIframesDuration
+        );
+
+        float newMovementSpeed = Mathf.Clamp(
+            stats.movementSpeed.FinalValue,
+            minMovementSpeed,
+            maxMovementSpeed
+        );
+
+        SetMaxHealthPreservePercent(newMaxHealth);
+        SetMaxStaminaPreservePercent(newMaxStamina);
+
+        damage = newDamage;
+        healthRegen = newHealthRegen;
+        lives = newLives;
+        damageReduction = newDamageReduction;
+        attackRange = newAttackRange;
+        knockbackForce = newKnockbackForce;
+        iframesDuration = newIframesDuration;
+        movementSpeed = newMovementSpeed;
 
         if (stats.staminaBar == null || stats.staminaBar.Length != baseStaminaBar.Length)
         {
@@ -169,38 +220,20 @@ public class AttributesController : MonoBehaviour
             }
         }
 
-        iframesDuration = Mathf.Clamp(
-            stats.iframesDuration.FinalValue,
-            minIframesDuration,
-            maxIframesDuration
-        );
-
-        movementSpeed = Mathf.Clamp(
-            stats.movementSpeed.FinalValue,
-            minMovementSpeed,
-            maxMovementSpeed
-        );
-
-        currentHealth = Mathf.Clamp(
-            Mathf.RoundToInt(maxHealth * healthPercent),
-            minMaxHealth,
-            maxHealth
-        );
+        RefreshUI();
     }
+
 
     public void Heal(int amount)
     {
         if (amount <= 0)
             return;
 
+        // PlayerUI
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-
-        //PlayerUI
-        if(playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        RefreshUI();
     }
+
 
     public void HealPercent(float percent)
     {
@@ -215,50 +248,45 @@ public class AttributesController : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        //PlayerUI - pozn. proc se neda pouzit Heal(maxHealth);????
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        // PlayerUI
+        RefreshUI();
     }
 
     public void AddMaxHealth(int amount)
     {
         if (amount <= 0)
             return;
+
         maxHealth += amount;
         currentHealth += amount;
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        // PlayerUI
+        RefreshUI();
     }
 
     public void TakeDamage(int amount)
     {
         if (amount <= 0)
             return;
+
         int effectiveDamage = Mathf.RoundToInt(amount * (1f - damageReduction));
         currentHealth = Mathf.Max(currentHealth - effectiveDamage, 0);
-        //PlayerUI
-        if (playerUI != null)
-        {
-            playerUI.UpdateHealthBar(currentHealth, maxHealth);
-        }
+
+        // PlayerUI
+        RefreshUI();
     }
 
     public bool ConsumeStamina(int amount)
     {
         if (amount <= 0 || currentStamina < amount)
             return false;
+
         currentStamina -= amount;
         lastStaminaUseTime = Time.time;
 
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        // PlayerUI
+        RefreshUI();
         return true;
     }
 
@@ -266,25 +294,23 @@ public class AttributesController : MonoBehaviour
     {
         if (amount <= 0)
             return;
-        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
 
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        // PlayerUI
+        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
+        RefreshUI();
     }
 
     public void AddMaxStamina(int amount)
     {
         if (amount <= 0)
             return;
+
         maxStamina += amount;
         currentStamina += amount;
-        
-        if (playerUI != null)
-        {
-            playerUI.UpdateStaminaBar(currentStamina, maxStamina);
-        }
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
+        // PlayerUI
+        RefreshUI();
     }
 
     private IEnumerator RegenStaminaLoop()
@@ -321,6 +347,7 @@ public class AttributesController : MonoBehaviour
         sb.AppendLine($"Attack Range: {attackRange}");
         sb.AppendLine($"Knockback Force: {knockbackForce}");
         sb.AppendLine($"Max Stamina: {maxStamina}");
+        sb.AppendLine($"Current Stamina: {currentStamina}");
         sb.AppendLine($"Iframes Duration: {iframesDuration}");
         sb.AppendLine($"Movement Speed: {movementSpeed}");
 

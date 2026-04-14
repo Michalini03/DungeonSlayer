@@ -9,8 +9,6 @@ public class PlayerCombat : MonoBehaviour
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
-    
-
 
     // for animations, dont change
     float cooldown = 0f;
@@ -104,6 +102,7 @@ public class PlayerCombat : MonoBehaviour
         {
             animator.SetTrigger("Death");
 
+            SaveSystem.DeleteRun();
         }
         else
         {

@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private CanvasGroup fadeOverlayCanvasGroup;
     [SerializeField] private float fadeDuration = 0.75f;
     [SerializeField] private GameObject menuRoot;
+    [SerializeField] private GameObject continueButton;
 
     private bool isTransitioning = false;
 
@@ -26,6 +28,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        RefreshContinueButton();
+
         if (fadeOverlayCanvasGroup != null)
         {
             StartCoroutine(FadeInRoutine());
@@ -36,9 +40,30 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    private void RefreshContinueButton()
+    {
+        if (continueButton != null)
+        {
+            continueButton.SetActive(SaveSystem.HasRunSave());
+        }
+    }
+
     public void StartRun()
     {
         LoadSceneWithFade("DeepForest-FirstMap");
+    }
+
+    public void ContinueRun()
+    {
+        RunSaveData save = SaveSystem.LoadRun();
+
+        if (save == null || string.IsNullOrEmpty(save.currentSceneName))
+        {
+            RefreshContinueButton();
+            return;
+        }
+
+        LoadSceneWithFade(save.currentSceneName);
     }
 
     public void GoToEncyclopedia()
@@ -50,6 +75,7 @@ public class MainMenu : MonoBehaviour
     {
         LoadSceneWithFade("EncyclopediaFoePage");
     }
+
     public void GoToAugments()
     {
         LoadSceneWithFade("EncyclopediaAugmentPage");
@@ -80,7 +106,6 @@ public class MainMenu : MonoBehaviour
         isTransitioning = true;
         StartCoroutine(QuitRoutine());
     }
-
 
     private void LoadSceneWithFade(string sceneName)
     {

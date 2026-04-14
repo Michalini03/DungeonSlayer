@@ -3,23 +3,35 @@ using UnityEngine;
 
 public static class SaveSystem
 {
+    private static string SavePath => Path.Combine(Application.persistentDataPath, "run.json");
+
     public static void SaveRun(RunSaveData data)
     {
-        string path = Path.Combine(Application.persistentDataPath, "run.json");
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(path, json);
+        File.WriteAllText(SavePath, json);
     }
 
     public static RunSaveData LoadRun()
     {
-        string path = Path.Combine(Application.persistentDataPath, "run.json");
-
-        if (!File.Exists(path))
+        if (!File.Exists(SavePath))
         {
             return null;
         }
 
-        string json = File.ReadAllText(path);
+        string json = File.ReadAllText(SavePath);
         return JsonUtility.FromJson<RunSaveData>(json);
+    }
+
+    public static bool HasRunSave()
+    {
+        return File.Exists(SavePath);
+    }
+
+    public static void DeleteRun()
+    {
+        if (File.Exists(SavePath))
+        {
+            File.Delete(SavePath);
+        }
     }
 }
