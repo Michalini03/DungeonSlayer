@@ -12,9 +12,9 @@ public class TileMapSpawnPointFinder : MonoBehaviour
     [SerializeField] private Vector3 spawnRatOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] public GameObject player;
 
-    private readonly List<Vector3> skeletonSpawnPoints = new List<Vector3>();
-    private readonly List<Vector3> flyingEyeSpawnPoints = new List<Vector3>();
-    private readonly List<Vector3> ratSpawnPoints = new List<Vector3>();
+    public readonly List<Vector3> skeletonSpawnPoints = new List<Vector3>();
+    public readonly List<Vector3> flyingEyeSpawnPoints = new List<Vector3>();
+    public readonly List<Vector3> ratSpawnPoints = new List<Vector3>();
 
     private bool hasFoundSpawnPoints = false;
 
