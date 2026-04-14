@@ -9050,6 +9050,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4018976409727894886, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
       insertIndex: 6
       addedObject: {fileID: 1697462947}
+    - targetCorrespondingSourceObject: {fileID: 4018976409727894886, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
+      insertIndex: 7
+      addedObject: {fileID: 1697462948}
   m_SourcePrefab: {fileID: 100100000, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
 --- !u!1 &1697462939 stripped
 GameObject:
@@ -9071,6 +9074,18 @@ MonoBehaviour:
   playerTransform: {fileID: 1879287773}
   maxDistance: 10
   maxVolume: 0.5
+--- !u!114 &1697462948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697462939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67910e2b91f38d74ea138ada0c3ec6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitInfo
 --- !u!1 &1738956192
 GameObject:
   m_ObjectHideFlags: 0
@@ -9561,13 +9576,13 @@ MonoBehaviour:
   enemyGroups:
   - Type: 0
     Prefab: {fileID: 1697462939}
-    Count: 1
+    Count: 5
   - Type: 1
     Prefab: {fileID: 662783415}
     Count: 0
   - Type: 2
     Prefab: {fileID: 3401202097853588897}
-    Count: 10
+    Count: 2
   nextSceneName: Cave-First
   sceneFader: {fileID: 115880803}
   delayBeforeLoad: 2
@@ -11176,8 +11191,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1592636436}
-  - {fileID: 4965236556578706022}
   - {fileID: 922992706}
+  - {fileID: 4965236556578706022}
   - {fileID: 1879620557}
   - {fileID: 1649750263}
   - {fileID: 987921903}
