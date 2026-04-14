@@ -15,7 +15,6 @@ public class StartupStory : MonoBehaviour
     [TextArea(3, 10)]
     [SerializeField] private string[] pages;
 
-    [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float characterDelay = 0.03f;
     [SerializeField] private float delayBeforeTyping = 0.2f;
     [SerializeField] private float delayAfterTyping = 0.4f;

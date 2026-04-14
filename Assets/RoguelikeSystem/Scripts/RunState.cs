@@ -5,6 +5,7 @@ public class RunState
     private Dictionary<string, int> ownedStacks = new();
 
     public int Seed { get; set; }
+    public string CurrentSceneName { get; set; }
 
     public IReadOnlyDictionary<string, int> OwnedStacks => ownedStacks;
 
@@ -43,6 +44,7 @@ public class RunState
     {
         RunSaveData data = new RunSaveData();
         data.runSeed = Seed;
+        data.currentSceneName = CurrentSceneName;
 
         foreach (var kv in ownedStacks)
         {
@@ -61,6 +63,7 @@ public class RunState
             return;
 
         Seed = data.runSeed;
+        CurrentSceneName = data.currentSceneName;
 
         for (int i = 0; i < data.ownedAugmentIds.Count; i++)
         {

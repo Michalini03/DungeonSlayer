@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class RunSaveData
 {
     public int runSeed;
+    public string currentSceneName;
+
     public List<string> ownedAugmentIds = new();
     public List<int> ownedAugmentStacks = new();
 }

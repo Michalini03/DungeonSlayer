@@ -20,12 +20,12 @@ public class RunController : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            DontDestroyOnLoad(transform.root.gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -42,7 +42,9 @@ public class RunController : MonoBehaviour
         runState.LoadFromSaveData(save);
 
         if (runState.Seed == 0)
+        {
             runState.Seed = Random.Range(1, 999999);
+        }
 
         draftService = new AugmentDraftService(runState.Seed);
 
@@ -52,6 +54,9 @@ public class RunController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        runState.CurrentSceneName = scene.name;
+        SaveSystem.SaveRun(runState.ToSaveData());
+
         RebindSceneReferences();
         RefreshBuild();
     }
@@ -72,11 +77,15 @@ public class RunController : MonoBehaviour
         Time.timeScale = (IsAugmentMenuOpen || PauseMenu.isPaused) ? 0f : 1f;
     }
 
+    public void EndRun()
+    {
+        SaveSystem.DeleteRun();
+    }
+
     public List<AugmentDefinition> GetThreeRandomAugments()
     {
         if (augmentDatabase == null)
         {
-            Debug.LogError("AugmentDatabase is null");
             return new List<AugmentDefinition>();
         }
 
@@ -92,7 +101,6 @@ public class RunController : MonoBehaviour
             return;
 
         runState.AddAugment(augment.id);
-        SaveSystem.SaveRun(runState.ToSaveData());
         RefreshBuild();
     }
 
@@ -105,12 +113,16 @@ public class RunController : MonoBehaviour
         {
             case "health_potion":
                 if (attributesController != null)
+                {
                     attributesController.HealPercent(0.5f);
+                }
                 return true;
 
             case "full_heal":
                 if (attributesController != null)
+                {
                     attributesController.FullHeal();
+                }
                 return true;
 
             default:
@@ -121,12 +133,15 @@ public class RunController : MonoBehaviour
     public void RefreshBuild()
     {
         if (attributesController == null || synergyDatabase == null)
+        {
             return;
+        }
 
         PlayerBuildStats stats = BuildCalculator.BuildStats(
             attributesController,
             runState,
-            synergyDatabase.GetAll());
+            synergyDatabase.GetAll()
+        );
 
         attributesController.ApplyCalculatedStats(stats);
     }
