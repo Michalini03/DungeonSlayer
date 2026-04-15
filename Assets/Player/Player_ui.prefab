@@ -126,6 +126,7 @@ MonoBehaviour:
   baseHealthWidth: 100
   baseMaxStamina: 100
   baseStaminaWidth: 100
+  aController: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
 --- !u!1 &505626135493656474
 GameObject:
   m_ObjectHideFlags: 0

@@ -1702,31 +1702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: attackStaminaCost
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'staminaBar.Array.data[0]'
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'staminaBar.Array.data[1]'
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'staminaBar.Array.data[2]'
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseStaminaBar.Array.data[0]'
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseStaminaBar.Array.data[1]'
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseStaminaBar.Array.data[2]'
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3314722472415878276, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: dashTime
@@ -1736,10 +1712,6 @@ PrefabInstance:
       propertyPath: dashVelocity
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 5651398065606186526, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: comboFeedbackPrefab
-      value: 
-      objectReference: {fileID: 7541469581761792935, guid: a816fbddfa409fb47abec178a1f185e0, type: 3}
     - target: {fileID: 6390582940139494156, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: m_Name
       value: Player
