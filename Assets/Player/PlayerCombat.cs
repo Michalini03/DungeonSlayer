@@ -111,11 +111,11 @@ public class PlayerCombat : MonoBehaviour
     {
         float distanceFromPerfect = Mathf.Abs(normalizedTime - 0.5f)*10;
         Debug.Log("Distance from center: " + (normalizedTime - 0.5f));
-        if (distanceFromPerfect < aController.staminaBar[2] / 2f)
+        if (distanceFromPerfect < aController.comboBar[2] / 2f)
         {
             return 0.5f; // 50% stamina cost reduction
         }
-        else if(distanceFromPerfect < aController.staminaBar[2]/ 2f + aController.staminaBar[1] / 2f)
+        else if(distanceFromPerfect < aController.comboBar[1] / 2f + aController.comboBar[0] / 2f)
         {
             return 0.75f; // 25% stamina cost reduction
         }

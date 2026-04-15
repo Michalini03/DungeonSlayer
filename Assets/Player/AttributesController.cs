@@ -18,7 +18,7 @@ public class AttributesController : MonoBehaviour
     public float baseAttackRange = 0.5f;
     public float baseKnockbackForce = 10f;
     public int baseMaxStamina = 100;
-    public int[] baseComboBar = new int[3] { 5, 3, 2 };
+    public int[] baseComboBar = new int[3] { 6, 3, 1 };
     public float baseIframesDuration = 0.5f;
     public float baseMovementSpeed = 10f;
 
@@ -61,9 +61,6 @@ public class AttributesController : MonoBehaviour
     public float attackRange;
     public float knockbackForce;
 
-    public int maxStamina;
-    public int currentStamina;
-    public int[] comboBar;
     private int _maxStamina;
     public int maxStamina
     {
