@@ -20,15 +20,27 @@ public class PlayerUI : MonoBehaviour
     public float baseMaxStamina = 100f;
     public float baseStaminaWidth = 100f;
 
-    public void UpdateHealthBar(float currentHealth, float maxHealth)
+    public AttributesController aController;
+
+    private void OnEnable()
+    {
+        aController.OnHealthChange += UpdateHealthBar;
+        aController.OnStaminaChange += UpdateStaminaBar;
+    }
+
+    private void OnDisable()
+    {
+        aController.OnHealthChange -= UpdateHealthBar;
+        aController.OnStaminaChange -= UpdateStaminaBar;
+    }
+
+
+    public void UpdateHealthBar(int currentHealth, int maxHealth)
     {
         if (healthFill == null || maxHealth <= 0f)
             return;
 
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
-        float ratio = currentHealth / maxHealth;
-        healthFill.fillAmount = ratio;
+        healthFill.fillAmount = currentHealth / (float)maxHealth;
 
         if (healthBarRoot != null)
         {
@@ -40,15 +52,12 @@ public class PlayerUI : MonoBehaviour
             healthText.text = $"{Mathf.RoundToInt(currentHealth)} / {Mathf.RoundToInt(maxHealth)}";
     }
 
-    public void UpdateStaminaBar(float currentStamina, float maxStamina)
+    public void UpdateStaminaBar(int currentStamina, int maxStamina)
     {
         if (staminaFill == null || maxStamina <= 0f)
             return;
 
-        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
-
-        float ratio = currentStamina / maxStamina;
-        staminaFill.fillAmount = ratio;
+        staminaFill.fillAmount = currentStamina / (float)maxStamina;
 
         if (staminaBarRoot != null)
         {

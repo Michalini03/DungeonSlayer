@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerCombat pCombat;
     public Rigidbody2D rb;
     public Animator animator;
+    public Transform fallCheck;
 
     public float acceleration = 10f;
     private float runSpeedModifier = 4f;
@@ -27,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashTime = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
 
-    private bool canDash = true;
+    public bool canDash = true;
     private bool isDashing;
 
     private bool IsGameplayBlocked()
@@ -100,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        animator.SetFloat("VerticalSpeed", rb.linearVelocityY);
 
         // Count down the timer every frame
         if (jumpCooldown > 0)
@@ -121,6 +123,11 @@ public class PlayerMovement : MonoBehaviour
             cController.Move(0f, false, false);
             jump = false;
             return;
+        }
+
+        if(Physics2D.OverlapBoxAll(new Vector2(this.transform.position.x, this.transform.position.y - 0.6f), new Vector2(0.4f, 0.3f), 0f, LayerMask.GetMask("Ground")).Length == 0)
+        {
+            animator.SetTrigger("Falling");
         }
 
         cController.Move(horizontalMove * Time.fixedDeltaTime, false, jump); // movement, crouch, jump
@@ -155,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
+        animator.SetTrigger("Landed");
     }
 
     

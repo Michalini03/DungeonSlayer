@@ -19,7 +19,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   rarity: 0
   baseWeight: 120
-  maxStacks: 1
+  maxStacks: 100
   effectType: 1
   tags: []
   excludes: []

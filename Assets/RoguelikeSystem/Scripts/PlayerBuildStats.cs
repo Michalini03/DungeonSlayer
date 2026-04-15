@@ -10,7 +10,7 @@ public class PlayerBuildStats
     public StatModifier knockbackForce = new();
 
     public StatModifier maxStamina = new();
-    public int[] staminaBar;
+    public int[] comboBar;
 
     public StatModifier iframesDuration = new();
     public StatModifier movementSpeed = new();

@@ -1520,6 +1520,10 @@ PrefabInstance:
       propertyPath: deathCanvas
       value: 
       objectReference: {fileID: 1222005720}
+    - target: {fileID: 5651398065606186526, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+      propertyPath: comboFeedbackPrefab
+      value: 
+      objectReference: {fileID: 7541469581761792935, guid: a816fbddfa409fb47abec178a1f185e0, type: 3}
     - target: {fileID: 6390582940139494156, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: m_Name
       value: Player
@@ -14531,7 +14535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 816325438842244662, guid: fe21c985b7ebb9c4aa587e92349abd9e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -700
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 816325438842244662, guid: fe21c985b7ebb9c4aa587e92349abd9e, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14539,7 +14543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 840735772041538759, guid: fe21c985b7ebb9c4aa587e92349abd9e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -700
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 840735772041538759, guid: fe21c985b7ebb9c4aa587e92349abd9e, type: 3}
       propertyPath: m_AnchoredPosition.y

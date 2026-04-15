@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -24,6 +23,13 @@ public class MainMenu : MonoBehaviour
             fadeOverlayCanvasGroup.alpha = 1f;
             fadeOverlayCanvasGroup.blocksRaycasts = true;
         }
+
+        RefreshContinueButton();
+    }
+
+    private void OnEnable()
+    {
+        RefreshContinueButton();
     }
 
     private void Start()
@@ -42,9 +48,12 @@ public class MainMenu : MonoBehaviour
 
     private void RefreshContinueButton()
     {
+        bool hasSave = SaveSystem.HasRunSave();
+        Debug.Log("Has run save: " + hasSave);
+
         if (continueButton != null)
         {
-            continueButton.SetActive(SaveSystem.HasRunSave());
+            continueButton.SetActive(hasSave);
         }
     }
 
@@ -66,31 +75,6 @@ public class MainMenu : MonoBehaviour
         LoadSceneWithFade(save.currentSceneName);
     }
 
-    public void GoToEncyclopedia()
-    {
-        LoadSceneWithFade("EncyclopediaPage");
-    }
-
-    public void GoToFoes()
-    {
-        LoadSceneWithFade("EncyclopediaFoePage");
-    }
-
-    public void GoToAugments()
-    {
-        LoadSceneWithFade("EncyclopediaAugmentPage");
-    }
-
-    public void GoToSettingsMenu()
-    {
-        LoadSceneWithFade("SettingsMenu");
-    }
-
-    public void GoToAboutPage()
-    {
-        LoadSceneWithFade("AboutPage");
-    }
-
     public void GoToMainMenu()
     {
         LoadSceneWithFade("MainMenu");
@@ -99,9 +83,7 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         if (isTransitioning)
-        {
             return;
-        }
 
         isTransitioning = true;
         StartCoroutine(QuitRoutine());
@@ -110,9 +92,7 @@ public class MainMenu : MonoBehaviour
     private void LoadSceneWithFade(string sceneName)
     {
         if (isTransitioning)
-        {
             return;
-        }
 
         isTransitioning = true;
         StartCoroutine(LoadSceneRoutine(sceneName));
