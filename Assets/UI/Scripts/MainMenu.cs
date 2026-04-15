@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private CanvasGroup fadeOverlayCanvasGroup;
     [SerializeField] private float fadeDuration = 0.75f;
     [SerializeField] private GameObject menuRoot;
+    [SerializeField] private GameObject continueButton;
 
     private bool isTransitioning = false;
 
@@ -22,10 +23,19 @@ public class MainMenu : MonoBehaviour
             fadeOverlayCanvasGroup.alpha = 1f;
             fadeOverlayCanvasGroup.blocksRaycasts = true;
         }
+
+        RefreshContinueButton();
+    }
+
+    private void OnEnable()
+    {
+        RefreshContinueButton();
     }
 
     private void Start()
     {
+        RefreshContinueButton();
+
         if (fadeOverlayCanvasGroup != null)
         {
             StartCoroutine(FadeInRoutine());
@@ -36,33 +46,33 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    private void RefreshContinueButton()
+    {
+        bool hasSave = SaveSystem.HasRunSave();
+        Debug.Log("Has run save: " + hasSave);
+
+        if (continueButton != null)
+        {
+            continueButton.SetActive(hasSave);
+        }
+    }
+
     public void StartRun()
     {
         LoadSceneWithFade("DeepForest-FirstMap");
     }
 
-    public void GoToEncyclopedia()
+    public void ContinueRun()
     {
-        LoadSceneWithFade("EncyclopediaPage");
-    }
+        RunSaveData save = SaveSystem.LoadRun();
 
-    public void GoToFoes()
-    {
-        LoadSceneWithFade("EncyclopediaFoePage");
-    }
-    public void GoToAugments()
-    {
-        LoadSceneWithFade("EncyclopediaAugmentPage");
-    }
+        if (save == null || string.IsNullOrEmpty(save.currentSceneName))
+        {
+            RefreshContinueButton();
+            return;
+        }
 
-    public void GoToSettingsMenu()
-    {
-        LoadSceneWithFade("SettingsMenu");
-    }
-
-    public void GoToAboutPage()
-    {
-        LoadSceneWithFade("AboutPage");
+        LoadSceneWithFade(save.currentSceneName);
     }
 
     public void GoToMainMenu()
@@ -73,21 +83,16 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         if (isTransitioning)
-        {
             return;
-        }
 
         isTransitioning = true;
         StartCoroutine(QuitRoutine());
     }
 
-
     private void LoadSceneWithFade(string sceneName)
     {
         if (isTransitioning)
-        {
             return;
-        }
 
         isTransitioning = true;
         StartCoroutine(LoadSceneRoutine(sceneName));

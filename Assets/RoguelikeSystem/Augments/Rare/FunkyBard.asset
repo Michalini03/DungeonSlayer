@@ -15,10 +15,11 @@ MonoBehaviour:
   id: bard
   displayName: Funky Bard
   description: Funky music plays for the rest of the run.
-  flavorText: '"I like telling this with some good music"'
+  flavorText: '"Yes, the bard is necessary. I will take no questions."'
   icon: {fileID: 0}
   rarity: 2
   baseWeight: 50
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes: []

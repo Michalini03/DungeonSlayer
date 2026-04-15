@@ -14,7 +14,10 @@ public class AugmentSelectionUI : MonoBehaviour
     private void Awake()
     {
         if (cards == null || cards.Length == 0)
+        {
             cards = GetComponentsInChildren<AugmentCardUI>(true);
+        }
+            
     }
 
     private void Start()
@@ -26,7 +29,6 @@ public class AugmentSelectionUI : MonoBehaviour
     {
         if (RunController.Instance == null)
         {
-            Debug.LogError("RunController.Instance is null");
             return;
         }
 
@@ -59,14 +61,16 @@ public class AugmentSelectionUI : MonoBehaviour
         gameObject.SetActive(false);
 
         if (RunController.Instance != null)
+        {
             RunController.Instance.SetAugmentMenuOpen(false);
+        }
+
     }
 
     public void SelectAugment(AugmentDefinition augment)
     {
         if (RunController.Instance == null)
         {
-            Debug.LogError("RunController.Instance is null");
             return;
         }
 

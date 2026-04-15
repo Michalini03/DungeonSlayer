@@ -128,13 +128,18 @@ public class PlayerCombat : MonoBehaviour
     public void DetectEnemiesHit()
     {
         if (IsInputBlocked())
+        {
             return;
+        }
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
 
-        
+        //Debug.Log("Hit " + hitEnemies + " enemies!");
+
+        int dealtDamage = GetEffectiveDamage();
 
         // Pavel: Zde jsem si dovolil drobnou úpravu aby to rovnou fungovalo s novou komponentou
+        // Roman: Taky mala uprava (dealtDamage) pro Berserker augment
         foreach (Collider2D enemy in hitEnemies)
         {
             EnemyHitInfo enemyHitInfo = enemy.gameObject.GetComponent<EnemyHitInfo>();
@@ -142,7 +147,8 @@ public class PlayerCombat : MonoBehaviour
             if (enemyHitInfo != null)
             {
                 Debug.Log("EnemyHitInfo komponenta byla nalezena.");
-                enemyHitInfo.manageEnemyHit(aController.damage);
+                enemyHitInfo.manageEnemyHit(dealtDamage);
+                ApplyOnHitEffects(dealtDamage);
             }
             else
             {
@@ -162,8 +168,16 @@ public class PlayerCombat : MonoBehaviour
         aController.TakeDamage(damage);
         if(aController.currentHealth <= 0)
         {
-            animator.SetTrigger("Death");
+            if (aController.lives == 0)
+            {
+                animator.SetTrigger("Death");
+            }
 
+            else
+            {
+                aController.lives--;
+                aController.currentHealth = aController.maxHealth;
+            }
         }
         else
         {
@@ -182,10 +196,12 @@ public class PlayerCombat : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null || aController == null)
+        {
             return;
+        }
 
         Gizmos.DrawWireSphere(attackPoint.position, aController.attackRange);
-        Gizmos.DrawCube(new Vector3(this.transform.position.x,this.transform.position.y-0.6f), new Vector3(0.4f,0.3f,0));
+        
     }
 
     // ==========================================
@@ -225,6 +241,64 @@ public class PlayerCombat : MonoBehaviour
         if (script != null)
         {
             script.Setup(message, textColor);
+        }
+    }
+
+    private int GetEffectiveDamage()
+    {
+        float damage = aController.damage;
+
+        if (aController.berserker)
+        {
+            if (aController.maxHealth > 0)
+            {
+                float healthPercent = (float)aController.currentHealth / aController.maxHealth;
+
+                if (healthPercent <= 0.25f)
+                {
+                    damage *= 2f;
+                }
+            }
+        }
+
+        return Mathf.RoundToInt(damage);
+    }
+
+    private void ApplyOnHitEffects(int dealtDamage)
+    {
+        if (aController.lifeSteal)
+        {
+            int healAmount = Mathf.Max(1, Mathf.RoundToInt(dealtDamage * 0.05f));
+            aController.Heal(healAmount);
+        }
+    }
+
+    private int GetEffectiveDamage()
+    {
+        float damage = aController.damage;
+
+        if (aController.berserker)
+        {
+            if (aController.maxHealth > 0)
+            {
+                float healthPercent = (float)aController.currentHealth / aController.maxHealth;
+
+                if (healthPercent <= 0.25f)
+                {
+                    damage *= 2f;
+                }
+            }
+        }
+
+        return Mathf.RoundToInt(damage);
+    }
+
+    private void ApplyOnHitEffects(int dealtDamage)
+    {
+        if (aController.lifeSteal)
+        {
+            int healAmount = Mathf.Max(1, Mathf.RoundToInt(dealtDamage * 0.05f));
+            aController.Heal(healAmount);
         }
     }
 }

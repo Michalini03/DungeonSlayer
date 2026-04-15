@@ -15,15 +15,10 @@ public class AttributesController : MonoBehaviour
     public int baseHealthRegen = 0;
     public int baseLives = 0;
     public float baseDamageReduction = 0f;
-
-    public float baseAttackRange = 10f;
+    public float baseAttackRange = 0.5f;
     public float baseKnockbackForce = 10f;
-
     public int baseMaxStamina = 100;
-    
-
-    public int[] baseStaminaBar = new int[3] { 6, 3, 1 };
-
+    public int[] baseComboBar = new int[3] { 5, 3, 2 };
     public float baseIframesDuration = 0.5f;
     public float baseMovementSpeed = 10f;
 
@@ -31,15 +26,14 @@ public class AttributesController : MonoBehaviour
     public int minDamage = 0;
     public int minHealthRegen = 0;
     public int minLives = 0;
+    public float minAttackRange = 5f;
+    public float minKnockbackForce = 0f;
+    public int minMaxStamina = 50;
+    public int minComboBarSectionValue = 0;
+
     public float minDamageReduction = -1f;
     public float maxDamageReduction = 0.5f;
 
-    public float minAttackRange = 5f;
-    public float minKnockbackForce = 0f;
-
-    public int minMaxStamina = 50;
-    public int minStaminaBarSectionValue = 0;
-        
     public float minIframesDuration = 0.1f;
     public float maxIframesDuration = 2f;
 
@@ -67,6 +61,9 @@ public class AttributesController : MonoBehaviour
     public float attackRange;
     public float knockbackForce;
 
+    public int maxStamina;
+    public int currentStamina;
+    public int[] comboBar;
     private int _maxStamina;
     public int maxStamina
     {
@@ -79,7 +76,7 @@ public class AttributesController : MonoBehaviour
         get => _currentStamina;
         set { _currentStamina = value; OnStaminaChange?.Invoke(currentStamina, maxStamina); }
     }
-    public int[] staminaBar;
+    public int[] comboBar;
 
     public float iframesDuration;
     public float movementSpeed;
@@ -88,6 +85,14 @@ public class AttributesController : MonoBehaviour
     [Header("Abilities")]
     public int maxGroundCombos; //bude lehci jen zvedat cislo nez mit pro kazde odemcene kombo vlastni bool
     public int maxAirCombos; //stejne tady
+    public bool berserker;
+    public bool distantSlash;
+    public bool lifeSteal;
+    public bool lingeringStrikes;
+    public bool martyrsBlood;
+    public bool readiedBlow;
+    public bool swordWind;
+
 
     //marek: for ui updated, will be on more lines marked by comment //PlayerUI
     [Header("Player UI")]
@@ -99,14 +104,41 @@ public class AttributesController : MonoBehaviour
     public int jumpStaminaCost = 15;
 
     [Header("Stamina Settings")]
-    public float regenRate = 15f;      // Stamina per second
-    public float regenDelay = 1f;      // Time to wait before starting regen
+    public float staminaRegenRate = 20f;      // Stamina per second
+    public float staminaRegenDelay = 0.5f;      // Time to wait before starting regen
     private float lastStaminaUseTime;
 
     private void Awake()
     {
         ResetToBaseStats();
         StartCoroutine(RegenStaminaLoop());
+        StartCoroutine(RegenHealthLoop());
+    }
+
+    private void RefreshUI()
+    {
+        if (playerUI == null)
+        {
+            return;
+        }
+
+        playerUI.UpdateHealthBar(currentHealth, maxHealth);
+        playerUI.UpdateStaminaBar(currentStamina, maxStamina);
+    }
+
+    private void SetMaxHealthPreservePercent(int newMaxHealth)
+    {
+        float percent = maxHealth > 0 ? (float)currentHealth / maxHealth : 1f;
+
+        maxHealth = Mathf.Max(newMaxHealth, minMaxHealth);
+        currentHealth = Mathf.Clamp(Mathf.RoundToInt(maxHealth * percent), 0, maxHealth);
+    }
+    private void SetMaxStaminaPreservePercent(int newMaxStamina)
+    {
+        float percent = maxStamina > 0 ? (float)currentStamina / maxStamina : 1f;
+
+        maxStamina = Mathf.Max(newMaxStamina, minMaxStamina);
+        currentStamina = Mathf.Clamp(Mathf.RoundToInt(maxStamina * percent), 0, maxStamina);
     }
 
     public void ResetToBaseStats()
@@ -121,103 +153,120 @@ public class AttributesController : MonoBehaviour
         knockbackForce = baseKnockbackForce;
 
         maxStamina = baseMaxStamina;
-        staminaBar = (int[])baseStaminaBar.Clone();
+        comboBar = (int[])baseComboBar.Clone();
 
         iframesDuration = baseIframesDuration;
         movementSpeed = baseMovementSpeed;
 
-        maxGroundCombos = 4;
+        maxGroundCombos = 2;
         maxAirCombos = 1;
+        berserker = false;
+        distantSlash = false;
+        lifeSteal = false;
+        lingeringStrikes = false;
+        martyrsBlood = false;
+        readiedBlow = false;
+        swordWind = false;
 
         currentHealth = maxHealth;
         currentStamina = maxStamina;
 
         
     }
-
     public void ApplyCalculatedStats(PlayerBuildStats stats)
     {
-        float healthPercent = maxHealth > 0 ? (float)currentHealth / maxHealth : 1f;
-
-        maxHealth = Mathf.Max(
+        int newMaxHealth = Mathf.Max(
             Mathf.RoundToInt(stats.maxHealth.FinalValue),
             minMaxHealth
         );
 
-        damage = Mathf.Max(
+        int newDamage = Mathf.Max(
             Mathf.RoundToInt(stats.damage.FinalValue),
             minDamage
         );
 
-        healthRegen = Mathf.Max(
+        int newHealthRegen = Mathf.Max(
             Mathf.RoundToInt(stats.healthRegen.FinalValue),
             minHealthRegen
         );
 
-        lives = Mathf.Max(
+        int newLives = Mathf.Max(
             Mathf.RoundToInt(stats.lives.FinalValue),
             minLives
         );
 
-        damageReduction = Mathf.Clamp(
+        float newDamageReduction = Mathf.Clamp(
             stats.damageReduction.FinalValue,
             minDamageReduction,
             maxDamageReduction
         );
 
-        attackRange = Mathf.Max(
+        float newAttackRange = Mathf.Max(
             stats.attackRange.FinalValue,
             minAttackRange
         );
 
-        knockbackForce = Mathf.Max(
+        float newKnockbackForce = Mathf.Max(
             stats.knockbackForce.FinalValue,
             minKnockbackForce
         );
 
-        maxStamina = Mathf.Max(
+        int newMaxStamina = Mathf.Max(
             Mathf.RoundToInt(stats.maxStamina.FinalValue),
             minMaxStamina
         );
 
-        if (stats.staminaBar == null || stats.staminaBar.Length != baseStaminaBar.Length)
-        {
-            staminaBar = (int[])baseStaminaBar.Clone();
-        }
-        else
-        {
-            staminaBar = (int[])stats.staminaBar.Clone();
-
-            for (int i = 0; i < staminaBar.Length; i++)
-            {
-                staminaBar[i] = Mathf.Max(staminaBar[i], minStaminaBarSectionValue);
-            }
-        }
-
-        iframesDuration = Mathf.Clamp(
+        float newIframesDuration = Mathf.Clamp(
             stats.iframesDuration.FinalValue,
             minIframesDuration,
             maxIframesDuration
         );
 
-        movementSpeed = Mathf.Clamp(
+        float newMovementSpeed = Mathf.Clamp(
             stats.movementSpeed.FinalValue,
             minMovementSpeed,
             maxMovementSpeed
         );
 
-        currentHealth = Mathf.Clamp(
-            Mathf.RoundToInt(maxHealth * healthPercent),
-            minMaxHealth,
-            maxHealth
-        );
+        SetMaxHealthPreservePercent(newMaxHealth);
+        SetMaxStaminaPreservePercent(newMaxStamina);
+
+        damage = newDamage;
+        healthRegen = newHealthRegen;
+        lives = newLives;
+        damageReduction = newDamageReduction;
+        attackRange = newAttackRange;
+        knockbackForce = newKnockbackForce;
+        iframesDuration = newIframesDuration;
+        movementSpeed = newMovementSpeed;
+
+        if (stats.comboBar == null || stats.comboBar.Length != baseComboBar.Length)
+        {
+            comboBar = (int[])baseComboBar.Clone();
+        }
+        else
+        {
+            comboBar = (int[])stats.comboBar.Clone();
+
+            for (int i = 0; i < comboBar.Length; i++)
+            {
+                comboBar[i] = Mathf.Max(comboBar[i], minComboBarSectionValue);
+            }
+        }
+
+        DebugPrintStats();
+
     }
+
 
     public void Heal(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
 
+        
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
 
         
@@ -226,7 +275,9 @@ public class AttributesController : MonoBehaviour
     public void HealPercent(float percent)
     {
         if (percent <= 0f)
+        {
             return;
+        }
 
         int amount = Mathf.RoundToInt(maxHealth * percent);
         Heal(amount);
@@ -236,32 +287,79 @@ public class AttributesController : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        //PlayerUI - pozn. proc se neda pouzit Heal(maxHealth);????
         
     }
 
     public void AddMaxHealth(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
+
         maxHealth += amount;
         currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
         
     }
 
     public void TakeDamage(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
+
         int effectiveDamage = Mathf.RoundToInt(amount * (1f - damageReduction));
         currentHealth = Mathf.Max(currentHealth - effectiveDamage, 0);
+
         
+    }
+    public void RegenerateHealth(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        // PlayerUI
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        
+    }
+
+    private IEnumerator RegenHealthLoop()
+    {
+        WaitForSeconds wait = new WaitForSeconds(1f);
+
+        while (true)
+        {
+            if (martyrsBlood)
+            {
+                if (currentHealth < maxHealth)
+                {
+                    RegenerateHealth((int)(maxHealth * healthRegen * 0.01f));
+                }
+            }
+            else
+            {
+                if (currentHealth < (maxHealth / 2))
+                {
+                    RegenerateHealth((int)(maxHealth * healthRegen * 0.01f));
+                }
+            }
+
+            yield return wait;
+        }
     }
 
     public bool ConsumeStamina(int amount)
     {
         if (amount <= 0 || currentStamina < amount)
+        {
             return false;
+        }
+
         currentStamina -= amount;
         lastStaminaUseTime = Time.time;
 
@@ -272,9 +370,12 @@ public class AttributesController : MonoBehaviour
     public void RegenerateStamina(int amount)
     {
         if (amount <= 0)
+        {
             return;
-        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
+        }
 
+        // PlayerUI
+        currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
         
     }
 
@@ -282,9 +383,11 @@ public class AttributesController : MonoBehaviour
     {
         if (amount <= 0)
             return;
+
         maxStamina += amount;
         currentStamina += amount;
-        
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+
         
     }
 
@@ -295,11 +398,11 @@ public class AttributesController : MonoBehaviour
         while (true)
         {
             // 1. Check if the delay has passed
-            if (Time.time - lastStaminaUseTime >= regenDelay)
+            if (Time.time - lastStaminaUseTime >= staminaRegenDelay)
             {
                 if (currentStamina < maxStamina)
                 {
-                    RegenerateStamina((int)(regenRate * 0.1f));
+                    RegenerateStamina((int)(staminaRegenRate * 0.1f));
                 }
             }
 
@@ -322,16 +425,17 @@ public class AttributesController : MonoBehaviour
         sb.AppendLine($"Attack Range: {attackRange}");
         sb.AppendLine($"Knockback Force: {knockbackForce}");
         sb.AppendLine($"Max Stamina: {maxStamina}");
+        sb.AppendLine($"Current Stamina: {currentStamina}");
         sb.AppendLine($"Iframes Duration: {iframesDuration}");
         sb.AppendLine($"Movement Speed: {movementSpeed}");
 
-        if (staminaBar != null)
+        if (comboBar != null)
         {
             sb.Append("Stamina Bar: [");
-            for (int i = 0; i < staminaBar.Length; i++)
+            for (int i = 0; i < comboBar.Length; i++)
             {
-                sb.Append(staminaBar[i]);
-                if (i < staminaBar.Length - 1)
+                sb.Append(comboBar[i]);
+                if (i < comboBar.Length - 1)
                     sb.Append(", ");
             }
             sb.AppendLine("]");
