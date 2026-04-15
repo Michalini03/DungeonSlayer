@@ -183,7 +183,7 @@ MonoBehaviour:
   groundDistance: 0.2
   groundOffset: {x: 0.2, y: -0.4}
   wallDistance: 0.3
-  wallOffset: {x: 0.1, y: -0.4}
+  wallOffset: {x: 0.1, y: -0.42}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
