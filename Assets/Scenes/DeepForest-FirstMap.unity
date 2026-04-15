@@ -9135,6 +9135,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1879287772}
+    - target: {fileID: 4954863320412787584, guid: f34dd2ba37ca65944afa27a2d278b8ce, type: 3}
+      propertyPath: wallOffset.y
+      value: -0.42
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
