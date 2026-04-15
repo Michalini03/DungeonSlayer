@@ -7,20 +7,17 @@ public class AugmentDraftService
 {
     private readonly System.Random rng;
 
-    private const int CommonChance = 50;
-    private const int UncommonChance = 30;
+    private const int CommonChance = 54;
+    private const int UncommonChance = 40;
     private const int RareChance = 15;
-    private const int LegendaryChance = 5;
+    private const int LegendaryChance = 1;
 
     public AugmentDraftService(int seed)
     {
         rng = new System.Random(seed);
     }
 
-    public List<AugmentDefinition> GenerateDraft(
-        IReadOnlyList<AugmentDefinition> allAugments,
-        RunState run,
-        int count = 3)
+    public List<AugmentDefinition> GenerateDraft(IReadOnlyList<AugmentDefinition> allAugments, RunState run, int count = 3)
     {
         List<AugmentDefinition> validAugments = GetValidAugments(allAugments, run);
         List<AugmentDefinition> result = new();
@@ -29,9 +26,7 @@ public class AugmentDraftService
         {
             AugmentRarity rolledRarity = RollRarity();
 
-            List<AugmentDefinition> rarityPool = validAugments
-                .Where(a => a.rarity == rolledRarity)
-                .ToList();
+            List<AugmentDefinition> rarityPool = validAugments.Where(a => a.rarity == rolledRarity).ToList();
 
             if (rarityPool.Count == 0)
             {
@@ -52,9 +47,7 @@ public class AugmentDraftService
         return result;
     }
 
-    private List<AugmentDefinition> GetValidAugments(
-        IReadOnlyList<AugmentDefinition> allAugments,
-        RunState run)
+    private List<AugmentDefinition> GetValidAugments(IReadOnlyList<AugmentDefinition> allAugments, RunState run)
     {
         List<AugmentDefinition> valid = new();
 

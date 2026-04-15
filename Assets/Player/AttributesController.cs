@@ -9,13 +9,10 @@ public class AttributesController : MonoBehaviour
     public int baseHealthRegen = 0;
     public int baseLives = 0;
     public float baseDamageReduction = 0f;
-
-    public float baseAttackRange = 10f;
+    public float baseAttackRange = 0.5f;
     public float baseKnockbackForce = 10f;
-
     public int baseMaxStamina = 100;
-    public int[] baseStaminaBar = new int[3] { 6, 3, 1 };
-
+    public int[] baseComboBar = new int[3] { 5, 3, 2 };
     public float baseIframesDuration = 0.5f;
     public float baseMovementSpeed = 10f;
 
@@ -23,15 +20,14 @@ public class AttributesController : MonoBehaviour
     public int minDamage = 0;
     public int minHealthRegen = 0;
     public int minLives = 0;
+    public float minAttackRange = 5f;
+    public float minKnockbackForce = 0f;
+    public int minMaxStamina = 50;
+    public int minComboBarSectionValue = 0;
+
     public float minDamageReduction = -1f;
     public float maxDamageReduction = 0.5f;
 
-    public float minAttackRange = 5f;
-    public float minKnockbackForce = 0f;
-
-    public int minMaxStamina = 50;
-    public int minStaminaBarSectionValue = 0;
-        
     public float minIframesDuration = 0.1f;
     public float maxIframesDuration = 2f;
 
@@ -50,14 +46,22 @@ public class AttributesController : MonoBehaviour
 
     public int maxStamina;
     public int currentStamina;
-    public int[] staminaBar;
+    public int[] comboBar;
 
     public float iframesDuration;
     public float movementSpeed;
 
     [Header("Abilities")]
-    public bool canComboAttack3;
-    public bool canAirComboAttack2;
+    //public bool canComboAttack3;
+    //public bool canAirComboAttack2;
+    public bool berserker;
+    public bool distantSlash;
+    public bool lifeSteal;
+    public bool lingeringStrikes;
+    public bool martyrsBlood;
+    public bool readiedBlow;
+    public bool swordWind;
+
 
     //marek: for ui updated, will be on more lines marked by comment //PlayerUI
     [Header("Player UI")]
@@ -69,14 +73,15 @@ public class AttributesController : MonoBehaviour
     public int jumpStaminaCost = 15;
 
     [Header("Stamina Settings")]
-    public float regenRate = 15f;      // Stamina per second
-    public float regenDelay = 1f;      // Time to wait before starting regen
+    public float staminaRegenRate = 20f;      // Stamina per second
+    public float staminaRegenDelay = 0.5f;      // Time to wait before starting regen
     private float lastStaminaUseTime;
 
     private void Awake()
     {
         ResetToBaseStats();
         StartCoroutine(RegenStaminaLoop());
+        StartCoroutine(RegenHealthLoop());
     }
 
     private void RefreshUI()
@@ -95,22 +100,14 @@ public class AttributesController : MonoBehaviour
         float percent = maxHealth > 0 ? (float)currentHealth / maxHealth : 1f;
 
         maxHealth = Mathf.Max(newMaxHealth, minMaxHealth);
-        currentHealth = Mathf.Clamp(
-            Mathf.RoundToInt(maxHealth * percent),
-            0,
-            maxHealth
-        );
+        currentHealth = Mathf.Clamp(Mathf.RoundToInt(maxHealth * percent), 0, maxHealth);
     }
     private void SetMaxStaminaPreservePercent(int newMaxStamina)
     {
         float percent = maxStamina > 0 ? (float)currentStamina / maxStamina : 1f;
 
         maxStamina = Mathf.Max(newMaxStamina, minMaxStamina);
-        currentStamina = Mathf.Clamp(
-            Mathf.RoundToInt(maxStamina * percent),
-            0,
-            maxStamina
-        );
+        currentStamina = Mathf.Clamp(Mathf.RoundToInt(maxStamina * percent), 0, maxStamina);
     }
 
     public void ResetToBaseStats()
@@ -125,13 +122,20 @@ public class AttributesController : MonoBehaviour
         knockbackForce = baseKnockbackForce;
 
         maxStamina = baseMaxStamina;
-        staminaBar = (int[])baseStaminaBar.Clone();
+        comboBar = (int[])baseComboBar.Clone();
 
         iframesDuration = baseIframesDuration;
         movementSpeed = baseMovementSpeed;
 
-        canComboAttack3 = false;
-        canAirComboAttack2 = false;
+        //canComboAttack3 = false;
+        //canAirComboAttack2 = false;
+        berserker = false;
+        distantSlash = false;
+        lifeSteal = false;
+        lingeringStrikes = false;
+        martyrsBlood = false;
+        readiedBlow = false;
+        swordWind = false;
 
         currentHealth = maxHealth;
         currentStamina = maxStamina;
@@ -206,19 +210,21 @@ public class AttributesController : MonoBehaviour
         iframesDuration = newIframesDuration;
         movementSpeed = newMovementSpeed;
 
-        if (stats.staminaBar == null || stats.staminaBar.Length != baseStaminaBar.Length)
+        if (stats.comboBar == null || stats.comboBar.Length != baseComboBar.Length)
         {
-            staminaBar = (int[])baseStaminaBar.Clone();
+            comboBar = (int[])baseComboBar.Clone();
         }
         else
         {
-            staminaBar = (int[])stats.staminaBar.Clone();
+            comboBar = (int[])stats.comboBar.Clone();
 
-            for (int i = 0; i < staminaBar.Length; i++)
+            for (int i = 0; i < comboBar.Length; i++)
             {
-                staminaBar[i] = Mathf.Max(staminaBar[i], minStaminaBarSectionValue);
+                comboBar[i] = Mathf.Max(comboBar[i], minComboBarSectionValue);
             }
         }
+
+        DebugPrintStats();
 
         RefreshUI();
     }
@@ -227,18 +233,21 @@ public class AttributesController : MonoBehaviour
     public void Heal(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
 
         // PlayerUI
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         RefreshUI();
     }
 
-
     public void HealPercent(float percent)
     {
         if (percent <= 0f)
+        {
             return;
+        }
 
         int amount = Mathf.RoundToInt(maxHealth * percent);
         Heal(amount);
@@ -255,7 +264,9 @@ public class AttributesController : MonoBehaviour
     public void AddMaxHealth(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
 
         maxHealth += amount;
         currentHealth += amount;
@@ -268,7 +279,9 @@ public class AttributesController : MonoBehaviour
     public void TakeDamage(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
 
         int effectiveDamage = Mathf.RoundToInt(amount * (1f - damageReduction));
         currentHealth = Mathf.Max(currentHealth - effectiveDamage, 0);
@@ -276,11 +289,49 @@ public class AttributesController : MonoBehaviour
         // PlayerUI
         RefreshUI();
     }
+    public void RegenerateHealth(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        // PlayerUI
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        RefreshUI();
+    }
+
+    private IEnumerator RegenHealthLoop()
+    {
+        WaitForSeconds wait = new WaitForSeconds(1f);
+
+        while (true)
+        {
+            if (martyrsBlood)
+            {
+                if (currentHealth < maxHealth)
+                {
+                    RegenerateHealth((int)(maxHealth * healthRegen * 0.01f));
+                }
+            }
+            else
+            {
+                if (currentHealth < (maxHealth / 2))
+                {
+                    RegenerateHealth((int)(maxHealth * healthRegen * 0.01f));
+                }
+            }
+
+            yield return wait;
+        }
+    }
 
     public bool ConsumeStamina(int amount)
     {
         if (amount <= 0 || currentStamina < amount)
+        {
             return false;
+        }
 
         currentStamina -= amount;
         lastStaminaUseTime = Time.time;
@@ -293,7 +344,9 @@ public class AttributesController : MonoBehaviour
     public void RegenerateStamina(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
 
         // PlayerUI
         currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
@@ -320,11 +373,11 @@ public class AttributesController : MonoBehaviour
         while (true)
         {
             // 1. Check if the delay has passed
-            if (Time.time - lastStaminaUseTime >= regenDelay)
+            if (Time.time - lastStaminaUseTime >= staminaRegenDelay)
             {
                 if (currentStamina < maxStamina)
                 {
-                    RegenerateStamina((int)(regenRate * 0.1f));
+                    RegenerateStamina((int)(staminaRegenRate * 0.1f));
                 }
             }
 
@@ -351,13 +404,13 @@ public class AttributesController : MonoBehaviour
         sb.AppendLine($"Iframes Duration: {iframesDuration}");
         sb.AppendLine($"Movement Speed: {movementSpeed}");
 
-        if (staminaBar != null)
+        if (comboBar != null)
         {
             sb.Append("Stamina Bar: [");
-            for (int i = 0; i < staminaBar.Length; i++)
+            for (int i = 0; i < comboBar.Length; i++)
             {
-                sb.Append(staminaBar[i]);
-                if (i < staminaBar.Length - 1)
+                sb.Append(comboBar[i]);
+                if (i < comboBar.Length - 1)
                     sb.Append(", ");
             }
             sb.AppendLine("]");

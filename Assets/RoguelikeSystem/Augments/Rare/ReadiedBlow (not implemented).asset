@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: DistantSlash
+  m_Name: ReadiedBlow (not implemented)
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: distant_slash
-  displayName: Distant Slash
-  description: Attacks travel through the air until they hit an enemy or an obstacle.
-  flavorText: '"The Saint struck down monsters across even great is'
+  id: readied_blow
+  displayName: Readied Blow
+  description: Hold the attack button to charge up, release to unleash a heavy blow.
+  flavorText: '"By concentrating their power, the Saint released powerful attacks."'
   icon: {fileID: 0}
   rarity: 2
   baseWeight: 100

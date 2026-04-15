@@ -54,11 +54,16 @@ public class RunController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        runState.CurrentSceneName = scene.name;
-        SaveSystem.SaveRun(runState.ToSaveData());
-
         RebindSceneReferences();
         RefreshBuild();
+
+        if (scene.name == "MainMenu")
+        {
+            return;
+        }
+
+        runState.CurrentSceneName = scene.name;
+        SaveSystem.SaveRun(runState.ToSaveData());
     }
 
     private void RebindSceneReferences()
@@ -80,6 +85,7 @@ public class RunController : MonoBehaviour
     public void EndRun()
     {
         SaveSystem.DeleteRun();
+        Destroy(transform.root.gameObject);
     }
 
     public List<AugmentDefinition> GetThreeRandomAugments()
@@ -95,23 +101,36 @@ public class RunController : MonoBehaviour
     public void GiveAugment(AugmentDefinition augment)
     {
         if (augment == null)
+        {
             return;
+        }
 
         if (TryApplyInstantAugment(augment))
+        {
             return;
+        }
+
 
         runState.AddAugment(augment.id);
         RefreshBuild();
     }
 
+    public bool HasAugment(string augmentId)
+    {
+        return runState != null && runState.HasAugment(augmentId);
+    }
+
     private bool TryApplyInstantAugment(AugmentDefinition augment)
     {
         if (augment.effectType != AugmentEffectType.Instant)
+        {
             return false;
+        }
+            
 
         switch (augment.id)
         {
-            case "health_potion":
+            case "rejuv":
                 if (attributesController != null)
                 {
                     attributesController.HealPercent(0.5f);
@@ -125,9 +144,108 @@ public class RunController : MonoBehaviour
                 }
                 return true;
 
+            case "gamba":
+                GiveRandomAugments(1);
+                return true;
+
+            case "random_augments":
+                GiveRandomAugments(2);
+                return true;
+
             default:
                 return false;
         }
+    }
+
+    private void GiveRandomAugments(int number)
+    {
+        if (augmentDatabase == null)
+        {
+            return;
+        }
+
+        List<AugmentDefinition> candidates = new List<AugmentDefinition>();
+
+        foreach (AugmentDefinition candidate in augmentDatabase.GetAll())
+        {
+            if (candidate == null)
+            {
+                continue;
+            }
+
+            if (candidate.id == "gamba")
+            {
+                continue;
+            }
+
+            if (runState.GetStacks(candidate.id) >= candidate.maxStacks)
+            {
+                continue;
+            }
+
+            if (IsExcludedByOwnedAugments(candidate))
+            {
+                continue;
+            }
+
+            if (IsExcludedByCandidate(candidate))
+            {
+                continue;
+            }
+
+            candidates.Add(candidate);
+        }
+
+        if (candidates.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < number; i++)
+        {
+            int index = Random.Range(0, candidates.Count);
+            AugmentDefinition rolled = candidates[index];
+
+            GiveAugment(rolled);
+        }
+    }
+
+    private bool IsExcludedByOwnedAugments(AugmentDefinition candidate)
+    {
+        foreach (var kv in runState.OwnedStacks)
+        {
+            AugmentDefinition owned = augmentDatabase.GetById(kv.Key);
+
+            if (owned == null)
+            {
+                continue;
+            }
+
+            if (owned.excludes != null && owned.excludes.Contains(candidate.id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool IsExcludedByCandidate(AugmentDefinition candidate)
+    {
+        if (candidate.excludes == null)
+        {
+            return false;
+        }
+
+        foreach (var kv in runState.OwnedStacks)
+        {
+            if (candidate.excludes.Contains(kv.Key))
+            {
+                return true;
+            }    
+        }
+
+        return false;
     }
 
     public void RefreshBuild()
@@ -137,11 +255,7 @@ public class RunController : MonoBehaviour
             return;
         }
 
-        PlayerBuildStats stats = BuildCalculator.BuildStats(
-            attributesController,
-            runState,
-            synergyDatabase.GetAll()
-        );
+        PlayerBuildStats stats = BuildCalculator.BuildStats(attributesController, runState, synergyDatabase.GetAll());
 
         attributesController.ApplyCalculatedStats(stats);
     }

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: ReadiedBlow
+  m_Name: LingeringStrikes (not implemented)
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: readied_blow
-  displayName: Readied Blow
-  description: Hold the attack button to charge up, release to unleash a heavy blow.
-  flavorText: '"By concentrating their power, the Saint released powerful attacks."'
+  id: lingering_strikes
+  displayName: Lingering Strikes
+  description: Attacks briefly leave behind a damaging aura.
+  flavorText: '"Each of the Saint''s blow left behind a holy aura."'
   icon: {fileID: 0}
-  rarity: 2
+  rarity: 1
   baseWeight: 100
   maxStacks: 1
   tags: []

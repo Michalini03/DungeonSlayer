@@ -26,9 +26,7 @@ public class PlayerUI : MonoBehaviour
             return;
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
-        float ratio = currentHealth / maxHealth;
-        healthFill.fillAmount = ratio;
+        healthFill.fillAmount = currentHealth / maxHealth;
 
         if (healthBarRoot != null)
         {
@@ -46,9 +44,7 @@ public class PlayerUI : MonoBehaviour
             return;
 
         currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
-
-        float ratio = currentStamina / maxStamina;
-        staminaFill.fillAmount = ratio;
+        staminaFill.fillAmount = currentStamina / maxStamina;
 
         if (staminaBarRoot != null)
         {

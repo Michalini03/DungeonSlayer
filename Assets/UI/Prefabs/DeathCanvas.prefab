@@ -258,8 +258,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+      - m_Target: {fileID: 5349997384586251137}
+        m_TargetAssemblyTypeName: DeathScreen, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 4995214845269547853}
   - component: {fileID: 5516145047276486148}
   - component: {fileID: 682811619827708189}
+  - component: {fileID: 5349997384586251137}
   m_Layer: 5
   m_Name: DeathCanvas
   m_TagString: Untagged
@@ -537,6 +538,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   fadeDuration: 1.2
   targetAlpha: 1
+--- !u!114 &5349997384586251137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5166402664189565780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18908cd594e6f3f409aaf9a55dbe0647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathScreen
 --- !u!1 &6248998910420755051
 GameObject:
   m_ObjectHideFlags: 0
