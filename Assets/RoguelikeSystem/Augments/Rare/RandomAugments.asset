@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: LingeringStrikes
+  m_Name: RandomAugments
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: lingering_strikes
-  displayName: Lingering Strikes
-  description: Attacks briefly leave behind a damaging aura.
-  flavorText: '"Each of the Saint''s blow left behind a holy aura."'
+  id: random_augments
+  displayName: Forgotten Powers
+  description: Gain two random augments of any rarity.
+  flavorText: '"I can''t recall this part of the story properly..."'
   icon: {fileID: 0}
-  rarity: 1
-  baseWeight: 100
-  maxStacks: 1
+  rarity: 2
+  baseWeight: 75
+  maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []

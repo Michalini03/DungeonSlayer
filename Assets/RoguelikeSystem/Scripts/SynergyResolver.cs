@@ -2,9 +2,7 @@ using System.Collections.Generic;
 
 public static class SynergyResolver
 {
-    public static List<AugmentSynergyDefinition> GetActiveSynergies(
-        RunState run,
-        IReadOnlyList<AugmentSynergyDefinition> allSynergies)
+    public static List<AugmentSynergyDefinition> GetActiveSynergies(RunState run, IReadOnlyList<AugmentSynergyDefinition> allSynergies)
     {
         List<AugmentSynergyDefinition> active = new();
 

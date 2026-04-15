@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
   id: oaken_armor
   displayName: Oaken Armor
-  description: Damage Reduction Up. Movement Speed Down.
+  description: Damage Reduction Up. Total Movement Speed Down.
   flavorText: '"The Saint was clad in the very bark of the Great Oak."'
   icon: {fileID: 0}
   rarity: 1
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes: []
