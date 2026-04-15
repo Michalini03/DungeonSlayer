@@ -84,9 +84,10 @@ public class AttributesController : MonoBehaviour
     public float iframesDuration;
     public float movementSpeed;
 
+    
     [Header("Abilities")]
-    public bool canComboAttack3;
-    public bool canAirComboAttack2;
+    public int maxGroundCombos; //bude lehci jen zvedat cislo nez mit pro kazde odemcene kombo vlastni bool
+    public int maxAirCombos; //stejne tady
 
     //marek: for ui updated, will be on more lines marked by comment //PlayerUI
     [Header("Player UI")]
@@ -125,8 +126,8 @@ public class AttributesController : MonoBehaviour
         iframesDuration = baseIframesDuration;
         movementSpeed = baseMovementSpeed;
 
-        canComboAttack3 = false;
-        canAirComboAttack2 = false;
+        maxGroundCombos = 4;
+        maxAirCombos = 1;
 
         currentHealth = maxHealth;
         currentStamina = maxStamina;

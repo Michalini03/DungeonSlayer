@@ -112,12 +112,12 @@ TextureImporter:
       name: Attack3_Recover_0
       rect:
         serializedVersion: 2
-        x: 63
-        y: 31
-        width: 47
-        height: 52
+        x: 0
+        y: 0
+        width: 192
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Attack3_Recover_1
       rect:
         serializedVersion: 2
-        x: 269
-        y: 31
-        width: 47
-        height: 58
+        x: 192
+        y: 0
+        width: 192
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: Attack3_Recover_2
       rect:
         serializedVersion: 2
-        x: 468
-        y: 31
-        width: 47
-        height: 60
+        x: 384
+        y: 0
+        width: 192
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: Attack3_Recover_3
       rect:
         serializedVersion: 2
-        x: 653
-        y: 31
-        width: 46
-        height: 60
+        x: 576
+        y: 0
+        width: 192
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c1ecca5aec3593c47a972fdc15dbed62
     internalID: 0
     vertices: []
     indices: 
@@ -208,7 +208,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":192.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Attack3_Recover_0: 4508246274625224442
       Attack3_Recover_1: 1954664383624893061
