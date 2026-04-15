@@ -845,6 +845,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8050220538137763261, guid: fe21c985b7ebb9c4aa587e92349abd9e, type: 3}
+      propertyPath: aController
+      value: 
+      objectReference: {fileID: 1879287779}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8137,6 +8141,10 @@ PrefabInstance:
       propertyPath: deathCanvas
       value: 
       objectReference: {fileID: 39914906}
+    - target: {fileID: 5651398065606186526, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+      propertyPath: comboFeedbackPrefab
+      value: 
+      objectReference: {fileID: 7541469581761792935, guid: a816fbddfa409fb47abec178a1f185e0, type: 3}
     - target: {fileID: 6390582940139494156, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: m_Name
       value: Player
@@ -8182,6 +8190,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e50c87115c74c4cb964dd9f02121bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayFootsteps
+--- !u!114 &1879287779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+  m_PrefabInstance: {fileID: 1879287771}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879287772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bab44781139a34295dbc3f5bf0dd12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1879620555
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour
 {
     public AttributesController aController;
     public Animator animator;
+    private PlayerMovement pMovement;
 
     public Transform attackPoint;
     public LayerMask enemyLayers;
@@ -32,7 +33,7 @@ public class PlayerCombat : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        pMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -73,7 +74,7 @@ public class PlayerCombat : MonoBehaviour
 
             if (aController.ConsumeStamina(finalStaminaCost))
             {
-                this.GetComponent<PlayerMovement>().canDash = false;
+                pMovement.canDash = false;
                 if(currentComboStep != 0)
                 {
                     if (staminaMultiplier == 0.5f)
@@ -103,6 +104,7 @@ public class PlayerCombat : MonoBehaviour
                 animator.SetTrigger("Attack");
 
             }
+            pMovement.canDash = true;
         }
 
     }
@@ -244,34 +246,6 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private int GetEffectiveDamage()
-    {
-        float damage = aController.damage;
-
-        if (aController.berserker)
-        {
-            if (aController.maxHealth > 0)
-            {
-                float healthPercent = (float)aController.currentHealth / aController.maxHealth;
-
-                if (healthPercent <= 0.25f)
-                {
-                    damage *= 2f;
-                }
-            }
-        }
-
-        return Mathf.RoundToInt(damage);
-    }
-
-    private void ApplyOnHitEffects(int dealtDamage)
-    {
-        if (aController.lifeSteal)
-        {
-            int healAmount = Mathf.Max(1, Mathf.RoundToInt(dealtDamage * 0.05f));
-            aController.Heal(healAmount);
-        }
-    }
 
     private int GetEffectiveDamage()
     {

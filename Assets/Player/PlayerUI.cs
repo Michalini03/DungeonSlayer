@@ -20,6 +20,8 @@ public class PlayerUI : MonoBehaviour
     public float baseMaxStamina = 100f;
     public float baseStaminaWidth = 100f;
 
+    public AttributesController aController;
+
     private void OnEnable()
     {
         aController.OnHealthChange += UpdateHealthBar;
@@ -38,8 +40,7 @@ public class PlayerUI : MonoBehaviour
         if (healthFill == null || maxHealth <= 0f)
             return;
 
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        healthFill.fillAmount = currentHealth / maxHealth;
+        healthFill.fillAmount = currentHealth / (float)maxHealth;
 
         if (healthBarRoot != null)
         {
@@ -56,8 +57,7 @@ public class PlayerUI : MonoBehaviour
         if (staminaFill == null || maxStamina <= 0f)
             return;
 
-        currentStamina = Mathf.Clamp(currentStamina, 0f, maxStamina);
-        staminaFill.fillAmount = currentStamina / maxStamina;
+        staminaFill.fillAmount = currentStamina / (float)maxStamina;
 
         if (staminaBarRoot != null)
         {
