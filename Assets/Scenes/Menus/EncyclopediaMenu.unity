@@ -1076,6 +1076,8 @@ MonoBehaviour:
   fadeOverlayCanvasGroup: {fileID: 236866658}
   fadeDuration: 0.4
   menuRoot: {fileID: 957893980}
+  continueButton: {fileID: 0}
+  firstSelectedButton: {fileID: 1759126617}
 --- !u!4 &983754916
 Transform:
   m_ObjectHideFlags: 0

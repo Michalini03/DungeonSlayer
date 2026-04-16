@@ -334,10 +334,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1363996566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -320, y: -480}
+  m_SizeDelta: {x: 1600, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &561131798
 MonoBehaviour:
@@ -386,8 +386,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -473,7 +473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -350.37}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &932877440
@@ -880,49 +880,30 @@ MonoBehaviour:
   continueText: {fileID: 932877441}
   rootPanel: {fileID: 1363996565}
   pages:
-  - '"It was four hundred years ago that the Darkness engulfed our lands - our very
-    world. With that unending shadow came monsters and beasts of nightmares. They
-    murdered, slaughtered, and raided without pause. Hundreds of towns and villages
-    were reduced to ruin in mere days. We prayed to the Old Gods. We begged for salvation,
-    for their return, for the light to be restored. Yet our prayers yielded nothing
-    but dread and despair."
+  - 'Four hundred years ago, Darkness engulfed the world. In its shadow came monsters
+    and nightmare-beasts that slaughtered without end, reducing hundreds of towns
+    and villages to ruin within days. The people prayed to the Old Gods for salvation
+    and for the light to return, but their prayers were met only with fear and despair.
+    On the seventh day, however, a golden light crossed the starless sky, awakening
+    ancient power within the old Oaks, which briefly healed and sheltered those beneath
+    their branches.
+
+
+    That light did not fade. It fell amid blood and ruin where
+    a band of outlaws made their last stand, and beside their dying warlord it came
+    to rest in the form of a small golden acorn of the Great Oak. As he grasped it
+    with his final strength, his wounds closed, the beasts recoiled, and his mind
+    was filled with a vision of peace. With that vision came a sacred charge: he
+    was to carry the seed and plant it deep within the caverns beneath Mount Blanik.
+    Reborn by the light that spared him, he rose and began his final journey.
 
 '
-  - '"Then on the seventh day, a golden light streaked across the starless sky. Wherever
-    it passed, it stirred the ancient power slumbering within the Oaks of old, healing
-    and sheltering those beneath their branches. But this awakening was no more than
-    dying embers - faint sparks destined to fade, and with them all life, had fate
-    not intervened."
-
-'
-  - '"For the light did not vanish. It fell to the earth amidst blood and ruin, where
-    a band of outlaws made their final stand against the beasts. Among them was their
-    warlord - a man as feared as the monsters that now tore through his ranks. Steel
-    shattered, screams faded, and he himself fell beneath claw and fang."
-
-'
-  - '"For the light did not vanish. It fell to the earth amidst blood and ruin, where
-    a band of outlaws made their final stand against the beasts. Among them was their
-    warlord - a man as feared as the monsters that now tore through his ranks. Steel
-    shattered, screams faded, and he himself fell beneath claw and fang."
-
-'
-  - '"As death closed in, the fallen light came to rest beside him: a small golden
-    acorn of the Great Oak. With his final strength, he grasped it and in that instant,
-    the world stilled. His wounds knit. The beasts recoiled. And within his mind
-    blossomed a vision he had never known, yet had always yearned for: peace."
-
-'
-  - '"With that vision came a sacred charge. He was to carry the seed and plant it
-    deep within the caverns beneath Mount Blanik. Rising from the slaughter reborn,
-    she swore herself to the light that spared her and began her final journey..."
-
-'
-  fadeDuration: 0.5
   characterDelay: 0.03
   delayBeforeTyping: 0.2
   delayAfterTyping: 0.4
   nextSceneName: MainMenu
+  fadeOverlayCanvasGroup: {fileID: 0}
+  sceneFadeDuration: 0.75
 --- !u!1 &2092440684
 GameObject:
   m_ObjectHideFlags: 0

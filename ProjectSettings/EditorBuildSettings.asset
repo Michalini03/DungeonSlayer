@@ -15,20 +15,20 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/MainMenu.unity
     guid: 86d2ace8a7b286b409055adee5db13e0
   - enabled: 1
-    path: Assets/Scenes/Menus/EncyclopediaPage.unity
-    guid: 9453163334af62543b50374539413efd
+    path: Assets/Scenes/Menus/EncyclopediaAugmentMenu.unity
+    guid: 55139f8fba62b734ea72f738d6a24de7
   - enabled: 1
-    path: Assets/Scenes/Menus/EncyclopediaAugmentPage.unity
-    guid: 36c55ba1385457c4ba96f4b5008fa7e4
+    path: Assets/Scenes/Menus/EncyclopediaFoeMenu.unity
+    guid: b18579ebfc09807458d5bc942b571a95
   - enabled: 1
-    path: Assets/Scenes/Menus/EncyclopediaFoePage.unity
-    guid: d19872270ce707043b3c6af269ca47cb
+    path: Assets/Scenes/Menus/EncyclopediaMenu.unity
+    guid: ba42a729216b9f740b915ad9540fdce8
   - enabled: 1
     path: Assets/Scenes/Menus/SettingsMenu.unity
     guid: ac2919e92acbda346aff09fe1c2762e6
   - enabled: 1
-    path: Assets/Scenes/Menus/AboutPage.unity
-    guid: 0ddfcd85b719e584e8d97a13bd6c0522
+    path: Assets/Scenes/Menus/AboutMenu.unity
+    guid: f03ed62fda19bba43a292ba080312a9c
   - enabled: 0
     path: Assets/DeepForest/Scenes/FirstMap.unity
     guid: 27ad9821af41b0c468fb43854d40cfa3

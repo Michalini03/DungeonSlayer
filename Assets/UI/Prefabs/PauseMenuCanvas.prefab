@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   pauseMenu: {fileID: 2745297462477381683}
+  defaultSelectedButton: {fileID: 6319872870009184358}
 --- !u!1 &1716352727244079031
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2109372003093190774
 RectTransform:
   m_ObjectHideFlags: 0

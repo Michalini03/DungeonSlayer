@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18908cd594e6f3f409aaf9a55dbe0647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathScreen
+  defaultSelectedButton: {fileID: 2524750232284255325}
 --- !u!1 &6248998910420755051
 GameObject:
   m_ObjectHideFlags: 0
