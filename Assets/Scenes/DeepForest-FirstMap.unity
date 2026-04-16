@@ -7350,6 +7350,12 @@ MonoBehaviour:
   - name: SKELETON_HIT
     sounds:
     - {fileID: 8300000, guid: 1bd4d34ee8478564288717c739e35fc4, type: 3}
+  - name: RAT_HIT
+    sounds:
+    - {fileID: 8300000, guid: 4dbbe67866f2f4a45961c29d27a8552c, type: 3}
+  - name: RAT_DEATH
+    sounds:
+    - {fileID: 8300000, guid: ada78168009ecba4da7e92ebf8c1d35e, type: 3}
 --- !u!82 &1523313857
 AudioSource:
   m_ObjectHideFlags: 0

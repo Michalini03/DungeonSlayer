@@ -15,7 +15,9 @@ public enum SoundType
     SEEKER_HIT,
     SKELETON_FOOTSTEP,
     SKELETON_DEATH,
-    SKELETON_HIT
+    SKELETON_HIT,
+    RAT_HIT,
+    RAT_DEATH
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

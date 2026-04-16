@@ -186,6 +186,8 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        if (IsGameplayBlocked() || aController.currentHealth <= 0) yield break;
+
         canDash = false;
         isDashing = true;
         animator.SetTrigger("Dash");
