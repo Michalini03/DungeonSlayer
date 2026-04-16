@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.75f;
     [SerializeField] private GameObject menuRoot;
     [SerializeField] private GameObject continueButton;
+    [SerializeField] private GameObject firstSelectedButton;
 
     private bool isTransitioning = false;
 
@@ -43,17 +46,36 @@ public class MainMenu : MonoBehaviour
         else if (menuRoot != null)
         {
             menuRoot.SetActive(true);
+            SelectDefaultButton();
         }
     }
 
     private void RefreshContinueButton()
     {
         bool hasSave = SaveSystem.HasRunSave();
-        Debug.Log("Has run save: " + hasSave);
 
         if (continueButton != null)
         {
             continueButton.SetActive(hasSave);
+        }
+    }
+
+    private void SelectDefaultButton()
+    {
+        if (EventSystem.current == null)
+        {
+            return;
+        }
+
+        EventSystem.current.SetSelectedGameObject(null);
+
+        if (continueButton != null && continueButton.activeInHierarchy)
+        {
+            EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+        }
+        else if (firstSelectedButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(firstSelectedButton.gameObject);
         }
     }
 
@@ -69,6 +91,7 @@ public class MainMenu : MonoBehaviour
         if (save == null || string.IsNullOrEmpty(save.currentSceneName))
         {
             RefreshContinueButton();
+            SelectDefaultButton();
             return;
         }
 
@@ -78,6 +101,31 @@ public class MainMenu : MonoBehaviour
     public void GoToMainMenu()
     {
         LoadSceneWithFade("MainMenu");
+    }
+
+    public void GoToEncyclopedia()
+    {
+        LoadSceneWithFade("EncyclopediaMenu");
+    }
+
+    public void GoToAugments()
+    {
+        LoadSceneWithFade("EncyclopediaAugmentMenu");
+    }
+
+    public void GoToFoes()
+    {
+        LoadSceneWithFade("EncyclopediaFoeMenu");
+    }
+
+    public void GoToSettings()
+    {
+        LoadSceneWithFade("SettingsMenu");
+    }
+
+    public void GoToAbout()
+    {
+        LoadSceneWithFade("AboutMenu");
     }
 
     public void QuitGame()
@@ -104,6 +152,9 @@ public class MainMenu : MonoBehaviour
         {
             menuRoot.SetActive(true);
         }
+
+        yield return null;
+        SelectDefaultButton();
 
         float time = 0f;
 
