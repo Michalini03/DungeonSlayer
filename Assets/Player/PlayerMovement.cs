@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction.Player.Enable();
         inputAction.Player.Jump.performed += OnJump;
+        inputAction.Player.Jump.canceled += ctx => cController.CutJump();
         //dash input
         inputAction.Player.Dash.performed += ctx =>
         {
@@ -66,7 +67,9 @@ public class PlayerMovement : MonoBehaviour
     void OnDisable()
     {
         inputAction.Player.Disable();
+
         inputAction.Player.Jump.performed -= OnJump;
+        inputAction.Player.Jump.canceled -= ctx => cController.CutJump();
     }
 
     void Update()
@@ -134,6 +137,13 @@ public class PlayerMovement : MonoBehaviour
         jump = false;
     }
 
+    private void resetFallingTrigger()
+    {
+        animator.ResetTrigger("Falling");
+        animator.ResetTrigger("Landed");
+        animator.SetInteger("ComboStep", 0);
+    }
+
     private void OnJump(InputAction.CallbackContext context)
     {
         if (!context.performed)
@@ -160,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        Debug.Log("Landed");
+        //Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
         animator.SetTrigger("Landed");
     }
