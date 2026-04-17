@@ -92,6 +92,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+<<<<<<< HEAD
   - time: 0
     functionName: OpenComboWindow
     data: 
@@ -99,6 +100,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+=======
+>>>>>>> f691cc5 (clanky physics on incline surfaces fixed for jumping, air attacks can be performed any time in the air, jump height now depends on how long the jump key is pressed)
   - time: 0.41666666
     functionName: ResetCombo
     data: 
