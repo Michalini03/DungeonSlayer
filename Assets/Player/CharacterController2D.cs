@@ -10,9 +10,10 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
+	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
+	[Range(0,1f)] [SerializeField] private float m_JumpCutMultiplier = 0.5f;          // Multiplier for cutting the jump short when the player releases the jump button early
 
-	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .02f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
@@ -133,7 +134,9 @@ public class CharacterController2D : MonoBehaviour
 		{
 			// Add a vertical force to the player.
 			m_Grounded = false;
-			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+
+            m_Rigidbody2D.linearVelocity = new Vector2(m_Rigidbody2D.linearVelocityX, 0f);
+            m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}
 
@@ -147,5 +150,13 @@ public class CharacterController2D : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	public void CutJump()
+	{
+		if(m_Rigidbody2D.linearVelocityY > 0) 
+		{
+			m_Rigidbody2D.linearVelocity = new Vector2(m_Rigidbody2D.linearVelocityX, m_Rigidbody2D.linearVelocityY * m_JumpCutMultiplier);
+        }
 	}
 }
