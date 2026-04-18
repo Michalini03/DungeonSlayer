@@ -15,8 +15,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float insideTrigerRange = 3f;
     [SerializeField] private float outsideTrigerRange = 5f;
     [SerializeField] private float speedAnimationMultiplier = 2.0f;
-    [SerializeField] private int maxSpeedAdjustment = 1;
-    [SerializeField] private int minSpeedAdjustment = -1;
+    private bool canSeePlayer = false;
 
     [Header("Collision Settings")]
     [SerializeField] private string enemyLayerName = "Enemy";
@@ -63,10 +62,10 @@ public class EnemyMovement : MonoBehaviour
         setRigidBody();
         setCanWalk(true);
         InitializeAnimator();
-        adjustSpeed(minSpeedAdjustment, maxSpeedAdjustment);
         ConfigureCollisionRules();
         DisableHitbox();
     }
+
 
     private void ConfigureCollisionRules()
     {
@@ -98,16 +97,31 @@ public class EnemyMovement : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             return;
         }
-        
+
         manageAttackCooldown();
         Move();
         checkTrigger();
         checkEnemyMapPosition();
+        checkPlayerVisibility();
         
         if(isTrigered)
         {
             //CheckForJump();
         }
+    }
+
+    private void checkPlayerVisibility()
+    {
+        if (player == null) return;
+
+        Vector2 directionToPlayer = player.transform.position - transform.position;
+        // Raycast detekuje VŠECHNY collidery - pokud je zeď mezi skeletem a hráčem, vrátí zeď
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer.normalized, directionToPlayer.magnitude);
+
+        canSeePlayer = hit.collider != null && hit.collider.gameObject == player;
+
+        // Debug visualization - zelená = vidí, červená = nevidí
+        Debug.DrawRay(transform.position, directionToPlayer.normalized * directionToPlayer.magnitude, canSeePlayer ? Color.green : Color.red);
     }
 
     private void Move()
@@ -121,15 +135,19 @@ public class EnemyMovement : MonoBehaviour
             return;
         }
 
-        float currentSpeed = isTrigered ? chaseSpeed : normalSpeed;
+        float currentSpeed = isTrigered && canSeePlayer ? chaseSpeed : normalSpeed;
 
-        if (!isTrigered)
+        if(isTrigered && !canSeePlayer)
         {
             direction = getPatrolPoint();
         }
-        else
+        else if(isTrigered && canSeePlayer)
         {
             direction = moveTowardsPlayer();
+        }
+        else
+        {
+            direction = getPatrolPoint();
         }
 
         if (Mathf.Abs(direction.x) < 0.01f)
@@ -188,7 +206,7 @@ public class EnemyMovement : MonoBehaviour
         if (player == null) return;
 
         float dist = Vector3.Distance(transform.position, player.transform.position);
-        if (dist < insideTrigerRange)
+        if (dist < insideTrigerRange && canSeePlayer) 
         {
             animator.SetFloat("walkSpeedMultiplier", speedAnimationMultiplier);
             isTrigered = true;
@@ -201,56 +219,70 @@ public class EnemyMovement : MonoBehaviour
     }
 
     private Vector3 getPatrolPoint()
+{
+    // Základní inicializace směru
+    if (Mathf.Abs(walkDirection.x) < 0.01f)
     {
-        if (Mathf.Abs(walkDirection.x) < 0.01f)
-        {
-            walkDirection = Vector3.right;
-        }
-
-        float faceDir = walkDirection.x >= 0f ? 1f : -1f;
-
-        Vector2 chestOrigin = (Vector2)transform.position + new Vector2(0f, patrolProbeHeight);
-        Vector2 wallEnd = chestOrigin + new Vector2(wallCheckDistance * faceDir, 0f);
-        RaycastHit2D wallHit = Physics2D.Linecast(chestOrigin, wallEnd, groundLayer);
-
-        Vector2 frontProbe = (Vector2)transform.position + new Vector2(patrolFootProbeForward * faceDir, 0f);
-        Vector2 backProbe = (Vector2)transform.position + new Vector2(-patrolFootProbeForward * faceDir, 0f);
-
-        RaycastHit2D frontGround = Physics2D.Raycast(frontProbe, Vector2.down, patrolGroundCheckDistance, groundLayer);
-        RaycastHit2D backGround = Physics2D.Raycast(backProbe, Vector2.down, patrolGroundCheckDistance, groundLayer);
-
-        bool noFrontGround = frontGround.collider == null;
-        bool noBackGround = backGround.collider == null;
-
-        bool isSlopeAhead = false;
-        if (!noFrontGround && !noBackGround)
-        {
-            float normalDelta = Mathf.Abs(frontGround.normal.y - backGround.normal.y);
-            isSlopeAhead = frontGround.normal.y < patrolSlopeNormalThreshold || normalDelta > 0.08f;
-        }
-
-        bool blocked = wallHit.collider != null || noFrontGround || noBackGround || isSlopeAhead;
-
-        if (blocked)
-        {
-            patrolBlockedFrames++;
-        }
-        else
-        {
-            patrolBlockedFrames = 0;
-        }
-
-        bool canTurnNow = Time.time >= patrolNextTurnTime;
-        if (blocked && patrolBlockedFrames >= patrolBlockedFramesToTurn && canTurnNow)
-        {
-            faceDir *= -1f;
-            patrolNextTurnTime = Time.time + patrolTurnCooldown;
-            patrolBlockedFrames = 0;
-        }
-
-        walkDirection = new Vector3(faceDir, 0f, 0f);
-        return walkDirection;
+        walkDirection = Vector3.right;
     }
+
+    // Směr bereme z aktuálního otočení (Scale), aby Raycasty mířily vždy vpřed
+    float faceDir = transform.localScale.x >= 0f ? 1f : -1f;
+
+    // --- DETEKCE ZDI ---
+    // Posuneme počátek paprsku trochu výš, aby skeleton nezakopával o drobné nerovnosti
+    Vector2 wallOrigin = (Vector2)transform.position + new Vector2(0f, patrolProbeHeight);
+    RaycastHit2D wallHit = Physics2D.Raycast(wallOrigin, Vector2.right * faceDir, wallCheckDistance, groundLayer);
+
+    // --- DETEKCE PROPASTI A KOPCŮ ---
+    // frontProbe vysíláme před skeletona. 
+    // Důležité: patrolGroundCheckDistance musí být dostatečně velký (např. 1.5f - 2f), 
+    // aby detekoval zem i při chůzi dolů ze svahu.
+    Vector2 groundProbeOrigin = (Vector2)transform.position + new Vector2(faceDir * patrolFootProbeForward, 0.2f);
+    RaycastHit2D groundHit = Physics2D.Raycast(groundProbeOrigin, Vector2.down, patrolGroundCheckDistance, groundLayer);
+
+    // --- DETEKCE SKLONU (SLOPE) ---
+    bool isSlopeTooSteep = false;
+    if (groundHit.collider != null)
+    {
+        // Kontrolujeme úhel povrchu přes normálu (Y složka)
+        // Čím menší je Y, tím strmější je kopec.
+        isSlopeTooSteep = groundHit.normal.y < patrolSlopeNormalThreshold;
+    }
+
+    // Blokován, pokud: trefí zeď NEBO před ním není země (propast) NEBO je kopec moc strmý
+    bool blocked = wallHit.collider != null || groundHit.collider == null || isSlopeTooSteep;
+
+    if (blocked)
+    {
+        patrolBlockedFrames++;
+    }
+    else
+    {
+        patrolBlockedFrames = 0;
+    }
+
+    // Logika otočení
+    bool canTurnNow = Time.time >= patrolNextTurnTime;
+    if (blocked && patrolBlockedFrames >= patrolBlockedFramesToTurn && canTurnNow)
+    {
+        faceDir *= -1f;
+        walkDirection = new Vector3(faceDir, 0f, 0f);
+        
+        // OKAMŽITĚ otočíme skeletona, aby příští frame Raycasty mířily správně
+        flipCharacter(walkDirection); 
+        
+        patrolNextTurnTime = Time.time + patrolTurnCooldown;
+        patrolBlockedFrames = 0;
+    }
+    else
+    {
+        // Udržujeme stávající směr
+        walkDirection = new Vector3(faceDir, 0f, 0f);
+    }
+
+    return walkDirection;
+}
 
     private Vector3 moveTowardsPlayer()
     {
@@ -313,21 +345,18 @@ public class EnemyMovement : MonoBehaviour
         Gizmos.DrawRay(transform.position, dir * wallCheckDistance);
         Gizmos.DrawWireSphere(transform.position + new Vector3(0, -0.8f, 0), 0.2f);
 
+        // Detection ranges - viditelné jen když je vybraný
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, insideTrigerRange);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, outsideTrigerRange);
 
-        //marek: vizualizace utoku
-        Gizmos.DrawWireSphere(attackPoint.position, trueAttackRange);
-    }
-
-    private float generateRandomNumber(float min, float max)
-    {
-        float randomValue = Random.Range(min, max);
-        return randomValue;
-    }
-
-    private void adjustSpeed(float min, float max)
-    {
-        normalSpeed += generateRandomNumber(min, max);
-        chaseSpeed += generateRandomNumber(min, max);
+        // Attack range
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, trueAttackRange);
+        }
     }
 
     private void InitializeAnimator()

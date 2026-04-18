@@ -227,6 +227,7 @@ public class FlyingEyeBehavior : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             rb.gravityScale = 2f;
             gameObject.layer = LayerMask.NameToLayer("Default");
+            ignorePlayerCollision();
 
             StartCoroutine(DeathRoutine());
         }
@@ -259,6 +260,25 @@ public class FlyingEyeBehavior : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void ignorePlayerCollision()
+    {
+        if (Player == null)
+        {
+            return;
+        }
+
+        Collider2D[] enemyColliders = GetComponentsInChildren<Collider2D>();
+        Collider2D[] playerColliders = Player.GetComponentsInChildren<Collider2D>();
+
+        foreach (Collider2D enemyCollider in enemyColliders)
+        {
+            foreach (Collider2D playerCollider in playerColliders)
+            {
+                Physics2D.IgnoreCollision(enemyCollider, playerCollider, true);
+            }
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -267,7 +287,6 @@ public class FlyingEyeBehavior : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, insideTrigerRange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, outsideTrigerRange);
-
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }

@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject skeletonPrefab;
     [SerializeField] private GameObject flyingEyePrefab;
     [SerializeField] private GameObject ratPrefab;
+    [SerializeField] private GameObject goblinPrefab;
 
     [Header("Spawning Setup")]
     [SerializeField] private TileMapSpawnPointFinder spawnPointFinder;
@@ -74,6 +75,7 @@ public class EnemySpawner : MonoBehaviour
         SpawnSingleEnemy(spawnPointFinder.skeletonSpawnPoints, skeletonPrefab);
         SpawnSingleEnemy(spawnPointFinder.flyingEyeSpawnPoints, flyingEyePrefab);
         SpawnSingleEnemy(spawnPointFinder.ratSpawnPoints, ratPrefab);
+        SpawnSingleEnemy(spawnPointFinder.goblinSpawnPoints, goblinPrefab);
     }
 
     private void SpawnSingleEnemy(List<Vector3> spawnPoints, GameObject prefab)

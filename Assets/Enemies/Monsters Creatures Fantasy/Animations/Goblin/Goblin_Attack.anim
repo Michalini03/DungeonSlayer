@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rat_Die
+  m_Name: Goblin_Attack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,15 +21,21 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -3275687979676096647, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - time: 0.36666667
-      value: {fileID: 1417920292578380047, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
+      value: {fileID: -7008412969330441016, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 0.15
+      value: {fileID: -7763475090823894447, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 0.3
+      value: {fileID: 302641331129538988, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 0.45
+      value: {fileID: -6329420634031446844, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 0.5833333
+      value: {fileID: -910092549403018386, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
     - time: 0.73333335
-      value: {fileID: -7565016508592748685, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - time: 1.0833334
-      value: {fileID: -6282575213495077507, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - time: 1.45
-      value: {fileID: -5159644439001645356, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
+      value: {fileID: 221524225039350300, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 0.8833333
+      value: {fileID: 1290532464073988732, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - time: 1.0333333
+      value: {fileID: 4780903288873104255, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -52,17 +58,20 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -3275687979676096647, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - {fileID: 1417920292578380047, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - {fileID: -7565016508592748685, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - {fileID: -6282575213495077507, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
-    - {fileID: -5159644439001645356, guid: 4977646bec0ec72489020c76932c8dc7, type: 3}
+    - {fileID: -7008412969330441016, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: -7763475090823894447, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: 302641331129538988, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: -6329420634031446844, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: -910092549403018386, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: 221524225039350300, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: 1290532464073988732, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
+    - {fileID: 4780903288873104255, guid: f84c06efa9991bd49b5553f54f400348, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.4666667
+    m_StopTime: 1.05
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -81,11 +90,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 1.4166666
-    functionName: DestroyEnemy
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []
