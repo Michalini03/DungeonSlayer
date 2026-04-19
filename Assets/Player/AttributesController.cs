@@ -9,8 +9,6 @@ public class AttributesController : MonoBehaviour
     public event Action<int, int> OnStaminaChange;
 
     public int baseMaxHealth = 120;
-
-    
     public int baseDamage = 50;
     public int baseHealthRegen = 0;
     public int baseLives = 0;
@@ -18,7 +16,7 @@ public class AttributesController : MonoBehaviour
     public float baseAttackRange = 0.5f;
     public float baseKnockbackForce = 10f;
     public int baseMaxStamina = 100;
-    public int[] baseComboBar = new int[3] { 6, 3, 1 };
+    public int[] baseComboBar = new int[3] { 8, 8, 4 };
     public float baseIframesDuration = 0.5f;
     public float baseMovementSpeed = 10f;
 
