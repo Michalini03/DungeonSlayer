@@ -10,15 +10,16 @@ public class PlayerCombat : MonoBehaviour
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
-
-
     private int currentComboStep = 0;
     private bool canInputNextCombo = true;
     // for animations, dont change 
     private float cooldown = 0f;
 
+    [Header("Combo UI")]
+    public PlayerComboBarUI comboBarUI;
+
     [Header("Combo Timing System")]
-    public float currentComboWindowDuration = 1.0f; // The 1 second total window
+    public float currentComboWindowDuration = 4.0f; // The 1 second total window
     private float comboWindowStartTime = 0f;
 
     [Header("UI References")]
@@ -48,6 +49,19 @@ public class PlayerCombat : MonoBehaviour
         {
             animator.ResetTrigger("Attack");
         }
+
+        if (comboBarUI != null && currentComboStep > 0 && canInputNextCombo)
+        {
+            float elapsedTime = Time.time - comboWindowStartTime;
+            float normalizedTime = Mathf.Clamp01(elapsedTime / currentComboWindowDuration);
+
+            comboBarUI.SetMarkerPosition(normalizedTime);
+
+            if (elapsedTime >= currentComboWindowDuration)
+            {
+                ResetCombo();
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -60,70 +74,96 @@ public class PlayerCombat : MonoBehaviour
 
     public void Attack()
     {
-        if (IsInputBlocked() || aController.currentHealth <= 0) return;
-
-
-        if (canInputNextCombo)
+        if (IsInputBlocked() || aController.currentHealth <= 0)
         {
-
-
-            float elapsedTime = Time.time - comboWindowStartTime;
-            float normalizedTime = Mathf.Clamp01(elapsedTime/ currentComboWindowDuration);
-            float staminaMultiplier = EvaluateAttackPrecision(normalizedTime);
-            int finalStaminaCost = Mathf.RoundToInt(aController.attackStaminaCost * staminaMultiplier);
-
-            if (aController.ConsumeStamina(finalStaminaCost))
-            {
-                pMovement.canDash = false;
-                if(currentComboStep != 0)
-                {
-                    if (staminaMultiplier == 0.5f)
-                    {
-                        SpawnFeedbackText("Perfect!", Color.green);
-                    }
-                    else if (staminaMultiplier == 0.75f)
-                    {
-                        SpawnFeedbackText("Good!", Color.darkOrange);
-                    }
-                    else
-                    {
-                        SpawnFeedbackText("Poor", Color.red);
-                    }
-                }
-                
-
-                canInputNextCombo = false;
-                currentComboStep++;
-
-                int maxCombos = animator.GetBool("IsJumping") ? aController.maxAirCombos : aController.maxGroundCombos;
-                if(currentComboStep > maxCombos)
-                {
-                    currentComboStep = 1;
-                }
-                animator.SetInteger("ComboStep", currentComboStep);
-                animator.SetTrigger("Attack");
-
-            }
-            pMovement.canDash = true;
+            return;
         }
 
+        if (!canInputNextCombo)
+        {
+            return;
+        }
+
+        float staminaMultiplier = 1f;
+
+        if (currentComboStep > 0)
+        {
+            float elapsedTime = Time.time - comboWindowStartTime;
+            float normalizedTime = Mathf.Clamp01(elapsedTime / currentComboWindowDuration);
+            staminaMultiplier = EvaluateAttackPrecision(normalizedTime);
+        }
+
+        int finalStaminaCost = Mathf.RoundToInt(aController.attackStaminaCost * staminaMultiplier);
+
+        if (aController.ConsumeStamina(finalStaminaCost))
+        {
+            pMovement.canDash = false;
+
+            if (currentComboStep > 0)
+            {
+                if (staminaMultiplier == 0.5f)
+                {
+                    SpawnFeedbackText("Perfect!", Color.green);
+                }
+                else if (staminaMultiplier == 0.75f)
+                {
+                    SpawnFeedbackText("Good!", new Color(1f, 0.55f, 0f));
+                }
+                else
+                {
+                    SpawnFeedbackText("Poor", Color.red);
+                }
+            }
+
+            canInputNextCombo = false;
+            currentComboStep++;
+
+            int maxCombos = animator.GetBool("IsJumping") ? aController.maxAirCombos : aController.maxGroundCombos;
+
+            if (currentComboStep > maxCombos)
+            {
+                currentComboStep = 1;
+            }
+
+            animator.SetInteger("ComboStep", currentComboStep);
+            animator.SetTrigger("Attack");
+            pMovement.canDash = true;
+        }
     }
 
     private float EvaluateAttackPrecision(float normalizedTime)
     {
-        float distanceFromPerfect = Mathf.Abs(normalizedTime - 0.5f)*10;
-        Debug.Log("Distance from center: " + (normalizedTime - 0.5f));
-        if (distanceFromPerfect < aController.comboBar[2] / 2f)
+        int red = aController.comboBar[0];
+        int yellow = aController.comboBar[1];
+        int green = aController.comboBar[2];
+
+        float totalWidth = red * 2f + yellow * 2f + green;
+
+        if (totalWidth <= 0f)
         {
-            return 0.5f; // 50% stamina cost reduction
+            return 1f;
         }
-        else if(distanceFromPerfect < aController.comboBar[1] / 2f + aController.comboBar[0] / 2f)
+
+        float greenStart = (red + yellow) / totalWidth;
+        float greenEnd = (red + yellow + green) / totalWidth;
+
+        float yellowLeftStart = red / totalWidth;
+        float yellowLeftEnd = greenStart;
+
+        float yellowRightStart = greenEnd;
+        float yellowRightEnd = (red + yellow + green + yellow) / totalWidth;
+
+        if (normalizedTime >= greenStart && normalizedTime <= greenEnd)
         {
-            return 0.75f; // 25% stamina cost reduction
+            return 0.5f;    // 50% stamina cost reduction
+        }
+        else if ((normalizedTime >= yellowLeftStart && normalizedTime < yellowLeftEnd) || (normalizedTime > yellowRightStart && normalizedTime <= yellowRightEnd))
+        {
+            return 0.75f;   // 25% stamina cost reduction
         }
         else
         {
-            return 1f; // No reduction
+            return 1f;      // No reduction
         }
     }
 
@@ -215,8 +255,12 @@ public class PlayerCombat : MonoBehaviour
     {
         canInputNextCombo = true;
         currentComboWindowDuration = windowDuration;
-        comboWindowStartTime = Time.time; // Record the exact moment the window opens
-        
+        comboWindowStartTime = Time.time;
+
+        if (comboBarUI != null && currentComboStep > 0)
+        {
+            comboBarUI.ResetBar(aController.comboBar);
+        }
     }
 
     // Calling this at the very end of every attack animation's recovery frames.
@@ -225,9 +269,12 @@ public class PlayerCombat : MonoBehaviour
         currentComboStep = 0;
         canInputNextCombo = true;
         animator.SetInteger("ComboStep", 0);
-        this.GetComponent<PlayerMovement>().canDash = true;
+        GetComponent<PlayerMovement>().canDash = true;
 
-
+        if (comboBarUI != null)
+        {
+            comboBarUI.HideBar();
+        }
     }
 
     private void SpawnFeedbackText(string message, Color textColor)

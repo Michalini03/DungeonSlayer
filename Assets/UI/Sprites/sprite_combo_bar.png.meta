@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: cc8ecf1cd2c2ed943b46c8c93f318b96
+guid: 6ca9c6857ad680041bdd3ae7cf2ba48e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1491229129010850264
-    second: FAV_0
-  - first:
-      213: -1019713406176244848
-    second: FAV_1
+      213: 4860049122361049358
+    second: sprite_combo_bar_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +46,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FAV_0
+      name: sprite_combo_bar_0
       rect:
         serializedVersion: 2
-        x: 162
-        y: 49
-        width: 574
-        height: 1102
+        x: 2
+        y: 2
+        width: 124
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8d92861fdf8e1b410800000000000000
-      internalID: 1491229129010850264
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: FAV_1
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 469
-        width: 224
-        height: 262
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 09b492c4f0049d1f0800000000000000
-      internalID: -1019713406176244848
+      spriteID: e0187495dec527340800000000000000
+      internalID: 4860049122361049358
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FAV_0: 1491229129010850264
-      FAV_1: -1019713406176244848
+      sprite_combo_bar_0: 4860049122361049358
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

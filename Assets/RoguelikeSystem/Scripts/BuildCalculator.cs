@@ -169,13 +169,13 @@ public static class BuildCalculator
         {
             stats.comboBar[2] += 1;
 
-            if (stats.comboBar[1] > 0)
-            {
-                stats.comboBar[1] -= 1;
-            }
-            else if (stats.comboBar[0] > 0)
+            if (stats.comboBar[0] > 0)
             {
                 stats.comboBar[0] -= 1;
+            }
+            else if (stats.comboBar[1] > 0)
+            {
+                stats.comboBar[1] -= 1;
             }
         }
     }
