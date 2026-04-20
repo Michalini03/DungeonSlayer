@@ -7,14 +7,18 @@ public class TileMapSpawnPointFinder : MonoBehaviour
     [SerializeField] private Tilemap skeletonSpawnTilemap;
     [SerializeField] private Tilemap flyingEyeSpawnTilemap;
     [SerializeField] private Tilemap ratSpawnTilemap;
+    [SerializeField] private Tilemap goblinSpawnTilemap;
     [SerializeField] private Vector3 spawnSkeletonOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] private Vector3 spawnFlyingEyeOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] private Vector3 spawnRatOffset = new Vector3(0f, 0.5f, 0f);
+    [SerializeField] private Vector3 spawnGoblinOffset = new Vector3(0f, 0.5f, 0f);
+
     [SerializeField] public GameObject player;
 
     public readonly List<Vector3> skeletonSpawnPoints = new List<Vector3>();
     public readonly List<Vector3> flyingEyeSpawnPoints = new List<Vector3>();
     public readonly List<Vector3> ratSpawnPoints = new List<Vector3>();
+    public readonly List<Vector3> goblinSpawnPoints = new List<Vector3>();
 
     private bool hasFoundSpawnPoints = false;
 
@@ -31,7 +35,7 @@ public class TileMapSpawnPointFinder : MonoBehaviour
         skeletonSpawnPoints.Clear();
         flyingEyeSpawnPoints.Clear();
         ratSpawnPoints.Clear();
-
+        goblinSpawnPoints.Clear();
         // SKELETON SPAWN POINTS
         if (skeletonSpawnTilemap == null)
         {
@@ -70,6 +74,25 @@ public class TileMapSpawnPointFinder : MonoBehaviour
             }
         }
 
+        // GOBLIN SPAWN POINTS
+        if (goblinSpawnTilemap == null)
+        {
+            Debug.LogWarning("Goblin Spawn Tilemap is not assigned.", this);
+        }
+        else
+        {
+            BoundsInt goblinBounds = goblinSpawnTilemap.cellBounds;
+            foreach (Vector3Int cellPosition in goblinBounds.allPositionsWithin)
+            {
+                if (goblinSpawnTilemap.HasTile(cellPosition))
+                {
+                    Vector3 worldPoint = goblinSpawnTilemap.GetCellCenterWorld(cellPosition) + spawnGoblinOffset;
+                    worldPoint.z = player.transform.position.z;
+                    goblinSpawnPoints.Add(worldPoint);
+                }
+            }
+        }
+
         // RAT SPAWN POINTS
         if (ratSpawnTilemap == null)
         {
@@ -91,7 +114,7 @@ public class TileMapSpawnPointFinder : MonoBehaviour
 
         hasFoundSpawnPoints = true;
 
-        Debug.Log($"Found {skeletonSpawnPoints.Count} Skeleton points, {flyingEyeSpawnPoints.Count} Flying Eye points, and {ratSpawnPoints.Count} Rat points.");
+        Debug.Log($"Found {skeletonSpawnPoints.Count} Skeleton points, {flyingEyeSpawnPoints.Count} Flying Eye points, {goblinSpawnPoints.Count} Goblin points, and {ratSpawnPoints.Count} Rat points.");
     }
 
     public Vector3 GetRandomSpawnPoint(EnemyType enemyType)
@@ -123,6 +146,15 @@ public class TileMapSpawnPointFinder : MonoBehaviour
                     return ratSpawnPoints[randomIndex];
                 }
                 Debug.LogWarning("Requested Rat spawn, but no Rat spawn points exist. Defaulting to Vector3.zero.");
+                return Vector3.zero;
+
+            case EnemyType.Goblin:
+                if (goblinSpawnPoints.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, goblinSpawnPoints.Count);
+                    return goblinSpawnPoints[randomIndex];
+                }
+                Debug.LogWarning("Requested Goblin spawn, but no Goblin spawn points exist. Defaulting to Vector3.zero.");
                 return Vector3.zero;
 
             default:

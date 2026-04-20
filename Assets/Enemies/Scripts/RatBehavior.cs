@@ -59,6 +59,7 @@ public class RatBehavior : MonoBehaviour
         {
             Flip();
         }
+        
         checkPlayerDistance();
         managerLookAround();
         move();
