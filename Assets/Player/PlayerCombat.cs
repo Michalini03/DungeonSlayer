@@ -12,8 +12,10 @@ public class PlayerCombat : MonoBehaviour
 
     private int currentComboStep = 0;
     private bool canInputNextCombo = true;
+    private int currentMaxCombos = 0;
     // for animations, dont change 
-    private float cooldown = 0f;
+    private float start = 0f;
+    private float cooldown = 1f;
 
     [Header("Combo UI")]
     public PlayerComboBarUI comboBarUI;
@@ -35,6 +37,7 @@ public class PlayerCombat : MonoBehaviour
     void Start()
     {
         pMovement = GetComponent<PlayerMovement>();
+        start = Time.time - cooldown;
     }
 
     // Update is called once per frame
@@ -42,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (aController.currentHealth <= 0)
         {
+
             return;
         }
 
@@ -49,6 +53,7 @@ public class PlayerCombat : MonoBehaviour
         {
             animator.ResetTrigger("Attack");
         }
+
 
         if (comboBarUI != null && currentComboStep > 0 && canInputNextCombo)
         {
@@ -62,14 +67,12 @@ public class PlayerCombat : MonoBehaviour
                 ResetCombo();
             }
         }
+        animator.SetBool("canCombo", canInputNextCombo);
     }
 
     private void FixedUpdate()
     {
-        if (cooldown > 0)
-        {
-            cooldown -= Time.fixedDeltaTime;
-        }
+        
     }
 
     public void Attack()
@@ -84,6 +87,11 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
+        if (currentComboStep == 0)
+        {
+            currentMaxCombos = animator.GetBool("IsJumping") ? aController.maxAirCombos : aController.maxGroundCombos;
+        }
+
         float staminaMultiplier = 1f;
 
         if (currentComboStep > 0)
@@ -91,6 +99,13 @@ public class PlayerCombat : MonoBehaviour
             float elapsedTime = Time.time - comboWindowStartTime;
             float normalizedTime = Mathf.Clamp01(elapsedTime / currentComboWindowDuration);
             staminaMultiplier = EvaluateAttackPrecision(normalizedTime);
+        }
+        else
+        {
+            if(Time.time - start < cooldown)
+            {
+                return;
+            }
         }
 
         int finalStaminaCost = Mathf.RoundToInt(aController.attackStaminaCost * staminaMultiplier);
@@ -118,11 +133,11 @@ public class PlayerCombat : MonoBehaviour
             canInputNextCombo = false;
             currentComboStep++;
 
-            int maxCombos = animator.GetBool("IsJumping") ? aController.maxAirCombos : aController.maxGroundCombos;
-
-            if (currentComboStep > maxCombos)
+            
+            if (currentComboStep > currentMaxCombos)
             {
-                currentComboStep = 1;
+                ResetCombo();
+                return;
             }
 
             animator.SetInteger("ComboStep", currentComboStep);
@@ -212,6 +227,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (aController.lives == 0)
             {
+                ResetCombo();
                 animator.SetTrigger("Death");
             }
 
@@ -223,6 +239,7 @@ public class PlayerCombat : MonoBehaviour
         }
         else
         {
+            ResetCombo();
             animator.SetTrigger("Hurt");
         }
     }
@@ -250,9 +267,18 @@ public class PlayerCombat : MonoBehaviour
     // ANIMATION EVENTS 
     // ==========================================
 
-    // Calling this slightly after the hit lands. Allows the player to chain the next hit.
+    
     public void OpenComboWindow(float windowDuration)
     {
+
+        if(currentComboStep>=currentMaxCombos)
+        {
+            animator.ResetTrigger("Attack");
+            comboBarUI.HideBar();
+            ResetCombo();
+            return;
+        }
+
         canInputNextCombo = true;
         currentComboWindowDuration = windowDuration;
         comboWindowStartTime = Time.time;
@@ -263,13 +289,18 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    // Calling this at the very end of every attack animation's recovery frames.
+    
     public void ResetCombo()
     {
+        animator.ResetTrigger("Attack");
+        if (currentComboStep > 0)
+        {
+            start = Time.time;
+        }
         currentComboStep = 0;
         canInputNextCombo = true;
-        animator.SetInteger("ComboStep", 0);
-        GetComponent<PlayerMovement>().canDash = true;
+        animator.SetInteger("ComboStep", currentComboStep);
+        pMovement.canDash = true;
 
         if (comboBarUI != null)
         {
@@ -281,7 +312,6 @@ public class PlayerCombat : MonoBehaviour
     {
         if (comboFeedbackPrefab == null) return;
 
-        // Spawn it slightly above the player's head (adjust the Y offset as needed)
         Vector3 spawnPos = transform.position + new Vector3(0f, 0.5f, 0f);
 
         GameObject feedbackObj = Instantiate(comboFeedbackPrefab, spawnPos, Quaternion.identity);
