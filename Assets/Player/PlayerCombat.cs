@@ -13,7 +13,10 @@ public class PlayerCombat : MonoBehaviour
     private int currentComboStep = 0;
     private bool canInputNextCombo = true;
     private int currentMaxCombos = 0;
+<<<<<<< HEAD
     private float lastAttackSequenceTime = 0f;
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
     // for animations, dont change 
     private float start = 0f;
     private float cooldown = 1f;
