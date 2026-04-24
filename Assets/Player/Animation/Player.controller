@@ -1563,6 +1563,9 @@ AnimatorStateTransition:
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
 --- !u!1109 &4209227802708779650
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -1580,8 +1583,11 @@ AnimatorTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 1
+<<<<<<< HEAD
 =======
 >>>>>>> f691cc5 (clanky physics on incline surfaces fixed for jumping, air attacks can be performed any time in the air, jump height now depends on how long the jump key is pressed)
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
 --- !u!1101 &4573339594369961715
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1611,6 +1617,9 @@ AnimatorStateTransition:
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
 --- !u!1109 &4858106161041396154
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -1628,8 +1637,11 @@ AnimatorTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 1
+<<<<<<< HEAD
 =======
 >>>>>>> f691cc5 (clanky physics on incline surfaces fixed for jumping, air attacks can be performed any time in the air, jump height now depends on how long the jump key is pressed)
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
 --- !u!1102 &4883255131559208406
 AnimatorState:
   serializedVersion: 6

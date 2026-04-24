@@ -93,6 +93,9 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
   - time: 0
     functionName: OpenComboWindow
     data: 
@@ -100,8 +103,11 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+<<<<<<< HEAD
 =======
 >>>>>>> f691cc5 (clanky physics on incline surfaces fixed for jumping, air attacks can be performed any time in the air, jump height now depends on how long the jump key is pressed)
+=======
+>>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
   - time: 0.41666666
     functionName: ResetCombo
     data: 
