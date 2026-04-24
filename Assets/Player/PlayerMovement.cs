@@ -142,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         animator.ResetTrigger("Falling");
         animator.ResetTrigger("Landed");
         animator.SetInteger("ComboStep", 0);
+        
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -173,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
         animator.SetTrigger("Landed");
+        animator.ResetTrigger("Falling");
     }
 
     
