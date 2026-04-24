@@ -13,6 +13,7 @@ public class PlayerCombat : MonoBehaviour
     private int currentComboStep = 0;
     private bool canInputNextCombo = true;
     private int currentMaxCombos = 0;
+    private float lastAttackSequenceTime = 0f;
     // for animations, dont change 
     private float start = 0f;
     private float cooldown = 1f;
@@ -57,14 +58,25 @@ public class PlayerCombat : MonoBehaviour
 
         if (comboBarUI != null && currentComboStep > 0 && canInputNextCombo)
         {
-            float elapsedTime = Time.time - comboWindowStartTime;
-            float normalizedTime = Mathf.Clamp01(elapsedTime / currentComboWindowDuration);
-
-            comboBarUI.SetMarkerPosition(normalizedTime);
-
-            if (elapsedTime >= currentComboWindowDuration)
+            if (canInputNextCombo)
             {
-                ResetCombo();
+                float elapsedTime = Time.time - comboWindowStartTime;
+                float normalizedTime = Mathf.Clamp01(elapsedTime / currentComboWindowDuration);
+
+                comboBarUI.SetMarkerPosition(normalizedTime);
+
+                if (elapsedTime >= currentComboWindowDuration)
+                {
+                    ResetCombo();
+                }
+            }
+            else
+            {
+                if(Time.time - lastAttackSequenceTime > 1.5f)
+                {
+                    Debug.Log("combo got stuck, resetting");
+                    ResetCombo();
+                }
             }
         }
         animator.SetBool("canCombo", canInputNextCombo);
@@ -113,6 +125,7 @@ public class PlayerCombat : MonoBehaviour
         if (aController.ConsumeStamina(finalStaminaCost))
         {
             pMovement.canDash = false;
+            lastAttackSequenceTime = Time.time;
 
             if (currentComboStep > 0)
             {
