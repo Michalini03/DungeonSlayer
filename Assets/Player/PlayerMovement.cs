@@ -184,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
         animator.SetTrigger("Landed");
+        animator.ResetTrigger("Falling");
     }
 
     
