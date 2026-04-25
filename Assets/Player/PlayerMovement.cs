@@ -142,14 +142,6 @@ public class PlayerMovement : MonoBehaviour
         animator.ResetTrigger("Falling");
         animator.ResetTrigger("Landed");
         animator.SetInteger("ComboStep", 0);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
-=======
->>>>>>> f691cc5 (clanky physics on incline surfaces fixed for jumping, air attacks can be performed any time in the air, jump height now depends on how long the jump key is pressed)
-=======
-        
->>>>>>> 870a84e (player combos fixed, made a 1s cooldown on next attack after combo is finished, and other fixes)
     }
 
     private void OnJump(InputAction.CallbackContext context)
