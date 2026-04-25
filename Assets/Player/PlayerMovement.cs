@@ -72,6 +72,17 @@ public class PlayerMovement : MonoBehaviour
         inputAction.Player.Jump.canceled -= ctx => cController.CutJump();
     }
 
+    // Pavel - Přidal jsem si sem jen dva gettery pro cast spellu u bosse
+    public bool getJump()
+    {
+        return jump;
+    }
+
+    public bool IsInAir()
+    {
+        return animator.GetBool("IsJumping");
+    }
+
     void Update()
     {
         if (aController.currentHealth <= 0)
