@@ -8291,19 +8291,19 @@ PrefabInstance:
       objectReference: {fileID: 1677304996}
     - target: {fileID: 1679215925123323803, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 3781975277647428211, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 4994670329656470945, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 5159242485978287833, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 5159242485978287833, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8351,19 +8351,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6490125198773456798, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 8134636914529092595, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 8993125669340662290, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 9031885911505223163, guid: b4fa17e9f06d14f488c7875846c00ee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8904,6 +8904,12 @@ MonoBehaviour:
   - name: RAT_DEATH
     sounds:
     - {fileID: 8300000, guid: ada78168009ecba4da7e92ebf8c1d35e, type: 3}
+  - name: GOBLIN_HIT
+    sounds:
+    - {fileID: 8300000, guid: 727e7f648c213d646b82965d377afe35, type: 3}
+  - name: GOBLIN_DEATH
+    sounds:
+    - {fileID: 8300000, guid: c9bfca854ecc744408b67559374f76bb, type: 3}
 --- !u!82 &1523313857
 AudioSource:
   m_ObjectHideFlags: 0
