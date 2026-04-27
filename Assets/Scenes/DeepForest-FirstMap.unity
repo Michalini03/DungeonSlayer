@@ -7935,6 +7935,12 @@ MonoBehaviour:
   - name: RAT_DEATH
     sounds:
     - {fileID: 8300000, guid: ada78168009ecba4da7e92ebf8c1d35e, type: 3}
+  - name: GOBLIN_HIT
+    sounds:
+    - {fileID: 8300000, guid: 727e7f648c213d646b82965d377afe35, type: 3}
+  - name: GOBLIN_DEATH
+    sounds:
+    - {fileID: 8300000, guid: c9bfca854ecc744408b67559374f76bb, type: 3}
 --- !u!82 &1523313857
 AudioSource:
   m_ObjectHideFlags: 0

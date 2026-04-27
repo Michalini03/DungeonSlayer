@@ -17,7 +17,9 @@ public enum SoundType
     SKELETON_DEATH,
     SKELETON_HIT,
     RAT_HIT,
-    RAT_DEATH
+    RAT_DEATH,
+    GOBLIN_HIT,
+    GOBLIN_DEATH
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
