@@ -16,9 +16,9 @@ MonoBehaviour:
   displayName: Forgotten Powers
   description: Gain two random augments of any rarity.
   flavorText: '"I can''t recall this part of the story properly..."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0f595b7319d679044b8ba83e2504aa05, type: 3}
   rarity: 2
-  baseWeight: 75
+  baseWeight: 50
   maxStacks: 10
   effectType: 0
   tags: []

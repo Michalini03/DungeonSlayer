@@ -17,9 +17,10 @@ MonoBehaviour:
   description: ...
   flavorText: '"Sharper than any sword the Saint had ever held before. Longed to
     be reunited with its lost kin."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7975508b9c3dbf14cbbbad29297d1380, type: 3}
   rarity: 3
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes: []
