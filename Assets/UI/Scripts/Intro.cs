@@ -19,7 +19,7 @@ public class StartupStory : MonoBehaviour
     [SerializeField] private float delayBeforeTyping = 0.2f;
     [SerializeField] private float delayAfterTyping = 0.4f;
 
-    [SerializeField] private string nextSceneName = "MainMenu";
+    [SerializeField] private GameObject objectToEnable;
 
     [SerializeField] private CanvasGroup fadeOverlayCanvasGroup;
     [SerializeField] private float sceneFadeDuration = 0.75f;
@@ -204,9 +204,16 @@ public class StartupStory : MonoBehaviour
             yield return StartCoroutine(FadeCanvasGroup(fadeOverlayCanvasGroup, 0f, 1f, sceneFadeDuration));
         }
 
+
+        if (objectToEnable != null)
+        {
+            objectToEnable.SetActive(true);
+            transform.parent.gameObject.SetActive(false);
+        }
+
+        /*
         if (!string.IsNullOrWhiteSpace(nextSceneName))
         {
-            SceneManager.LoadScene(nextSceneName);
         }
         else if (rootPanel != null)
         {
@@ -215,7 +222,7 @@ public class StartupStory : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-        }
+        }*/
     }
 
     private void EndStory()

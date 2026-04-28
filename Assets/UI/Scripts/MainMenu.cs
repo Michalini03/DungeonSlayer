@@ -12,6 +12,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject continueButton;
     [SerializeField] private GameObject firstSelectedButton;
 
+    [SerializeField] private GameObject Menu;
+    [SerializeField] private GameObject EncyclopediaMenu;
+    [SerializeField] private GameObject EncyclopediaAugmentMenu;
+    [SerializeField] private GameObject EncyclopediaFoeMenu;
+    [SerializeField] private GameObject SettingsMenu;
+    [SerializeField] private GameObject AboutMenu;
+
     private bool isTransitioning = false;
 
     private void Awake()
@@ -32,7 +39,19 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        isTransitioning = false;
+
         RefreshContinueButton();
+
+        if (fadeOverlayCanvasGroup != null)
+        {
+            StartCoroutine(FadeInRoutine());
+        }
+        else if (menuRoot != null)
+        {
+            menuRoot.SetActive(true);
+            SelectDefaultButton();
+        }
     }
 
     private void Start()
@@ -100,32 +119,32 @@ public class MainMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        LoadSceneWithFade("MainMenu");
+        LoadSectionWithFade(Menu);
     }
 
     public void GoToEncyclopedia()
     {
-        LoadSceneWithFade("EncyclopediaMenu");
+        LoadSectionWithFade(EncyclopediaMenu);
     }
 
     public void GoToAugments()
     {
-        LoadSceneWithFade("EncyclopediaAugmentMenu");
+        LoadSectionWithFade(EncyclopediaAugmentMenu);
     }
 
     public void GoToFoes()
     {
-        LoadSceneWithFade("EncyclopediaFoeMenu");
+        LoadSectionWithFade(EncyclopediaFoeMenu);
     }
 
     public void GoToSettings()
     {
-        LoadSceneWithFade("SettingsMenu");
+        LoadSectionWithFade(SettingsMenu);
     }
 
     public void GoToAbout()
     {
-        LoadSceneWithFade("AboutMenu");
+        LoadSectionWithFade(AboutMenu);
     }
 
     public void QuitGame()
@@ -144,6 +163,15 @@ public class MainMenu : MonoBehaviour
 
         isTransitioning = true;
         StartCoroutine(LoadSceneRoutine(sceneName));
+    }
+
+    private void LoadSectionWithFade(GameObject sceneObject)
+    {
+        if (isTransitioning)
+            return;
+
+        isTransitioning = true;
+        StartCoroutine(LoadSectionRoutine(sceneObject));
     }
 
     private IEnumerator FadeInRoutine()
@@ -184,7 +212,41 @@ public class MainMenu : MonoBehaviour
         }
 
         fadeOverlayCanvasGroup.alpha = 1f;
+        
         SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator LoadSectionRoutine(GameObject sceneObject)
+    {
+        fadeOverlayCanvasGroup.blocksRaycasts = true;
+
+        float time = 0f;
+        float startAlpha = fadeOverlayCanvasGroup.alpha;
+
+        // Fade to black
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+            fadeOverlayCanvasGroup.alpha = Mathf.Lerp(startAlpha, 1f, time / fadeDuration);
+            yield return null;
+        }
+
+        fadeOverlayCanvasGroup.alpha = 1f;
+
+        // Swap the menus
+        if (sceneObject)
+        {
+            sceneObject.SetActive(true);
+
+            if (transform.parent != null)
+            {
+                transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     private IEnumerator QuitRoutine()

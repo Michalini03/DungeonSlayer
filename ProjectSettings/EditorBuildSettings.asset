@@ -8,25 +8,28 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/Intro.unity
     guid: 2af3a706d5956cd40b5a2c6d868120c6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/MainMenu.unity
     guid: 86d2ace8a7b286b409055adee5db13e0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/EncyclopediaAugmentMenu.unity
     guid: 55139f8fba62b734ea72f738d6a24de7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/EncyclopediaFoeMenu.unity
     guid: b18579ebfc09807458d5bc942b571a95
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/EncyclopediaMenu.unity
     guid: ba42a729216b9f740b915ad9540fdce8
   - enabled: 1
+    path: Assets/Scenes/Menus/MainMenuGame.unity
+    guid: 0533c07f2cbd34944931e0440218b93e
+  - enabled: 1
     path: Assets/Scenes/Menus/SettingsMenu.unity
     guid: ac2919e92acbda346aff09fe1c2762e6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menus/AboutMenu.unity
     guid: f03ed62fda19bba43a292ba080312a9c
   - enabled: 0
