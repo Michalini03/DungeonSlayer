@@ -31,30 +31,42 @@ public class StartupStory : MonoBehaviour
     private bool isEnding = false;
     private Coroutine pageRoutine;
 
+    private static bool hasSeenIntro = false;
+
     private void Start()
     {
-        if (continueText != null)
+        if (!hasSeenIntro)
         {
-            SetTextAlpha(continueText, 1f);
-        }
+            if (continueText != null)
+            {
+                SetTextAlpha(continueText, 1f);
+            }
 
-        if (storyCanvasGroup != null)
-        {
-            storyCanvasGroup.alpha = 1f;
-        }
+            if (storyCanvasGroup != null)
+            {
+                storyCanvasGroup.alpha = 1f;
+            }
 
-        if (fadeOverlayCanvasGroup != null)
-        {
-            fadeOverlayCanvasGroup.alpha = 0f;
-        }
+            if (fadeOverlayCanvasGroup != null)
+            {
+                fadeOverlayCanvasGroup.alpha = 0f;
+            }
 
-        if (pages == null || pages.Length == 0)
-        {
-            EndStory();
-            return;
-        }
+            if (pages == null || pages.Length == 0)
+            {
+                EndStory();
+                return;
+            }
 
-        pageRoutine = StartCoroutine(PlayPage(currentPage));
+            pageRoutine = StartCoroutine(PlayPage(currentPage));
+        }
+        else {             
+            if (objectToEnable != null)
+            {
+                objectToEnable.SetActive(true);
+                transform.parent.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void Update()
@@ -207,6 +219,7 @@ public class StartupStory : MonoBehaviour
 
         if (objectToEnable != null)
         {
+            hasSeenIntro = true;
             objectToEnable.SetActive(true);
             transform.parent.gameObject.SetActive(false);
         }

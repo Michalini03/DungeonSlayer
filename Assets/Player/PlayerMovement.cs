@@ -31,6 +31,11 @@ public class PlayerMovement : MonoBehaviour
     public bool canDash = true;
     private bool isDashing;
 
+    // Variables for fall reset
+    private float startPosX;
+    private float startPosY;
+    private bool isReturning = false;
+
     private bool IsGameplayBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
@@ -39,7 +44,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 120;
-        
+        startPosX = transform.position.x;
+        startPosY = transform.position.y;
+
     }
 
     void Awake()
@@ -126,7 +133,35 @@ public class PlayerMovement : MonoBehaviour
         // Check if the player has fallen below the death threshold
         if (rb.position.y < -10f)
         {
-            pCombat.takeDamage(9999);
+            if (!isReturning)
+            {
+                isReturning = true;
+                float zDist = transform.position.z;
+
+                int damageAmount = aController.maxHealth / 2; // Adjust this value as needed
+                if (aController.currentHealth > 1) { 
+                    if(aController.currentHealth - damageAmount <= 0)
+                    {
+                        aController.currentHealth = 1;
+                    }
+                    else
+                    {
+                        aController.currentHealth -= damageAmount;
+                    }
+                    transform.position = new Vector3(startPosX, startPosY, zDist);
+                    animator.SetTrigger("Landed");
+                    SoundManager.PlaySound(SoundType.PLAYER_HIT);
+                }
+                else
+                {
+                    pCombat.takeDamage(9999);
+                }
+            }
+
+        }
+        else
+        {
+            isReturning = false;
         }
     }
 
