@@ -100,7 +100,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartRun()
     {
-        LoadSceneWithFade("DeepForest-FirstMap");
+        LoadSceneWithFade("map_forest_1");
     }
 
     public void ContinueRun()
