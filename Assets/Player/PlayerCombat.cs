@@ -18,16 +18,21 @@ public class PlayerCombat : MonoBehaviour
     private float start = 0f;
     private float cooldown = 1f;
 
-    [Header("Combo UI")]
-    public PlayerComboBarUI comboBarUI;
-
     [Header("Combo Timing System")]
-    public float currentComboWindowDuration = 4.0f; // The 1 second total window
+    public float currentComboWindowDuration = 4.0f; // The 4 second total window
     private float comboWindowStartTime = 0f;
 
     [Header("UI References")]
+    public PlayerComboBarUI comboBarUI;
     public GameObject deathCanvas; // Reference to the YOU DIED!
     public GameObject comboFeedbackPrefab; // Reference to the ComboFeedbackText prefab
+
+    [Header("Attack Visual")]
+    [SerializeField] private SpriteRenderer attackVisual;
+    [SerializeField] private SpriteRenderer playerSprite;
+    [SerializeField] private Color attackVisualColor = new Color(1f, 1f, 1f, 0.5f);
+    [SerializeField] private float visualScaleMultiplier = 1f;
+
     private bool IsInputBlocked()
     {
         return RunController.Instance != null && RunController.Instance.IsGameplayInputBlocked;
@@ -38,6 +43,13 @@ public class PlayerCombat : MonoBehaviour
     void Start()
     {
         pMovement = GetComponent<PlayerMovement>();
+
+        if (attackVisual != null)
+        {
+            attackVisual.color = attackVisualColor;
+            attackVisual.enabled = false;
+        }
+
         start = Time.time - cooldown;
     }
 
@@ -202,7 +214,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, aController.attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(GetAttackCenter(), aController.attackRange, enemyLayers);
 
         //Debug.Log("Hit " + hitEnemies + " enemies!");
 
@@ -272,8 +284,8 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        Gizmos.DrawWireSphere(attackPoint.position, aController.attackRange);
-        
+        Gizmos.DrawWireSphere(GetAttackCenter(), aController.attackRange);
+
     }
 
     // ==========================================
@@ -301,7 +313,6 @@ public class PlayerCombat : MonoBehaviour
             comboBarUI.ResetBar(aController.comboBar);
         }
     }
-
     
     public void ResetCombo()
     {
@@ -365,4 +376,75 @@ public class PlayerCombat : MonoBehaviour
             aController.Heal(healAmount);
         }
     }
+
+    public void ShowAttackVisual()
+    {
+        if (attackVisual == null || aController == null)
+        {
+            return;
+        }
+
+        if (attackVisual.sprite == null)
+        {
+            return;
+        }
+
+        attackVisual.enabled = true;
+        attackVisual.color = attackVisualColor;
+
+        Vector3 pos = GetAttackCenter();
+        pos.z = attackVisual.transform.position.z;
+        attackVisual.transform.position = pos;
+
+        float desiredDiameter = aController.attackRange * 2f * visualScaleMultiplier;
+
+        Vector2 spriteSize = attackVisual.sprite.bounds.size;
+        if (spriteSize.x <= 0f || spriteSize.y <= 0f)
+        {
+            return;
+        }
+
+        float scaleX = desiredDiameter / spriteSize.x;
+        float scaleY = desiredDiameter / (spriteSize.y / 2f);
+
+        attackVisual.transform.localScale = new Vector3(scaleX, scaleY, 1f);
+
+        if (IsFacingLeft())
+        {
+            attackVisual.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+        }
+        else
+        {
+            attackVisual.transform.rotation = Quaternion.identity;
+        }
+    }
+
+    public void HideAttackVisual()
+    {
+        if (attackVisual == null)
+            return;
+
+        attackVisual.enabled = false;
+    }
+
+    private bool IsFacingLeft()
+    {
+        if (playerSprite != null)
+        {
+            return playerSprite.flipX;
+        }
+
+        return transform.localScale.x < 0f;
+    }
+
+    private Vector3 GetAttackCenter()
+    {
+        bool facingLeft = transform.localScale.x < 0f;
+        float direction = facingLeft ? -1f : 1f;
+
+        float distance = aController.attackRange;
+        return transform.position + new Vector3(distance * direction, 0f, 0f);
+    }
+
 }
+

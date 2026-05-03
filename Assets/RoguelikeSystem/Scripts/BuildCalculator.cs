@@ -45,7 +45,7 @@ public static class BuildCalculator
         {
             // Common
             case "attack_size_up":
-                stats.damageReduction.FlatBonus += 0.1f * stacks;
+                stats.attackRange.FlatBonus += 0.05f * stacks;
                 break;
 
             case "combo_bar_size_up":

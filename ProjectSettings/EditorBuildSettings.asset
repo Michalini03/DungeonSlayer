@@ -5,57 +5,30 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: Assets/Scenes/Menus/Intro.unity
-    guid: 2af3a706d5956cd40b5a2c6d868120c6
-  - enabled: 0
-    path: Assets/Scenes/Menus/MainMenu.unity
-    guid: 86d2ace8a7b286b409055adee5db13e0
-  - enabled: 0
-    path: Assets/Scenes/Menus/EncyclopediaAugmentMenu.unity
-    guid: 55139f8fba62b734ea72f738d6a24de7
-  - enabled: 0
-    path: Assets/Scenes/Menus/EncyclopediaFoeMenu.unity
-    guid: b18579ebfc09807458d5bc942b571a95
-  - enabled: 0
-    path: Assets/Scenes/Menus/EncyclopediaMenu.unity
-    guid: ba42a729216b9f740b915ad9540fdce8
   - enabled: 1
-    path: Assets/Scenes/Menus/MainMenuGame.unity
+    path: Assets/Scenes/Menus/main_menu.unity
     guid: 0533c07f2cbd34944931e0440218b93e
   - enabled: 1
-    path: Assets/Scenes/Menus/SettingsMenu.unity
-    guid: ac2919e92acbda346aff09fe1c2762e6
-  - enabled: 0
-    path: Assets/Scenes/Menus/AboutMenu.unity
-    guid: f03ed62fda19bba43a292ba080312a9c
-  - enabled: 0
-    path: Assets/DeepForest/Scenes/FirstMap.unity
-    guid: 27ad9821af41b0c468fb43854d40cfa3
+    path: Assets/Scenes/map_forest_1.unity
+    guid: 9f7da2df90015e14b93db984681e9567
+  - enabled: 1
+    path: Assets/Scenes/map_forest_2.unity
+    guid: b68e9290937df15428cabac2b77c07f9
+  - enabled: 1
+    path: Assets/Scenes/map_forest_3.unity
+    guid: 76b2728cbc3795d46ba2caae84c0ec69
+  - enabled: 1
+    path: Assets/Scenes/map_cave_1.unity
+    guid: fbf18c87cca03c943abda3024770eba0
+  - enabled: 1
+    path: Assets/Scenes/map_castle_1.unity
+    guid: 803bee8891a00bc4c92747e727fa5d55
   - enabled: 0
     path: Assets/Scenes/Player-movement-developmnet.unity
     guid: 9b99c131b11e7de439ca39284ee825a4
-  - enabled: 1
-    path: Assets/Scenes/DeepForest-FirstMap.unity
-    guid: 7e1d7e87fc5dbf843b61e802c19b0366
   - enabled: 0
     path: Assets/Scenes/Menus/SceneTransition.unity
     guid: 1497146395fe73b429a3ba3450b0dcb5
-  - enabled: 1
-    path: Assets/Scenes/Cave-First.unity
-    guid: f841245b1ac5b99448c00e217bb34937
-  - enabled: 1
-    path: Assets/Scenes/Castle-FirstMap.unity
-    guid: 2d505a26afb47f54c857c2d6fbd22a55
-  - enabled: 1
-    path: Assets/Scenes/SecondForestMap.unity
-    guid: 6c786f23c005c6a42bd4675dbae8598b
-  - enabled: 1
-    path: Assets/Scenes/ThirdForestMap.unity
-    guid: c6110e9d3442bd54b9572acfa1261218
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4f391b7500afc9f45b78026b9292a66a, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
