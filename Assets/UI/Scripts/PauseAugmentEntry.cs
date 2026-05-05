@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,35 @@ public class PauseAugmentEntry : MonoBehaviour
         if (stackText != null)
         {
             stackText.text = stacks > 1 ? $"x{stacks}" : "";
+        }
+    }
+
+    public void SetupSynergy(AugmentSynergyDefinition synergy)
+    {
+        if (synergy == null)
+        {
+            return;
+        }
+
+        if (iconImage != null)
+        {
+            iconImage.sprite = synergy.icon;
+            iconImage.enabled = synergy.icon != null;
+        }
+
+        if (titleText != null)
+        {
+            titleText.text = synergy.displayName;
+        }
+
+        if (descriptionText != null)
+        {
+            descriptionText.text = synergy.description;
+        }
+
+        if (flavorText != null)
+        {
+            flavorText.text = synergy.flavorText;
         }
     }
 }

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: WeightOfTheirSins
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
   id: weight_of_sins
-  displayName: Weight of Their Sins
-  description: Knockback Up. Total Movement Speed Down.
+  displayName: Ball and Chain
+  description: Knockback Up++. Total Movement Speed Down.
   flavorText: '"Realizing the truth, their sins weighed upon the Saint stronger than
     ever, but so did it on their enemies."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: c984485bdf6f79940b909c99635b25b1, type: 3}
   rarity: 1
   baseWeight: 100
   maxStacks: 1

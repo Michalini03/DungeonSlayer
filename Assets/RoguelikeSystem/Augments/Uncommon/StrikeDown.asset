@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: LifeSteal
+  m_Name: StrikeDown
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: life_steal
-  displayName: Life Steal
-  description: Regain HP by damaging enemies.
-  flavorText: '"The Acorn fed off the blood of monsters, sharing its vitality with
-    the Saint."'
-  icon: {fileID: 21300000, guid: aa7469a6db4a0914185242ee66d44052, type: 3}
-  rarity: 2
-  baseWeight: 100
+  id: strike_down
+  displayName: Strike Down
+  description: Damage Up+. Knockback Down.
+  flavorText: '"The Saint kept his foes close, pinning them, and swiftly killing
+    them."'
+  icon: {fileID: 21300000, guid: 8b194080eab5d5d4ea394b01adb39d1a, type: 3}
+  rarity: 1
+  baseWeight: 80
   maxStacks: 1
   effectType: 0
   tags: []

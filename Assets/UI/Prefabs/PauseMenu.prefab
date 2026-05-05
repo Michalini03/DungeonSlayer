@@ -1327,7 +1327,7 @@ GameObject:
   - component: {fileID: 3320136190033867089}
   - component: {fileID: 7886885485823411531}
   - component: {fileID: 2550419016152792081}
-  - component: {fileID: 6665350268076953909}
+  - component: {fileID: 1022664935195272772}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1394,7 +1394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 0
---- !u!114 &6665350268076953909
+--- !u!114 &1022664935195272772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1408,6 +1408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseAugmentPage
   contentParent: {fileID: 3320136190033867089}
   entryPrefab: {fileID: 7572548427305221243, guid: 16acb1545db30934d809e11528a8e4e5, type: 3}
+  synergyEntryPrefab: {fileID: 5978256454075465047, guid: 29b633dd9c567ff45b90211be5d057a7, type: 3}
 --- !u!1 &5097733312391082928
 GameObject:
   m_ObjectHideFlags: 0

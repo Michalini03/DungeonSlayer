@@ -264,6 +264,16 @@ public class RunController : MonoBehaviour
         return runState.OwnedStacks;
     }
 
+    public IReadOnlyList<AugmentSynergyDefinition> GetOwnedSynergies()
+    {
+        if (synergyDatabase == null)
+        {
+            return new List<AugmentSynergyDefinition>();
+        }
+
+        return SynergyResolver.GetActiveSynergies(runState, synergyDatabase.GetAll());
+    }
+
     public AugmentDefinition GetAugmentDefinition(string augmentId)
     {
         if (augmentDatabase == null)

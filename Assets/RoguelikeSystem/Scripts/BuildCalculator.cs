@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public static class BuildCalculator
 {
@@ -87,6 +88,36 @@ public static class BuildCalculator
                 stats.damageReduction.FlatBonus += 0.1f;
                 break;
 
+            case "precise_strikes":
+                stats.damageReduction.FlatBonus += 0.1f;
+
+                stats.attackRange.FlatBonus -= 0.05f;
+                break;
+
+            case "strike_down":
+                stats.damage.FlatBonus += 30;
+
+                stats.knockbackForce.FlatBonus -= 4;
+                break;
+
+            case "sweeping_attacks":
+                stats.attackRange.FlatBonus += 0.1f;
+
+                ApplyComboDown(stats, 1);
+                break;
+
+            case "vigor_over_vitality":
+                stats.maxHealth.FlatBonus += 80;
+
+                stats.maxStamina.FlatBonus -= 20;
+                break;
+
+            case "vitality_over_vigor":
+                stats.maxStamina.FlatBonus += 40;
+
+                stats.maxHealth.FlatBonus -= 40;
+                break;
+
             case "weight_of_sins":
                 stats.knockbackForce.FlatBonus += 10f;
 
@@ -149,8 +180,8 @@ public static class BuildCalculator
                 ApplyComboUp(stats, 1);
                 stats.damage.FlatBonus += 50;
                 stats.knockbackForce.FlatBonus += 10f;
-                stats.movementSpeed.FlatBonus += 10f;
-                stats.attackRange.FlatBonus += 0.5f;
+                stats.movementSpeed.FlatBonus += 1f;
+                stats.attackRange.FlatBonus += 0.2f;
                 break;
 
             default:
@@ -172,6 +203,28 @@ public static class BuildCalculator
             if (stats.comboBar[0] > 0)
             {
                 stats.comboBar[0] -= 1;
+            }
+            else if (stats.comboBar[1] > 0)
+            {
+                stats.comboBar[1] -= 1;
+            }
+        }
+    }
+
+    private static void ApplyComboDown(PlayerBuildStats stats, int stacks)
+    {
+        if (stats.comboBar == null || stats.comboBar.Length < 3)
+        {
+            return;
+        }
+
+        for (int i = 0; i < stacks; i++)
+        {
+            stats.comboBar[0] += 1;
+            
+            if (stats.comboBar[2] > 0)
+            {
+                stats.comboBar[2] -= 1;
             }
             else if (stats.comboBar[1] > 0)
             {

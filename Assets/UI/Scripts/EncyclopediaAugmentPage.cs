@@ -10,9 +10,6 @@ public class EncyclopediaAugmentPage: MonoBehaviour
     [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject augmentEntryPrefab;
 
-    [Header("Options")]
-    [SerializeField] private bool sortAlphabetically = true;
-
     private void Start()
     {
         Rebuild();
