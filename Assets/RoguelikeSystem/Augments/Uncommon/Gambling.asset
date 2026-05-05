@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
   id: gamba
   displayName: Gambling
-  description: Gain a random augment
-  flavorText: 
+  description: Gain a random augment.
+  flavorText: '"What..."'
   icon: {fileID: 21300000, guid: b2308e68a0f835049b1bf533d337a0b4, type: 3}
   rarity: 1
   baseWeight: 50

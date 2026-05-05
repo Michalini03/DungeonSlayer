@@ -7,9 +7,9 @@ public class AugmentDraftService
 {
     private readonly System.Random rng;
 
-    private const int CommonChance = 54;
+    private const int CommonChance = 59;
     private const int UncommonChance = 40;
-    private const int RareChance = 15;
+    private const int RareChance = 10;
     private const int LegendaryChance = 1;
 
     public AugmentDraftService(int seed)

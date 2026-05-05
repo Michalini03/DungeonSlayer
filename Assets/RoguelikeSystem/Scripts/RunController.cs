@@ -55,9 +55,9 @@ public class RunController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         RebindSceneReferences();
-        RefreshBuild();
+        //RefreshBuild();
 
-        if (scene.name == "MainMenu")
+        if (scene.name == "main_menu")
         {
             return;
         }
@@ -109,7 +109,6 @@ public class RunController : MonoBehaviour
         {
             return;
         }
-
 
         runState.AddAugment(augment.id);
         RefreshBuild();
@@ -258,5 +257,20 @@ public class RunController : MonoBehaviour
         PlayerBuildStats stats = BuildCalculator.BuildStats(attributesController, runState, synergyDatabase.GetAll());
 
         attributesController.ApplyCalculatedStats(stats);
+    }
+
+    public IReadOnlyDictionary<string, int> GetOwnedAugments()
+    {
+        return runState.OwnedStacks;
+    }
+
+    public AugmentDefinition GetAugmentDefinition(string augmentId)
+    {
+        if (augmentDatabase == null)
+        {
+            return null;
+        }
+
+        return augmentDatabase.GetById(augmentId);
     }
 }

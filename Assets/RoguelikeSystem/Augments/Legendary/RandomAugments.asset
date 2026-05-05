@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438c46e2eabf2b343bbdfdb3389cf1fd, type: 3}
-  m_Name: DistantSlash (not implemented)
+  m_Name: RandomAugments
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
-  id: distant_slash
-  displayName: Distant Slash
-  description: Attacks travel through the air until they hit an enemy or an obstacle.
-  flavorText: '"The Saint struck down monsters across even great is'
-  icon: {fileID: 0}
-  rarity: 2
-  baseWeight: 100
-  maxStacks: 1
+  id: random_augments
+  displayName: Forgotten Powers
+  description: Gain two random augments of any rarity.
+  flavorText: '"I can''t recall this part of the story properly..."'
+  icon: {fileID: 21300000, guid: 0f595b7319d679044b8ba83e2504aa05, type: 3}
+  rarity: 3
+  baseWeight: 50
+  maxStacks: 10
+  effectType: 1
   tags: []
   excludes: []
