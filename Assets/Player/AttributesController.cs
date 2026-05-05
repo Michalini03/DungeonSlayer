@@ -13,7 +13,7 @@ public class AttributesController : MonoBehaviour
     public int baseHealthRegen = 0;
     public int baseLives = 0;
     public float baseDamageReduction = 0f;
-    public float baseAttackRange = 0.5f;
+    public float baseAttackRange = 0.4f;
     public float baseKnockbackForce = 10f;
     public int baseMaxStamina = 100;
     public int[] baseComboBar = new int[3] { 8, 8, 4 };
@@ -24,7 +24,7 @@ public class AttributesController : MonoBehaviour
     public int minDamage = 0;
     public int minHealthRegen = 0;
     public int minLives = 0;
-    public float minAttackRange = 5f;
+    public float minAttackRange = 0.4f;
     public float minKnockbackForce = 0f;
     public int minMaxStamina = 50;
     public int minComboBarSectionValue = 0;
