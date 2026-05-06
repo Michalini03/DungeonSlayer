@@ -8009,7 +8009,7 @@ MonoBehaviour:
   ratPrefab: {fileID: 3401202097853588897}
   goblinPrefab: {fileID: 450877873}
   spawnPointFinder: {fileID: 1649750262}
-  nextSceneName: map_forest_2
+  nextSceneName: map_forest_3
   sceneFader: {fileID: 115880803}
   delayBeforeLoad: 2
   augmentSelectionUI: {fileID: 1114253266}
