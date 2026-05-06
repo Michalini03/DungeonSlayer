@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class AugmentSelectionUI : MonoBehaviour
 {
@@ -20,7 +22,6 @@ public class AugmentSelectionUI : MonoBehaviour
         {
             cards = GetComponentsInChildren<AugmentCardUI>(true);
         }
-            
     }
 
     private void Start()
@@ -61,6 +62,7 @@ public class AugmentSelectionUI : MonoBehaviour
         isSelecting = true;
         RunController.Instance.SetAugmentMenuOpen(true);
 
+        StartCoroutine(SelectFirstCardNextFrame());
     }
 
     public void Hide()
@@ -77,7 +79,6 @@ public class AugmentSelectionUI : MonoBehaviour
         {
             RunController.Instance.SetAugmentMenuOpen(false);
         }
-
     }
 
     public void SelectAugment(AugmentDefinition augment)
@@ -91,5 +92,31 @@ public class AugmentSelectionUI : MonoBehaviour
         Hide();
         isSelecting = false;
         spawner.selectedAugment = true;
+    }
+
+    private IEnumerator SelectFirstCardNextFrame()
+    {
+        yield return null;
+
+        if (EventSystem.current == null)
+        {
+            yield break;
+        }
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            if (cards[i] == null || !cards[i].gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+
+            Selectable selectable = cards[i].GetComponent<Selectable>();
+            if (selectable != null && selectable.interactable)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(selectable.gameObject);
+                yield break;
+            }
+        }
     }
 }

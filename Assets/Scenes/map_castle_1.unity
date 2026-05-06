@@ -7076,77 +7076,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6712814960835597669, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: augmentDatabase
-      value: 
-      objectReference: {fileID: 628771012}
-    - target: {fileID: 6712814960835597669, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: synergyDatabase
-      value: 
-      objectReference: {fileID: 628771011}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: augments.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: c331fc5f2c438d64eb2f5583d095b724, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: b2c4499e2706a204b9cf1b258e4f4842, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 1e57d9bd1a384b94baca77f9b0a8a815, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[3]'
-      value: 
-      objectReference: {fileID: 11400000, guid: bd463075fdaafdd49b327183d5fabe69, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[4]'
-      value: 
-      objectReference: {fileID: 11400000, guid: a78feabbb879fcf4099e90d14d1f613e, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[5]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 95b76409ac0f675458dd0ef31b915345, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[6]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 2e8820128d85293479fd1bd3fe545042, type: 2}
-    - target: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-      propertyPath: 'augments.Array.data[7]'
-      value: 
-      objectReference: {fileID: 11400000, guid: aeb105b6398fe824bb6ce47f990ff5eb, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
---- !u!114 &628771011 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5713988587627482234, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-  m_PrefabInstance: {fileID: 628771010}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095960d27f955d041aa9a132c6004134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SynergyDatabase
---- !u!114 &628771012 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8742190987322856829, guid: e3ab835ff39ab5e47806939ee0f243fc, type: 3}
-  m_PrefabInstance: {fileID: 628771010}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f8cfab96da24444690457ff497fa514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AugmentDatabase
 --- !u!1001 &683486148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33868,18 +33802,6 @@ PrefabInstance:
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 403364328}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[0]'
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[1]'
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[2]'
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 3314722472415878276, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: leftX
       value: -18.5
@@ -33927,9 +33849,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6390582940139494156, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       insertIndex: 4
       addedObject: {fileID: 1962133481}
-    - targetCorrespondingSourceObject: {fileID: 6390582940139494156, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1962133489}
   m_SourcePrefab: {fileID: 100100000, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
 --- !u!1 &1962133476 stripped
 GameObject:
@@ -33975,22 +33894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e50c87115c74c4cb964dd9f02121bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayFootsteps
---- !u!111 &1962133489
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962133476}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &2037864784
 GameObject:
   m_ObjectHideFlags: 0

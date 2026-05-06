@@ -8482,6 +8482,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2643523965128046179, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
       propertyPath: spawner
       value: 
@@ -8570,6 +8586,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2946448143255413651, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946448143255413651, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946448143255413651, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946448143255413651, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2977746058052221860, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8594,6 +8626,22 @@ PrefabInstance:
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 189770287}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8257540414186664116, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
       propertyPath: m_Name
       value: AugmentMenuCanvas
@@ -8696,42 +8744,6 @@ PrefabInstance:
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 1019162951}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: distantSlash
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: baseMaxHealth
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: currentHealth
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: minAttackRange
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: baseAttackRange
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: maxGroundCombos
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[0]'
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[1]'
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
-      propertyPath: 'baseComboBar.Array.data[2]'
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 3314722472415878276, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: leftX
       value: -16.5
