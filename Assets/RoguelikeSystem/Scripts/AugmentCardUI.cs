@@ -6,13 +6,13 @@ public class AugmentCardUI : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text rarityText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text flavorText;
-    [SerializeField] private TMP_Text rarityText;
     [SerializeField] private Button button;
 
-    private AugmentDefinition currentAugment;
-    private AugmentSelectionUI selectionUI;
+    private AugmentDefinition augment;
+    private AugmentSelectionUI owner;
 
     private void Awake()
     {
@@ -20,18 +20,34 @@ public class AugmentCardUI : MonoBehaviour
         {
             button = GetComponent<Button>();
         }
+
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OnClicked);
+        }
     }
 
-    public void Setup(AugmentDefinition augment, AugmentSelectionUI owner)
+    public void Setup(AugmentDefinition newAugment, AugmentSelectionUI newOwner)
     {
-        currentAugment = augment;
-        selectionUI = owner;
+        augment = newAugment;
+        owner = newOwner;
+
+        if (iconImage != null)
+        {
+            iconImage.sprite = augment.icon;
+            iconImage.enabled = augment.icon != null;
+        }
 
         if (titleText != null)
         {
             titleText.text = augment.displayName;
         }
 
+        if (rarityText != null)
+        {
+            rarityText.text = augment.rarity.ToString();
+        }
 
         if (descriptionText != null)
         {
@@ -42,30 +58,13 @@ public class AugmentCardUI : MonoBehaviour
         {
             flavorText.text = augment.flavorText;
         }
-
-        if (iconImage != null)
-        {
-            iconImage.sprite = augment.icon;
-            iconImage.enabled = augment.icon != null;
-        }
-
-        if (rarityText != null)
-        {
-            rarityText.text = augment.rarity.ToString();
-        }
-
-        if (button != null)
-        {
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(OnClicked);
-        }
     }
 
     private void OnClicked()
     {
-        if (selectionUI != null && currentAugment != null)
+        if (owner != null && augment != null)
         {
-            selectionUI.SelectAugment(currentAugment);
+            owner.SelectAugment(augment);
         }
     }
 }
