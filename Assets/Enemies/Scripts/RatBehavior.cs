@@ -20,7 +20,7 @@ public class RatBehavior : MonoBehaviour
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private int attackDamage = 20;
     [SerializeField] private float attackCooldownConstant = 1.5f;
-    private float attackCooldown = 0f;
+    private float attackCooldown = 2f;
 
     [Header("Detekce země (Červená čára)")]
     [SerializeField] private float groundDistance = 0.5f;
@@ -74,8 +74,8 @@ public class RatBehavior : MonoBehaviour
         Collider2D ratCollider = this.GetComponent<Collider2D>();
         Collider2D playerCollider = player.GetComponent<Collider2D>();
         Collider2D[] hitPlayers = Physics2D.OverlapBoxAll(ratCollider.bounds.center, ratCollider.bounds.size, 0f, LayerMask.GetMask(playerLayerName));
-        
-        if (hitPlayers.Length > 0 && attackCooldown == 0f)
+
+        if (hitPlayers.Length > 0 && attackCooldown == 0f && health > 0)
         {
             hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
             attackCooldown = attackCooldownConstant;

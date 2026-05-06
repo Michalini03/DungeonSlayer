@@ -395,7 +395,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   wallCheckDistance: 1
-  attackDamage: 35
+  attackDamage: 25
   attackHitboxCollider: {fileID: 1781513413779579957}
   deathAnimationLength: 1.2
   attackPoint: {fileID: 8621276621363503845}

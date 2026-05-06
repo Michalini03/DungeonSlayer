@@ -544,11 +544,7 @@ Transform:
   m_GameObject: {fileID: 428851950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-<<<<<<< HEAD
-  m_LocalPosition: {x: 76.17545, y: 26.968462, z: -9}
-=======
-  m_LocalPosition: {x: 76.17356, y: 26.968462, z: -9}
->>>>>>> origin/development
+  m_LocalPosition: {x: 76.17357, y: 26.968462, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33872,6 +33868,18 @@ PrefabInstance:
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 403364328}
+    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+      propertyPath: 'baseComboBar.Array.data[0]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+      propertyPath: 'baseComboBar.Array.data[1]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669573878980070046, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
+      propertyPath: 'baseComboBar.Array.data[2]'
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3314722472415878276, guid: 8fde34f3e8a38c344b982e2e84a55bc6, type: 3}
       propertyPath: leftX
       value: -18.5

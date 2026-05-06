@@ -456,7 +456,7 @@ MonoBehaviour:
   baseAttackRange: 0.4
   baseKnockbackForce: 10
   baseMaxStamina: 100
-  baseComboBar: 060000000300000001000000
+  baseComboBar: 080000000800000004000000
   baseIframesDuration: 0.5
   baseMovementSpeed: 5
   minMaxHealth: 1
