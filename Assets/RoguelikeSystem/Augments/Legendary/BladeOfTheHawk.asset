@@ -16,10 +16,11 @@ MonoBehaviour:
   displayName: Blade of the Hawk
   description: Massive Combo Bar Size Up. Knockback Down. Total Damage halved.
   flavorText: '"The Saint struck with the swiftness of a white hawk."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 86a681bec0a20924d914ad9963a80ad2, type: 3}
   rarity: 3
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes:
   - guts_attack

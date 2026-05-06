@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Crown of Thorns
   description: Deal double damage. Take double damage.
   flavorText: '"The Saint abandoned all defense, exploiting every enemy opening."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 31af639cbf4b35745a812ea5dd36d3fb, type: 3}
   rarity: 2
   baseWeight: 100
   maxStacks: 1

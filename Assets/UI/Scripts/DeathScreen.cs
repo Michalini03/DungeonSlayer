@@ -35,6 +35,6 @@ public class DeathScreen : MonoBehaviour
             SaveSystem.DeleteRun();
         }
 
-        SceneManager.LoadScene("MainMenuGame");
+        SceneManager.LoadScene("main_menu");
     }
 }

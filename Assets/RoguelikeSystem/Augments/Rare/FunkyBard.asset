@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Funky Bard
   description: Funky music plays for the rest of the run.
   flavorText: '"Yes, the bard is necessary. I will take no questions."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 667b1d15eac24f84489ae280e0a795ac, type: 3}
   rarity: 2
   baseWeight: 50
   maxStacks: 1

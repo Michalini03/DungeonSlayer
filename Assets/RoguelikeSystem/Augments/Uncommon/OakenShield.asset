@@ -16,9 +16,10 @@ MonoBehaviour:
   displayName: Oaken Shield
   description: Damage Reduction Up.
   flavorText: '"The Acorn shielded the Saint from damage."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4d6eab69bdee8384299bed0e4aceb05a, type: 3}
   rarity: 1
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes: []

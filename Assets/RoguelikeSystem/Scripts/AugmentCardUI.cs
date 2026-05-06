@@ -8,6 +8,7 @@ public class AugmentCardUI : MonoBehaviour
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private TMP_Text flavorText;
+    [SerializeField] private TMP_Text rarityText;
     [SerializeField] private Button button;
 
     private AugmentDefinition currentAugment;
@@ -16,7 +17,9 @@ public class AugmentCardUI : MonoBehaviour
     private void Awake()
     {
         if (button == null)
+        {
             button = GetComponent<Button>();
+        }
     }
 
     public void Setup(AugmentDefinition augment, AugmentSelectionUI owner)
@@ -25,18 +28,30 @@ public class AugmentCardUI : MonoBehaviour
         selectionUI = owner;
 
         if (titleText != null)
+        {
             titleText.text = augment.displayName;
+        }
+
 
         if (descriptionText != null)
+        {
             descriptionText.text = augment.description;
+        }
 
         if (flavorText != null)
+        {
             flavorText.text = augment.flavorText;
+        }
 
         if (iconImage != null)
         {
             iconImage.sprite = augment.icon;
             iconImage.enabled = augment.icon != null;
+        }
+
+        if (rarityText != null)
+        {
+            rarityText.text = augment.rarity.ToString();
         }
 
         if (button != null)
