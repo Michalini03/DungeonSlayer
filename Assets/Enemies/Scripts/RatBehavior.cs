@@ -17,6 +17,10 @@ public class RatBehavior : MonoBehaviour
     [SerializeField] private int health = 100;
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int healthRegenAmount = 30;
+    [SerializeField] private string playerLayerName = "Player";
+    [SerializeField] private int attackDamage = 20;
+    [SerializeField] private float attackCooldownConstant = 1.5f;
+    private float attackCooldown = 0f;
 
     [Header("Detekce země (Červená čára)")]
     [SerializeField] private float groundDistance = 0.5f;
@@ -59,10 +63,33 @@ public class RatBehavior : MonoBehaviour
         {
             Flip();
         }
-        
+        AttackHitboxLogic(Time.fixedDeltaTime);
         checkPlayerDistance();
         managerLookAround();
         move();
+    }
+
+    private void AttackHitboxLogic(float deltaTime)
+    {
+        Collider2D ratCollider = this.GetComponent<Collider2D>();
+        Collider2D playerCollider = player.GetComponent<Collider2D>();
+        Collider2D[] hitPlayers = Physics2D.OverlapBoxAll(ratCollider.bounds.center, ratCollider.bounds.size, 0f, LayerMask.GetMask(playerLayerName));
+        
+        if (hitPlayers.Length > 0 && attackCooldown == 0f)
+        {
+            hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
+            attackCooldown = attackCooldownConstant;
+        }
+
+        if(attackCooldown > 0f)
+        {
+            attackCooldown -= deltaTime;
+        }
+
+        if(attackCooldown < 0f)
+        {
+            attackCooldown = 0f;
+        }
     }
 
     void Flip()
