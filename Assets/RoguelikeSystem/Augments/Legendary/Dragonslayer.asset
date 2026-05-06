@@ -18,10 +18,11 @@ MonoBehaviour:
     halved.
   flavorText: '"The Saint''s sword was too big to be called a sword. Massive, thick,
     heavy, and far too rough. Indeed, it was a heap of raw iron."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 2827aa531b584984288edd82a69d7bbe, type: 3}
   rarity: 3
   baseWeight: 100
   maxStacks: 1
+  effectType: 0
   tags: []
   excludes:
   - griffith_attack

@@ -17,9 +17,10 @@ MonoBehaviour:
   description: Invincibility Duration Up.
   flavorText: '"In the Saint''s care, the Acorn grew stronger, and so did its power
     to protect."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ceb09d389658f7946bc9e525c55fede4, type: 3}
   rarity: 1
   baseWeight: 100
   maxStacks: 10
+  effectType: 0
   tags: []
   excludes: []

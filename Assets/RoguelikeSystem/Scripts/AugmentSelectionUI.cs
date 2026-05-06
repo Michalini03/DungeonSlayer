@@ -7,6 +7,9 @@ public class AugmentSelectionUI : MonoBehaviour
     [SerializeField] private AugmentCardUI[] cards;
     [SerializeField] private EnemySpawner spawner;
 
+    [Header("UI References")]
+    [SerializeField] private GameObject playerUI;
+
     public bool isSelecting = false;
 
     private List<AugmentDefinition> currentChoices = new();
@@ -30,6 +33,11 @@ public class AugmentSelectionUI : MonoBehaviour
         if (RunController.Instance == null)
         {
             return;
+        }
+
+        if (playerUI != null)
+        {
+            playerUI.SetActive(false);
         }
 
         currentChoices = RunController.Instance.GetThreeRandomAugments();
@@ -57,6 +65,11 @@ public class AugmentSelectionUI : MonoBehaviour
 
     public void Hide()
     {
+        if (playerUI != null)
+        {
+            playerUI.SetActive(true);
+        }
+
         EventSystem.current?.SetSelectedGameObject(null);
         gameObject.SetActive(false);
 

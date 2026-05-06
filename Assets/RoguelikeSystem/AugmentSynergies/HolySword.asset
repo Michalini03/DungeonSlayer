@@ -18,6 +18,8 @@ MonoBehaviour:
     Up. '
   flavorText: '"The Branch of The Great Oak was sword wielded in the most dire times
     by the Saint. It has since been lost to time..."'
+  icon: {fileID: 21300000, guid: b2d21cde4b15d814194fcd1b84954cc9, type: 3}
+  hidesAugments: 1
   requiredAugmentIds:
   - holy_sword_blade
   - holy_sword_heart

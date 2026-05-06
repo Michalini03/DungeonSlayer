@@ -20,6 +20,11 @@ public class EnemyHitInfo : MonoBehaviour
             ratBehavior.manageEnemyHit(playerDamage);
             return;
         }
+        if (TryGetComponent<BossBehavior>(out var bossBehavior))
+        {
+            bossBehavior.manageEnemyHit(playerDamage);
+            return;
+        }
         else
         {
             Debug.LogWarning("Neexistuje hledaná komponenta pro správu zásahu nepřítele.");

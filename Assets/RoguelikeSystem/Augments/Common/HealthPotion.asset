@@ -16,9 +16,9 @@ MonoBehaviour:
   displayName: Rejuvenation
   description: Regain 50% of Max HP.
   flavorText: '"The Acorn mended the Saint''s wounds."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: cf5cbecd7ccf75e488d4f99aedf51c08, type: 3}
   rarity: 0
-  baseWeight: 120
+  baseWeight: 100
   maxStacks: 100
   effectType: 1
   tags: []
