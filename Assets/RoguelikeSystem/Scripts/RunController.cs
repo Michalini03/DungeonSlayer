@@ -16,6 +16,8 @@ public class RunController : MonoBehaviour
     public bool IsAugmentMenuOpen { get; private set; }
     public bool IsGameplayInputBlocked => IsAugmentMenuOpen || PauseMenu.isPaused;
 
+    private bool suppressRuntimeStatSync = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -33,7 +35,15 @@ public class RunController : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this)
+        {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        if (attributesController != null)
+        {
+            attributesController.OnHealthChange -= HandleHealthChanged;
+            attributesController.OnStaminaChange -= HandleStaminaChanged;
+        }
     }
 
     private void Start()
@@ -48,14 +58,36 @@ public class RunController : MonoBehaviour
 
         draftService = new AugmentDraftService(runState.Seed);
 
+        suppressRuntimeStatSync = true;
+
         RebindSceneReferences();
         RefreshBuild();
+        RestoreRuntimeStats();
+
+        suppressRuntimeStatSync = false;
+
+        if (attributesController != null)
+        {
+            runState.CurrentHealth = attributesController.currentHealth;
+            runState.CurrentStamina = attributesController.currentStamina;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        suppressRuntimeStatSync = true;
+
         RebindSceneReferences();
-        //RefreshBuild();
+        RefreshBuild();
+        RestoreRuntimeStats();
+
+        suppressRuntimeStatSync = false;
+
+        if (attributesController != null)
+        {
+            runState.CurrentHealth = attributesController.currentHealth;
+            runState.CurrentStamina = attributesController.currentStamina;
+        }
 
         if (scene.name == "main_menu")
         {
@@ -68,7 +100,39 @@ public class RunController : MonoBehaviour
 
     private void RebindSceneReferences()
     {
+        if (attributesController != null)
+        {
+            attributesController.OnHealthChange -= HandleHealthChanged;
+            attributesController.OnStaminaChange -= HandleStaminaChanged;
+        }
+
         attributesController = FindFirstObjectByType<AttributesController>();
+
+        if (attributesController != null)
+        {
+            attributesController.OnHealthChange += HandleHealthChanged;
+            attributesController.OnStaminaChange += HandleStaminaChanged;
+        }
+    }
+
+    private void HandleHealthChanged(int currentHealth, int maxHealth)
+    {
+        if (suppressRuntimeStatSync)
+        {
+            return;
+        }
+
+        runState.CurrentHealth = currentHealth;
+    }
+
+    private void HandleStaminaChanged(int currentStamina, int maxStamina)
+    {
+        if (suppressRuntimeStatSync)
+        {
+            return;
+        }
+
+        runState.CurrentStamina = currentStamina;
     }
 
     public void SetAugmentMenuOpen(bool isOpen)
@@ -126,7 +190,6 @@ public class RunController : MonoBehaviour
             return false;
         }
             
-
         switch (augment.id)
         {
             case "rejuv":
@@ -259,6 +322,23 @@ public class RunController : MonoBehaviour
         attributesController.ApplyCalculatedStats(stats);
     }
 
+    private void RestoreRuntimeStats()
+    {
+        if (attributesController == null)
+        {
+            return;
+        }
+
+        if (runState.CurrentHealth > 0)
+        {
+            attributesController.currentHealth = Mathf.Clamp(runState.CurrentHealth, 0, attributesController.maxHealth);
+        }
+
+        if (runState.CurrentStamina > 0)
+        {
+            attributesController.currentStamina = Mathf.Clamp(runState.CurrentStamina, 0, attributesController.maxStamina);
+        }
+    }
     public IReadOnlyDictionary<string, int> GetOwnedAugments()
     {
         return runState.OwnedStacks;
