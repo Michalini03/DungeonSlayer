@@ -7,10 +7,10 @@ public class AugmentDraftService
 {
     private readonly System.Random rng;
 
-    private const int CommonChance = 54;
-    private const int UncommonChance = 40;
-    private const int RareChance = 15;
-    private const int LegendaryChance = 1;
+    private const int CommonChance = 45;
+    private const int UncommonChance = 30;
+    private const int RareChance = 20;
+    private const int LegendaryChance = 5;
 
     public AugmentDraftService(int seed)
     {
@@ -111,7 +111,7 @@ public class AugmentDraftService
         roll -= CommonChance;
         if (roll < UncommonChance)
         {
-            return AugmentRarity.Rare;
+            return AugmentRarity.Uncommon;
         }
 
         roll -= UncommonChance;

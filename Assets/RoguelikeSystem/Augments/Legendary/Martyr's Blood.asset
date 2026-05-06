@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AugmentDefinition
   id: martyrs_blood
   displayName: Martyr's Blood
-  description: 'Total Maximum Hit Points halved, but regain a small number of hitpoints
-    per second.
+  description: 'Total maxium HP halved, but regain a small number of HP per second.
 
-    All regeneration can now regenerate up to 100% of maximum HP.
+    All
+    regeneration can now regenerate up to 100% of maximum HP.
 
 '
   flavorText: '"While the Saint never stopped bleeding, they could never be felled."'
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 926d5ab3a66b3df46b7ccf93addf93ed, type: 3}
   rarity: 3
   baseWeight: 100
   maxStacks: 1

@@ -174,7 +174,6 @@ public class RunController : MonoBehaviour
             return;
         }
 
-
         runState.AddAugment(augment.id);
         RefreshBuild();
     }
@@ -339,5 +338,29 @@ public class RunController : MonoBehaviour
         {
             attributesController.currentStamina = Mathf.Clamp(runState.CurrentStamina, 0, attributesController.maxStamina);
         }
+    }
+    public IReadOnlyDictionary<string, int> GetOwnedAugments()
+    {
+        return runState.OwnedStacks;
+    }
+
+    public IReadOnlyList<AugmentSynergyDefinition> GetOwnedSynergies()
+    {
+        if (synergyDatabase == null)
+        {
+            return new List<AugmentSynergyDefinition>();
+        }
+
+        return SynergyResolver.GetActiveSynergies(runState, synergyDatabase.GetAll());
+    }
+
+    public AugmentDefinition GetAugmentDefinition(string augmentId)
+    {
+        if (augmentDatabase == null)
+        {
+            return null;
+        }
+
+        return augmentDatabase.GetById(augmentId);
     }
 }

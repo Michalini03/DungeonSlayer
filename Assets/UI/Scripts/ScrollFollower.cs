@@ -2,14 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-public class ScrollSelectionNavigator : MonoBehaviour
+public class ScrollFollower : MonoBehaviour
 {
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private RectTransform viewport;
     [SerializeField] private RectTransform content;
     [SerializeField] private Selectable firstSelected;
-    [SerializeField] private float scrollSpeed = 5f;
+    [SerializeField] private float scrollSpeed = 10f;
+    [SerializeField] private float mouseScrollBlockDuration = 0.2f;
+
+    private float lastMouseScrollTime = -999f;
 
     private void OnEnable()
     {
@@ -29,6 +33,13 @@ public class ScrollSelectionNavigator : MonoBehaviour
 
     private void Update()
     {
+        TrackMouseScroll();
+
+        if (Time.unscaledTime - lastMouseScrollTime < mouseScrollBlockDuration)
+        {
+            return;
+        }
+
         if (EventSystem.current == null || scrollRect == null || viewport == null || content == null)
         {
             return;
@@ -54,6 +65,21 @@ public class ScrollSelectionNavigator : MonoBehaviour
         }
 
         ScrollToVisible(selectedRect);
+    }
+
+    private void TrackMouseScroll()
+    {
+        if (Mouse.current == null)
+        {
+            return;
+        }
+
+        Vector2 scroll = Mouse.current.scroll.ReadValue();
+
+        if (Mathf.Abs(scroll.x) > 0.01f || Mathf.Abs(scroll.y) > 0.01f)
+        {
+            lastMouseScrollTime = Time.unscaledTime;
+        }
     }
 
     private void ScrollToVisible(RectTransform target)
@@ -111,13 +137,7 @@ public class ScrollSelectionNavigator : MonoBehaviour
         float normalizedOffset = offset / scrollableWidth;
         float targetScroll = scrollRect.horizontalNormalizedPosition + normalizedOffset;
 
-        scrollRect.horizontalNormalizedPosition = Mathf.Clamp01(
-            Mathf.Lerp(
-                scrollRect.horizontalNormalizedPosition,
-                targetScroll,
-                Time.unscaledDeltaTime * scrollSpeed
-            )
-        );
+        scrollRect.horizontalNormalizedPosition = Mathf.Clamp01(Mathf.Lerp(scrollRect.horizontalNormalizedPosition, targetScroll, Time.unscaledDeltaTime * scrollSpeed));
     }
 
     private void HandleVerticalScroll(Vector3[] viewportCorners, Vector3[] targetCorners)
