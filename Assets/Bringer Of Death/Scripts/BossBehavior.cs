@@ -6,7 +6,6 @@ public enum EnumBossState
 {
     FoesState,
     CastSpellState,
-    CombatState
 }
 
 public class BossBehavior : MonoBehaviour
@@ -17,12 +16,20 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private GameObject player;
     private PlayerMovement playerMovement;
     [SerializeField] private Vector2 castSpellOffset;
+    [SerializeField] private Vector2 castSpellOnSelfOffset;
     [SerializeField] private EnumBossState bossState;
     [SerializeField] private bool ignorePlayerCollision = true;
     [SerializeField] private string enemyLayerName = "Enemy";
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private BossBehaviorGX bossBehaviorGX;
+    
+    [SerializeField] private int foesStateHealthThreshold = 500;
     [SerializeField] private int health = 1000;
+    [SerializeField] private bool isDead = false;
+
+    [Header("Spell Settings")]
+    private float spellTimer;
+    private float spellInterval = 5f;
 
     [Header("Spawn Enemies Logic")]
     [SerializeField] private GameObject skeletonPrefab;
@@ -35,16 +42,27 @@ public class BossBehavior : MonoBehaviour
     private List<List<Vector3>> spawnPointsLists = new List<List<Vector3>>();
     private List<GameObject> waveSet = new List<GameObject>();
     private float spawnTimer = 0f;
-    private float spawnInterval = 2f;
+    [SerializeField] private float spawnInterval = 2f;
     private bool canSpawn = true;
-    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
 
+        spellTimer = spellInterval;
         ConfigureCollisionRules();
         getSpawnPointsLists();
+    }
+
+    private void adjustSpellTimerAndCast()
+    {
+        spellTimer -= Time.deltaTime;
+        if (spellTimer <= 0f)
+        {
+            spellTimer = spellInterval;
+            bossBehaviorGX.animator.SetTrigger("castSpell");
+        }
     }
 
     private void ConfigureCollisionRules()
@@ -89,10 +107,6 @@ public class BossBehavior : MonoBehaviour
         {
             FoesStateUpdate();
         }
-        else if(bossState == EnumBossState.CombatState)
-        {
-            CombatStateUpdate();
-        }
         else if(bossState == EnumBossState.CastSpellState)
         {
             CastSpellStateUpdate();
@@ -101,6 +115,11 @@ public class BossBehavior : MonoBehaviour
 
     private void FoesStateUpdate()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         UpdateWaveSet();
         checkEnemySpawnConditions();
 
@@ -119,14 +138,21 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
-    private void CombatStateUpdate()
-    {
-        // Logika pro CombatState (boj)
-    }
-
     private void CastSpellStateUpdate()
     {
-        // Logika pro CastSpellState (kouzlení)
+        if (isDead)
+        {
+            return;
+        }
+        adjustSpellTimerAndCast();
+
+        UpdateWaveSet();
+        checkEnemySpawnConditions();
+
+        if (canSpawn)
+        {
+            manageSpawn();
+        }
     }
 
     public void CastSpell()
@@ -152,6 +178,18 @@ public class BossBehavior : MonoBehaviour
         {
             Debug.LogWarning("Boss se pokusil kouzlit, ale hráč už neexistuje (asi je po smrti).");
         }
+    }
+
+    private void castSpellOnSelf()
+    {
+        if (spellPrefab == null)
+        {
+            Debug.LogError("Chybí spellPrefab v BossBehavior!");
+            return;
+        }
+
+        GameObject spell = Instantiate(spellPrefab, transform.position + (Vector3)castSpellOnSelfOffset, Quaternion.identity);
+        spell.transform.localScale = new Vector3(2f, 2f, 2f);
     }
 
     private void SpawnSingleEnemy()
@@ -183,6 +221,15 @@ public class BossBehavior : MonoBehaviour
         AdvanceIndexes(currentList.Count);
     }
 
+    private void flipBossDirection()
+    {
+        if (player == null) return;
+
+        float scale_x = transform.localScale.x;
+        float scale_y = transform.localScale.y;
+        this.transform.localScale = new Vector3(-scale_x, scale_y, 1);
+    }
+
     // Pomocná metoda pro posun indexů
     private void AdvanceIndexes(int currentListSize)
     {
@@ -195,6 +242,13 @@ public class BossBehavior : MonoBehaviour
             positionIndex = 0;
             MoveToNextList();
         }
+    }
+
+    public void moveToNextPosition()
+    {
+        float posX = this.transform.position.x;
+        float posY = this.transform.position.y;
+        this.transform.position = new Vector3(posX - 7f, posY, 0f);
     }
 
     private void MoveToNextList()
@@ -244,8 +298,12 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
+    
+
     public void manageEnemyHit(int playerDamage)
     {
+        if(isDead) return;
+
         if(!canSpawn)
         {   
             // Boss je ve fazi kdy nesspawnuje takze je nezranitelny
@@ -253,10 +311,18 @@ public class BossBehavior : MonoBehaviour
         }
         
         health -= playerDamage;
-
-        if(health <= 0)
+        if(health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
-            // zatim nic
+            bossState = EnumBossState.CastSpellState;
+            bossBehaviorGX.animator.SetTrigger("teleport");
+            moveToNextPosition();
+            flipBossDirection();
+            Debug.Log("Boss přechází do CastSpellState!");
+        }
+        else if(health <= 0)
+        {
+            isDead = true;
+            Debug.Log("Boss je mrtvý!");
         }
         else
         {
