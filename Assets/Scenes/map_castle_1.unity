@@ -544,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 428851950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 76.17626, y: 26.968462, z: -9}
+  m_LocalPosition: {x: 76.17357, y: 26.968462, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17568,6 +17568,12 @@ MonoBehaviour:
   - name: PLAYER_JUMP
     sounds:
     - {fileID: 8300000, guid: 78374939773994d4196eeccb9cc465e6, type: 3}
+    - {fileID: 8300000, guid: 4dd7f2af2fe6b1f4d84d7db0715aa585, type: 3}
+    - {fileID: 8300000, guid: e732839d84a903f46b9e5d7333022975, type: 3}
+    - {fileID: 8300000, guid: e48bec7e1c9be4540880d821ec32b975, type: 3}
+    - {fileID: 8300000, guid: 45608ac215afe5d47b5488eb84b2c1d9, type: 3}
+    - {fileID: 8300000, guid: a5bd9e28885b358488c6dcf4efe098ad, type: 3}
+    - {fileID: 8300000, guid: 261b947cbd035764f8305523c0fd47d2, type: 3}
   - name: PLAYER_DEATH
     sounds:
     - {fileID: 8300000, guid: 6bc5b6e5d6ed1e842917499ebe2f00a4, type: 3}
@@ -17622,6 +17628,9 @@ MonoBehaviour:
   - name: GOBLIN_DEATH
     sounds:
     - {fileID: 8300000, guid: c9bfca854ecc744408b67559374f76bb, type: 3}
+  - name: RAT_ATTACK
+    sounds:
+    - {fileID: 8300000, guid: 816cb2f7489fc1f4398d5bbf8edab4ba, type: 3}
 --- !u!82 &930151408
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18028,7 +18037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6402274978950259527, guid: 73e9845fa6bfd9c4ba46da53a63c6c93, type: 3}
       propertyPath: nextSceneName
-      value: main_menu
+      value: map_castle_2
       objectReference: {fileID: 0}
     - target: {fileID: 6402274978950259527, guid: 73e9845fa6bfd9c4ba46da53a63c6c93, type: 3}
       propertyPath: skeletonPrefab
@@ -34013,6 +34022,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551274017882248522, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2643523965128046179, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
       propertyPath: spawner
       value: 
@@ -34141,6 +34166,22 @@ PrefabInstance:
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 403364329}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7958518577695316944, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8257540414186664116, guid: 7b00e867b95822d47b13d2b0ce895946, type: 3}
       propertyPath: m_Name
       value: AugmentMenuCanvas
