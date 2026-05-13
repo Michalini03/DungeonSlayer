@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7489191353783863011}
   - component: {fileID: 8801613011171758143}
   - component: {fileID: 412388762100156142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BossGX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossBehaviorGX
   bossBehavior: {fileID: 1797016802862930450}
+  animator: {fileID: 0}
 --- !u!1 &6568270993484380182
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +142,7 @@ GameObject:
   - component: {fileID: 3129798392845357877}
   - component: {fileID: 578725081769189461}
   - component: {fileID: 1797016802862930450}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,12 +275,18 @@ MonoBehaviour:
   spellPrefab: {fileID: 5332775032863997940, guid: e1cbb843178079343b500a6bc3ad98b0, type: 3}
   player: {fileID: 0}
   castSpellOffset: {x: 0, y: 0.8}
+  castSpellOnSelfOffset: {x: 0, y: 0}
   bossState: 0
   ignorePlayerCollision: 1
   enemyLayerName: Enemy
   playerLayerName: Player
+  bossBehaviorGX: {fileID: 0}
+  foesStateHealthThreshold: 500
+  health: 1000
+  isDead: 0
   skeletonPrefab: {fileID: 0}
   flyingEyePrefab: {fileID: 0}
   goblinPrefab: {fileID: 1782134185211615687, guid: b49f2656ca01f5746a31aeb2c08d9c4f, type: 3}
   ratPrefab: {fileID: 0}
   spawnPointFinder: {fileID: 0}
+  spawnInterval: 2

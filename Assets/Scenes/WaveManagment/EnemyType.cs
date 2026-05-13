@@ -6,5 +6,6 @@ public enum EnemyType
     Skeleton,
     FlyingEye,
     Rat,
-    Goblin
+    Goblin, 
+    Boss
 }
