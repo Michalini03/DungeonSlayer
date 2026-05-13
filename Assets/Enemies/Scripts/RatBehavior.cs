@@ -78,6 +78,7 @@ public class RatBehavior : MonoBehaviour
         if (hitPlayers.Length > 0 && attackCooldown == 0f && health > 0)
         {
             hitPlayers[0].gameObject.GetComponent<PlayerCombat>().takeDamage(attackDamage);
+            SoundManager.PlaySound(SoundType.RAT_ATTACK, 0.3f);
             attackCooldown = attackCooldownConstant;
         }
 
