@@ -28,6 +28,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashTime = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
 
+    [Header("Double Jump")]
+    [SerializeField] private int maxJumps = 1;
+    private int jumpsRemaining;
+
+    [Header("Coyote Time")]
+    [SerializeField] private float coyoteTimeDuration = 0.15f;
+    private float coyoteTimeCounter;
+    private bool wasGrounded;
+
     public bool canDash = true;
     private bool isDashing;
 
@@ -46,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         Application.targetFrameRate = 120;
         startPosX = transform.position.x;
         startPosY = transform.position.y;
+        jumpsRemaining = maxJumps - 1;
 
     }
 
@@ -104,6 +114,23 @@ public class PlayerMovement : MonoBehaviour
             jump = false;
             animator.SetFloat("Speed", 0f);
             return;
+        }
+
+        bool isGroundedNow = cController.IsGrounded(); 
+
+        if (isGroundedNow)
+        {
+            coyoteTimeCounter = coyoteTimeDuration;
+            wasGrounded = true;
+            jumpsRemaining = maxJumps;
+        }
+        else if (wasGrounded)
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+            if (jumpCooldown <= 0)
+                jumpsRemaining = maxJumps - 1;
+            if (coyoteTimeCounter <= 0f)
+                wasGrounded = false;
         }
 
         Vector2 moveInput = inputAction.Player.Move.ReadValue<Vector2>();
@@ -192,14 +219,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.performed)
+        if (!context.performed|| IsGameplayBlocked() || aController.currentHealth <= 0)
             return;
 
-        if (IsGameplayBlocked() || aController.currentHealth <= 0)
-            return;
+        bool canCoyoteJump = wasGrounded && coyoteTimeCounter > 0f && jumpsRemaining == 0;
 
-        jump = true;
-        animator.SetBool("IsJumping", true);
+        if (jumpsRemaining > 0 || canCoyoteJump)
+        {
+            if (canCoyoteJump)
+            {
+                coyoteTimeCounter = 0f;
+                wasGrounded = false;
+            }
+            jump = true;
+            jumpsRemaining = Mathf.Max(0, jumpsRemaining - 1);
+            animator.SetBool("IsJumping", true);
+            jumpCooldown = 0.05f;
+        }
 
         // Tell the script to ignore the ground for the next 0.2 seconds
         jumpCooldown = 0.05f;
@@ -215,6 +251,8 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+
+        jumpsRemaining = maxJumps;
 
         //Debug.Log("Landed");
         animator.SetBool("IsJumping", false);

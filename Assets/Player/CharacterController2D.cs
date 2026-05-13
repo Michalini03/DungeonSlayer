@@ -19,6 +19,7 @@ public class CharacterController2D : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
+	public bool IsGrounded() => m_Grounded;
 
 	[Header("Events")]
 	[Space]
@@ -130,7 +131,7 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 		// If the player should jump...
-		if (m_Grounded && jump)
+		if (jump)
 		{
 			// Add a vertical force to the player.
 			m_Grounded = false;
