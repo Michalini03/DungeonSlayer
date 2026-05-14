@@ -193,8 +193,8 @@ MonoBehaviour:
   animator: {fileID: 2069037740385713035}
   lookAroundTimer: 10
   deathAnimationLength: 1.2
-  knockbackDuration: 0.15
-  knockbackResistance: 0.5
+  knockbackDuration: 0
+  knockbackResistance: 1
 --- !u!61 &3287252882876649618
 BoxCollider2D:
   m_ObjectHideFlags: 0
