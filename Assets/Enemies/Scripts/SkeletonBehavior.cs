@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private int health = 100;
+    [SerializeField] private int health = 200;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject player;
@@ -48,7 +48,14 @@ public class EnemyMovement : MonoBehaviour
     [Header("Deadh Settings")]
     [SerializeField] private float deathAnimationLength = 1.2f;
     private bool isDead = false;
-    
+
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackDuration = 0.15f;
+    [SerializeField] private float knockbackResistance = 1f;
+
+    private bool isKnockedBack = false;
+    private Coroutine knockbackCoroutine;
+
     private int patrolBlockedFrames = 0;
     private float patrolNextTurnTime = 0f;
 
@@ -95,6 +102,11 @@ public class EnemyMovement : MonoBehaviour
         if (isDead)
         {
             rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (isKnockedBack)
+        {
             return;
         }
 
@@ -425,12 +437,13 @@ private void OnTriggerEnter2D(Collider2D other)
     }
 
     // Tady si pak pridej klidne vice paramentru jak budes potrebovat (knockbackForce, hitEffect, atd.) 
-    public void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
         // Prevent the enemy from taking more hits or triggering death twice
         if (isDead) return;
 
         health -= playerDamage;
+        ApplyKnockback(sourcePosition, knockbackForce);
 
         if (health <= 0)
         {
@@ -485,5 +498,40 @@ private void OnTriggerEnter2D(Collider2D other)
         {
             DestroyEnemy();
         }
+    }
+
+    public void ApplyKnockback(Vector2 sourcePosition, float force)
+    {
+        if (isDead || rb == null)
+        {
+            return;
+        }
+
+        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
+
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            direction = transform.localScale.x >= 0 ? Vector2.right : Vector2.left;
+        }
+
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(knockbackCoroutine);
+        }
+
+        knockbackCoroutine = StartCoroutine(KnockbackRoutine(direction, force));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector2 direction, float force)
+    {
+        isKnockedBack = true;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * (force / Mathf.Max(knockbackResistance, 0.01f)), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnockedBack = false;
+        knockbackCoroutine = null;
     }
 }

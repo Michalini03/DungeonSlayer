@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02dd7338f3e66442a8a64d897666a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  health: 185
+  health: 200
   attackHitbox: {fileID: 1837563916395274584}
   animator: {fileID: 761251386390053453}
   player: {fileID: 0}
@@ -254,8 +254,6 @@ MonoBehaviour:
   insideTrigerRange: 5
   outsideTrigerRange: 7
   speedAnimationMultiplier: 2
-  maxSpeedAdjustment: 1
-  minSpeedAdjustment: -1
   enemyLayerName: Enemy
   playerLayerName: Player
   walkDirection: {x: 1, y: 0, z: 0}
@@ -272,6 +270,8 @@ MonoBehaviour:
   attackDamage: 35
   attackHitboxCollider: {fileID: 0}
   deathAnimationLength: 1.2
+  knockbackDuration: 0.15
+  knockbackResistance: 1
   attackPoint: {fileID: 8997590816025204790}
   trueAttackRange: 0.69
 --- !u!114 &629830827878730136

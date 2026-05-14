@@ -216,27 +216,32 @@ public class PlayerCombat : MonoBehaviour
 
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(GetAttackCenter(), aController.attackRange, enemyLayers);
 
-        //Debug.Log("Hit " + hitEnemies + " enemies!");
+        //Debug.Log("Hit " + hitEnemies + " enemies!");\
 
         int dealtDamage = GetEffectiveDamage();
 
-        // Pavel: Zde jsem si dovolil drobnou úpravu aby to rovnou fungovalo s novou komponentou
-        // Roman: Taky mala uprava (dealtDamage) pro Berserker augment
+        HashSet<EnemyHitInfo> alreadyHit = new HashSet<EnemyHitInfo>();
+
         foreach (Collider2D enemy in hitEnemies)
         {
-            EnemyHitInfo enemyHitInfo = enemy.gameObject.GetComponent<EnemyHitInfo>();
+            EnemyHitInfo enemyHitInfo = enemy.GetComponentInParent<EnemyHitInfo>();
 
-            if (enemyHitInfo != null)
-            {
-                Debug.Log("EnemyHitInfo komponenta byla nalezena.");
-                enemyHitInfo.manageEnemyHit(dealtDamage);
-                ApplyOnHitEffects(dealtDamage);
-            }
-            else
+            if (enemyHitInfo == null)
             {
                 Debug.LogWarning("Neexistuje komponenta EnemyHitInfo na zasaženém objektu.");
+                continue;
             }
 
+            if (alreadyHit.Contains(enemyHitInfo))
+            {
+                continue;
+            }
+
+            alreadyHit.Add(enemyHitInfo);
+
+            Vector2 sourcePosition = transform.position;
+            enemyHitInfo.manageEnemyHit(dealtDamage, sourcePosition, aController.knockbackForce);
+            ApplyOnHitEffects(dealtDamage);
         }
     }
 

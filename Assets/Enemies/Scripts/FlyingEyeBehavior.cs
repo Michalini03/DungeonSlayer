@@ -18,18 +18,18 @@ public class FlyingEyeBehavior : MonoBehaviour
     [SerializeField] private float maxSpeedPatrolAdjustment = 50f;
     [SerializeField] private float insideTrigerRange = 5f;
     [SerializeField] private float outsideTrigerRange = 8f;
-    [SerializeField] private float health = 100f;
-    [SerializeField] private bool isDead = false;
     private Vector3 targetPosition;
     private bool isPatrolling = true;
 
-    [Header("Attack Settings")]
+    [Header("Stats")]
+    [SerializeField] private float health = 120f;
     [SerializeField] private int attackDamage = 20;
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private string playerLayerName = "Player";
     private float attackCooldown = 1f;
     private float currentCooldown = 0f;
+    [SerializeField] private bool isDead = false;
 
     public GameObject Player;
     public float nextWaypointDistance = 1f;
@@ -43,6 +43,13 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     [Header("Death Settings")]
     [SerializeField] private float deathAnimationLength = 1.0f;
+
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackDuration = 0.15f;
+    [SerializeField] private float knockbackResistance = 0.5f;
+
+    private bool isKnockedBack = false;
+    private Coroutine knockbackCoroutine;
 
     void Start()
     {
@@ -94,6 +101,12 @@ public class FlyingEyeBehavior : MonoBehaviour
         {
             return;
         }
+
+        if (isKnockedBack)
+        {
+            return;
+        }
+
         managePatrolTarget();
         manageAttackCooldown();
         flipCharecter();
@@ -102,10 +115,11 @@ public class FlyingEyeBehavior : MonoBehaviour
 
     void Update()
     {
-        if (isDead)
+        if (isDead || isKnockedBack)
         {
             return;
         }
+
         if (path == null)
             return;
 
@@ -114,7 +128,6 @@ public class FlyingEyeBehavior : MonoBehaviour
             reachedEndOfPath = true;
             return;
         }
-
         else
         {
             reachedEndOfPath = false;
@@ -123,6 +136,7 @@ public class FlyingEyeBehavior : MonoBehaviour
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = direction * (isPatrolling ? moveSpeedPatrol : moveSpeedChase) * Time.deltaTime;
         rb.AddForce(force);
+
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
         {
@@ -208,7 +222,7 @@ public class FlyingEyeBehavior : MonoBehaviour
     }
 
     // Stejne jako u skeletona
-    public void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
         // Prevent taking damage if already dead
         if (health <= 0 || isDead)
@@ -217,6 +231,7 @@ public class FlyingEyeBehavior : MonoBehaviour
         }
 
         health -= playerDamage;
+        ApplyKnockback(sourcePosition, knockbackForce);
 
         if (health <= 0)
         {
@@ -277,6 +292,41 @@ public class FlyingEyeBehavior : MonoBehaviour
                 Physics2D.IgnoreCollision(enemyCollider, playerCollider, true);
             }
         }
+    }
+
+    public void ApplyKnockback(Vector2 sourcePosition, float force)
+    {
+        if (isDead || rb == null)
+        {
+            return;
+        }
+
+        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
+
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            direction = transform.localScale.x >= 0 ? Vector2.right : Vector2.left;
+        }
+
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(knockbackCoroutine);
+        }
+
+        knockbackCoroutine = StartCoroutine(KnockbackRoutine(direction, force));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector2 direction, float force)
+    {
+        isKnockedBack = true;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * (force / Mathf.Max(knockbackResistance, 0.01f)), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnockedBack = false;
+        knockbackCoroutine = null;
     }
 
     private void OnDrawGizmos()

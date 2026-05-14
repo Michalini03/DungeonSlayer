@@ -371,7 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02dd7338f3e66442a8a64d897666a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  health: 100
+  health: 150
   attackHitbox: {fileID: 839541000686328177}
   animator: {fileID: 6358350723265764019}
   player: {fileID: 0}
@@ -398,5 +398,7 @@ MonoBehaviour:
   attackDamage: 25
   attackHitboxCollider: {fileID: 1781513413779579957}
   deathAnimationLength: 1.2
+  knockbackDuration: 0.15
+  knockbackResistance: 1
   attackPoint: {fileID: 8621276621363503845}
   trueAttackRange: 0.69

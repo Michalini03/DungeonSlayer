@@ -39,7 +39,14 @@ public class RatBehavior : MonoBehaviour
 
     [Header("Deadh Settings")]
     [SerializeField] private float deathAnimationLength = 2.0f;
-    private bool isDead = false;
+    private bool isDead = false;    
+
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackDuration = 0.15f;
+    [SerializeField] private float knockbackResistance = 0.1f;
+
+    private bool isKnockedBack = false;
+    private Coroutine knockbackCoroutine;
 
     void Start()
     {
@@ -50,6 +57,11 @@ public class RatBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isKnockedBack)
+        {
+            return;
+        }
+
         Vector2 currentGroundOffset = new Vector2(groundOffset.x * direction, groundOffset.y);
         Vector2 groundOrigin = (Vector2)transform.position + currentGroundOffset;
 
@@ -66,7 +78,7 @@ public class RatBehavior : MonoBehaviour
         AttackHitboxLogic(Time.fixedDeltaTime);
         checkPlayerDistance();
         managerLookAround();
-        move();
+        Move();
     }
 
     private void AttackHitboxLogic(float deltaTime)
@@ -97,13 +109,9 @@ public class RatBehavior : MonoBehaviour
     {
         direction *= -1;
 
-        // Otočení grafiky (funguje správně i pro Scale 3)
         Vector3 newScale = transform.localScale;
         newScale.x = Mathf.Abs(newScale.x) * direction;
         transform.localScale = newScale;
-
-        // Malý postrč, aby senzor hned znovu nenarazil do té samé věci
-        transform.Translate(Vector2.right * direction * 0.1f);
     }
 
     private void flipVisuals()
@@ -114,19 +122,15 @@ public class RatBehavior : MonoBehaviour
         transform.localScale = newScale;
     }
 
-    private void move()
+    private void Move()
     {
-        if(!isMoving)
+        if (!isMoving || isDead || isKnockedBack)
         {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             return;
         }
 
-        if (isDead)
-        {
-            return;
-        }
-
-        transform.Translate(Vector2.right * direction * speed * Time.fixedDeltaTime);
+        rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
     }
 
     // Vykreslení senzorů v Editoru (v okně Scene)
@@ -193,12 +197,13 @@ public class RatBehavior : MonoBehaviour
         isMoving = false;
     }
 
-    public void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
         // Prevent the enemy from taking more hits or triggering death twice
         if (isDead) return;
 
         health -= playerDamage;
+        ApplyKnockback(sourcePosition, knockbackForce);
 
         if (health <= 0)
         {
@@ -254,5 +259,39 @@ public class RatBehavior : MonoBehaviour
         {
             col.enabled = false;
         }
+    }
+
+    public void ApplyKnockback(Vector2 sourcePosition, float force)
+    {
+        if (isDead || rb == null)
+        {
+            return;
+        }
+
+        float horizontalDirection = transform.position.x >= sourcePosition.x ? 1f : -1f;
+        Vector2 direction = new Vector2(horizontalDirection, 0f);
+
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(knockbackCoroutine);
+        }
+
+        knockbackCoroutine = StartCoroutine(KnockbackRoutine(direction, force));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector2 direction, float force)
+    {
+        isKnockedBack = true;
+        isMoving = false;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * (force / Mathf.Max(knockbackResistance, 0.01f)), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        isKnockedBack = false;
+        isMoving = true;
+        knockbackCoroutine = null;
     }
 }

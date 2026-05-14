@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RatBehavior
   speed: 1.2
   speedConstant: 0
-  maxSpeedAdjustment: 0.7
+  maxSpeedAdjustment: 0.5
   player: {fileID: 0}
   playerTriggerDistance: 3
   lookMinTime: 7
@@ -180,6 +180,9 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   healthRegenAmount: 30
+  playerLayerName: Player
+  attackDamage: 20
+  attackCooldownConstant: 1.5
   groundDistance: 0.2
   groundOffset: {x: 0.2, y: -0.4}
   wallDistance: 0.3
@@ -190,6 +193,8 @@ MonoBehaviour:
   animator: {fileID: 2069037740385713035}
   lookAroundTimer: 10
   deathAnimationLength: 1.2
+  knockbackDuration: 0.15
+  knockbackResistance: 0.5
 --- !u!61 &3287252882876649618
 BoxCollider2D:
   m_ObjectHideFlags: 0
