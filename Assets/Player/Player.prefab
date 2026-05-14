@@ -461,20 +461,6 @@ MonoBehaviour:
   baseComboBar: 080000000800000004000000
   baseIframesDuration: 0.5
   baseMovementSpeed: 5
-  minMaxHealth: 1
-  minDamage: 0
-  minHealthRegen: 0
-  minLives: 0
-  minAttackRange: 0.4
-  minKnockbackForce: 0
-  minMaxStamina: 50
-  minComboBarSectionValue: 0
-  minDamageReduction: -1
-  maxDamageReduction: 0.5
-  minIframesDuration: 0.1
-  maxIframesDuration: 2
-  minMovementSpeed: 1
-  maxMovementSpeed: 10
   damage: 0
   healthRegen: 0
   lives: 0
@@ -486,13 +472,10 @@ MonoBehaviour:
   movementSpeed: 5
   maxGroundCombos: 3
   maxAirCombos: 0
+  maxJumps: 0
   berserker: 0
-  distantSlash: 0
   lifeSteal: 0
-  lingeringStrikes: 0
   martyrsBlood: 0
-  readiedBlow: 0
-  swordWind: 0
   playerUI: {fileID: 0}
   attackStaminaCost: 20
   dashStaminaCost: 30

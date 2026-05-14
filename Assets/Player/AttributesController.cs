@@ -20,23 +20,23 @@ public class AttributesController : MonoBehaviour
     public float baseIframesDuration = 0.5f;
     public float baseMovementSpeed = 10f;
 
-    public int minMaxHealth = 1;
-    public int minDamage = 0;
-    public int minHealthRegen = 0;
-    public int minLives = 0;
-    public float minAttackRange = 0.4f;
-    public float minKnockbackForce = 0f;
-    public int minMaxStamina = 50;
-    public int minComboBarSectionValue = 0;
+    public const int minMaxHealth = 1;
+    public const int minDamage = 0;
+    public const int minHealthRegen = 0;
+    public const int minLives = 0;
+    public const float minAttackRange = 0.4f;
+    public const float minKnockbackForce = 0f;
+    public const int minMaxStamina = 50;
+    public const int minComboBarSectionValue = 0;
 
-    public float minDamageReduction = -1f;
-    public float maxDamageReduction = 0.5f;
+    public const float minDamageReduction = -1f;
+    public const float maxDamageReduction = 0.5f;
 
-    public float minIframesDuration = 0.1f;
-    public float maxIframesDuration = 2f;
+    public const float minIframesDuration = 0.1f;
+    public const float maxIframesDuration = 2f;
 
-    public float minMovementSpeed = 1f;
-    public float maxMovementSpeed = 20f;
+    public const float minMovementSpeed = 1f;
+    public const float maxMovementSpeed = 20f;
 
     private int _maxHealth;
     public int maxHealth
@@ -80,14 +80,10 @@ public class AttributesController : MonoBehaviour
     [Header("Abilities")]
     public int maxGroundCombos; //bude lehci jen zvedat cislo nez mit pro kazde odemcene kombo vlastni bool
     public int maxAirCombos; //stejne tady
+    public int maxJumps;
     public bool berserker;
-    public bool distantSlash;
     public bool lifeSteal;
-    public bool lingeringStrikes;
     public bool martyrsBlood;
-    public bool readiedBlow;
-    public bool swordWind;
-
 
     //marek: for ui updated, will be on more lines marked by comment //PlayerUI
     [Header("Player UI")]
@@ -155,18 +151,16 @@ public class AttributesController : MonoBehaviour
 
         maxGroundCombos = 2;
         maxAirCombos = 1;
+        maxJumps = 1;
         berserker = false;
-        distantSlash = false;
         lifeSteal = false;
-        lingeringStrikes = false;
         martyrsBlood = false;
-        readiedBlow = false;
-        swordWind = false;
+
 
         currentHealth = maxHealth;
         currentStamina = maxStamina;
 
-        
+        RefreshUI();
     }
     public void ApplyCalculatedStats(PlayerBuildStats stats)
     {
@@ -249,8 +243,7 @@ public class AttributesController : MonoBehaviour
             }
         }
 
-        DebugPrintStats();
-
+        RefreshUI();
     }
 
 

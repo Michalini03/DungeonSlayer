@@ -119,7 +119,7 @@ public static class BuildCalculator
                 break;
 
             case "weight_of_sins":
-                stats.knockbackForce.FlatBonus += 5f;
+                stats.knockbackForce.FlatBonus += 1.5f;
                     
                 stats.movementSpeed.ApplyMinMultiplier(0.8f);
                 break;
@@ -147,6 +147,10 @@ public static class BuildCalculator
                 stats.healthRegen.FlatBonus += 5;
                 break;
 
+            case "wings_of_light":
+                attributes.maxJumps += 1;
+                break;
+
             // Legendary
             case "griffith_attack":
                 ApplyComboMax(stats);
@@ -157,7 +161,7 @@ public static class BuildCalculator
 
             case "guts_attack":
                 stats.damage.Multiplier *= 2f;
-                stats.knockbackForce.FlatBonus += 5f;
+                stats.knockbackForce.FlatBonus += 2f;
                 stats.attackRange.FlatBonus += 0.5f;
 
                 ApplyComboMin(stats);

@@ -29,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
 
     [Header("Double Jump")]
-    [SerializeField] private int maxJumps = 1;
     private int jumpsRemaining;
 
     [Header("Coyote Time")]
@@ -55,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         Application.targetFrameRate = 120;
         startPosX = transform.position.x;
         startPosY = transform.position.y;
-        jumpsRemaining = maxJumps - 1;
+        jumpsRemaining = aController.maxJumps - 1;
 
     }
 
@@ -122,13 +121,13 @@ public class PlayerMovement : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTimeDuration;
             wasGrounded = true;
-            jumpsRemaining = maxJumps;
+            jumpsRemaining = aController.maxJumps;
         }
         else if (wasGrounded)
         {
             coyoteTimeCounter -= Time.deltaTime;
             if (jumpCooldown <= 0)
-                jumpsRemaining = maxJumps - 1;
+                jumpsRemaining = aController.maxJumps - 1;
             if (coyoteTimeCounter <= 0f)
                 wasGrounded = false;
         }
@@ -252,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        jumpsRemaining = maxJumps;
+        jumpsRemaining = aController.maxJumps;
 
         //Debug.Log("Landed");
         animator.SetBool("IsJumping", false);
