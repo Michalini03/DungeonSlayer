@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.InputSystem.Controls;
@@ -14,6 +15,8 @@ public class StartupStory : MonoBehaviour
 
     [TextArea(3, 10)]
     [SerializeField] private string[] pages;
+
+    [SerializeField] private Image[] imageCanvas;
 
     [SerializeField] private float characterDelay = 0.03f;
     [SerializeField] private float delayBeforeTyping = 0.2f;
@@ -142,6 +145,13 @@ public class StartupStory : MonoBehaviour
         {
             SetTextAlpha(continueText, 1f);
         }
+
+
+        if (pageIndex > 0)
+        {
+            imageCanvas[pageIndex - 1].gameObject.SetActive(false);
+        }
+        imageCanvas[pageIndex].gameObject.SetActive(true);
 
         storyText.text = "";
 
