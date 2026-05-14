@@ -22,13 +22,25 @@ public class RunController : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            DontDestroyOnLoad(transform.root.gameObject);
+            Destroy(transform.root.gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(transform.root.gameObject);
 
+        // 1. LOAD DATA IMMEDIATELY IN AWAKE
+        RunSaveData save = SaveSystem.LoadRun();
+        runState.LoadFromSaveData(save);
+
+        if (runState.Seed == 0)
+        {
+            runState.Seed = Random.Range(1, 999999);
+        }
+
+        draftService = new AugmentDraftService(runState.Seed);
+
+        // 2. NOW it is safe to subscribe to scene loads
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -48,16 +60,6 @@ public class RunController : MonoBehaviour
 
     private void Start()
     {
-        RunSaveData save = SaveSystem.LoadRun();
-        runState.LoadFromSaveData(save);
-
-        if (runState.Seed == 0)
-        {
-            runState.Seed = Random.Range(1, 999999);
-        }
-
-        draftService = new AugmentDraftService(runState.Seed);
-
         suppressRuntimeStatSync = true;
 
         RebindSceneReferences();
