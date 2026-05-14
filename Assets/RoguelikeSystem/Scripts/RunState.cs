@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class RunState
 {
-    private Dictionary<string, int> ownedStacks = new();
+    private Dictionary<string, int> ownedStacks = new Dictionary<string, int>();
 
     public int Seed { get; set; }
     public string CurrentSceneName { get; set; }
