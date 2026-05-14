@@ -62,7 +62,7 @@ public static class BuildCalculator
                 break;
 
             case "knockback_up":
-                stats.knockbackForce.FlatBonus += 2 * stacks;
+                stats.knockbackForce.FlatBonus += 0.5f * stacks;
                 break;
 
             case "movement_up":
@@ -97,7 +97,7 @@ public static class BuildCalculator
             case "strike_down":
                 stats.damage.FlatBonus += 30;
 
-                stats.knockbackForce.FlatBonus -= 4;
+                stats.knockbackForce.FlatBonus -= 1f;
                 break;
 
             case "sweeping_attacks":
@@ -119,8 +119,8 @@ public static class BuildCalculator
                 break;
 
             case "weight_of_sins":
-                stats.knockbackForce.FlatBonus += 10f;
-
+                stats.knockbackForce.FlatBonus += 5f;
+                    
                 stats.movementSpeed.ApplyMinMultiplier(0.8f);
                 break;
 
@@ -157,7 +157,7 @@ public static class BuildCalculator
 
             case "guts_attack":
                 stats.damage.Multiplier *= 2f;
-                stats.knockbackForce.FlatBonus += 10f;
+                stats.knockbackForce.FlatBonus += 5f;
                 stats.attackRange.FlatBonus += 0.5f;
 
                 ApplyComboMin(stats);
@@ -179,7 +179,6 @@ public static class BuildCalculator
             case "the_holy_sword":
                 ApplyComboUp(stats, 1);
                 stats.damage.FlatBonus += 50;
-                stats.knockbackForce.FlatBonus += 10f;
                 stats.movementSpeed.FlatBonus += 1f;
                 stats.attackRange.FlatBonus += 0.2f;
                 break;

@@ -2,27 +2,27 @@ using UnityEngine;
 
 public class EnemyHitInfo : MonoBehaviour
 {
-    public void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
         if (TryGetComponent<EnemyMovement>(out var skeletonBehavior))
         {
-            skeletonBehavior.manageEnemyHit(playerDamage);
+            skeletonBehavior.manageEnemyHit(playerDamage, sourcePosition, knockbackForce);
             return;
         }
 
         if (TryGetComponent<FlyingEyeBehavior>(out var flyingEyeBehavior))
         {
-            flyingEyeBehavior.manageEnemyHit(playerDamage);
+            flyingEyeBehavior.manageEnemyHit(playerDamage, sourcePosition, knockbackForce);
             return;
         }
         if (TryGetComponent<RatBehavior>(out var ratBehavior))
         {
-            ratBehavior.manageEnemyHit(playerDamage);
+            ratBehavior.manageEnemyHit(playerDamage, sourcePosition, knockbackForce);
             return;
         }
         if (TryGetComponent<BossBehavior>(out var bossBehavior))
         {
-            bossBehavior.manageEnemyHit(playerDamage);
+            bossBehavior.manageEnemyHit(playerDamage, sourcePosition, knockbackForce);
             return;
         }
         else

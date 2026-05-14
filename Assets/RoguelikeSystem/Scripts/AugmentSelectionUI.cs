@@ -91,7 +91,11 @@ public class AugmentSelectionUI : MonoBehaviour
         RunController.Instance.GiveAugment(augment);
         Hide();
         isSelecting = false;
-        spawner.selectedAugment = true;
+
+        if (spawner != null)
+        {
+            spawner.selectedAugment = true;
+        }
     }
 
     private IEnumerator SelectFirstCardNextFrame()

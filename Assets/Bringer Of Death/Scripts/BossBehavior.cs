@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using System.Collections;
 
 public enum EnumBossState
 {
@@ -24,7 +25,8 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private BossBehaviorGX bossBehaviorGX;
     
     [SerializeField] private int foesStateHealthThreshold = 500;
-    [SerializeField] private int health = 1000;
+    [SerializeField] private int maxHealth = 1500;
+    [SerializeField] private int health = 1500;
     [SerializeField] private bool isDead = false;
 
     [Header("Spell Settings")]
@@ -45,14 +47,33 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private float spawnInterval = 2f;
     private bool canSpawn = true;
 
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackDuration = 0.15f;
+    [SerializeField] private float knockbackResistance = 1f;
+
+    private bool isKnockedBack = false;
+    private Coroutine knockbackCoroutine;
+
+    [Header("Boss UI")]
+    [SerializeField] private BossHealthBarUI bossHealthBarUI;
+    [SerializeField] private string bossDisplayName = "Vratimor, the Shadow Lich";
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
 
+        health = maxHealth;
+
         spellTimer = spellInterval;
         ConfigureCollisionRules();
         getSpawnPointsLists();
+
+        if (bossHealthBarUI != null)
+        {
+            bossHealthBarUI.Initialize(bossDisplayName, health, maxHealth);
+        }
     }
 
     private void adjustSpellTimerAndCast()
@@ -102,8 +123,13 @@ public class BossBehavior : MonoBehaviour
             Debug.LogWarning("BossBehavior: Hráč není přiřazen! Boss nebude moci kouzlit.");
             return;
         }
-        
-        if(bossState == EnumBossState.FoesState)
+
+        if (isKnockedBack)
+        {
+            return;
+        }
+
+        if (bossState == EnumBossState.FoesState)
         {
             FoesStateUpdate();
         }
@@ -298,20 +324,27 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
-    
-
-    public void manageEnemyHit(int playerDamage)
+    public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
-        if(isDead) return;
+        if (isDead) return;
 
-        if(!canSpawn)
-        {   
+        if (!canSpawn)
+        {
             // Boss je ve fazi kdy nesspawnuje takze je nezranitelny
             return;
         }
-        
+
         health -= playerDamage;
-        if(health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
+        health = Mathf.Max(health, 0);
+
+        if (bossHealthBarUI != null)
+        {
+            bossHealthBarUI.SetHealth(health, maxHealth);
+        }
+
+        ApplyKnockback(sourcePosition, knockbackForce);
+
+        if (health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
             bossState = EnumBossState.CastSpellState;
             bossBehaviorGX.animator.SetTrigger("teleport");
@@ -319,14 +352,54 @@ public class BossBehavior : MonoBehaviour
             flipBossDirection();
             Debug.Log("Boss přechází do CastSpellState!");
         }
-        else if(health <= 0)
+        else if (health <= 0)
         {
             isDead = true;
             Debug.Log("Boss je mrtvý!");
+
+            if (bossHealthBarUI != null)
+            {
+                bossHealthBarUI.Hide();
+            }
         }
         else
         {
             bossBehaviorGX.animator.SetTrigger("tookHit");
         }
+    }
+
+    public void ApplyKnockback(Vector2 sourcePosition, float force)
+    {
+        if (isDead || rb == null)
+        {
+            return;
+        }
+
+        Vector2 direction = ((Vector2)transform.position - sourcePosition).normalized;
+
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            direction = transform.localScale.x >= 0 ? Vector2.right : Vector2.left;
+        }
+
+        if (knockbackCoroutine != null)
+        {
+            StopCoroutine(knockbackCoroutine);
+        }
+
+        knockbackCoroutine = StartCoroutine(KnockbackRoutine(direction, force));
+    }
+
+    private IEnumerator KnockbackRoutine(Vector2 direction, float force)
+    {
+        isKnockedBack = true;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * (force / Mathf.Max(knockbackResistance, 0.01f)), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnockedBack = false;
+        knockbackCoroutine = null;
     }
 }

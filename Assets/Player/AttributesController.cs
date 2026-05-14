@@ -13,8 +13,8 @@ public class AttributesController : MonoBehaviour
     public int baseHealthRegen = 0;
     public int baseLives = 0;
     public float baseDamageReduction = 0f;
-    public float baseAttackRange = 0.4f;
-    public float baseKnockbackForce = 10f;
+    public float baseAttackRange = 0.45f;
+    public float baseKnockbackForce = 1f;
     public int baseMaxStamina = 100;
     public int[] baseComboBar = new int[3] { 8, 8, 4 };
     public float baseIframesDuration = 0.5f;
@@ -99,7 +99,7 @@ public class AttributesController : MonoBehaviour
     public int jumpStaminaCost = 15;
 
     [Header("Stamina Settings")]
-    public float staminaRegenRate = 20f;      // Stamina per second
+    public float staminaRegenRate = 20f;        // Stamina per second
     public float staminaRegenDelay = 0.5f;      // Time to wait before starting regen
     private float lastStaminaUseTime;
 

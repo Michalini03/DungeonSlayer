@@ -211,14 +211,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7481166481520672473, guid: 52d84148701e5224ca009f12947ee1fc, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2cb3d185f5d7ab6479cf3a3b9461771a, type: 2}
-    - target: {fileID: 7481166481520672473, guid: 52d84148701e5224ca009f12947ee1fc, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -577,7 +569,17 @@ Tilemap:
   m_GameObject: {fileID: 145005014}
   m_Enabled: 1
   m_Tiles:
-  - first: {x: 21, y: -5, z: 0}
+  - first: {x: 6, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
+  - first: {x: 15, y: 0, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -597,16 +599,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 8, y: 1, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: 29, y: 4, z: 0}
     second:
       serializedVersion: 2
@@ -617,7 +609,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -14, y: 11, z: 0}
+  - first: {x: -12, y: 8, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -627,7 +619,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 15, y: 11, z: 0}
+  - first: {x: 14, y: 9, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -637,7 +629,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -6, y: 12, z: 0}
+  - first: {x: -4, y: 11, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -647,7 +639,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 30, y: 14, z: 0}
+  - first: {x: 31, y: 11, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -690,7 +682,7 @@ Tilemap:
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -14, y: -5, z: 0}
-  m_Size: {x: 45, y: 20, z: 1}
+  m_Size: {x: 46, y: 20, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1161,7 +1153,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.779532, y: 2.70499, z: -10}
+  m_LocalPosition: {x: -15.77683, y: 2.70499, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7133,7 +7125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5360250100783091722, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
       propertyPath: health
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5360250100783091722, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
       propertyPath: player
@@ -7142,6 +7134,10 @@ PrefabInstance:
     - target: {fileID: 5360250100783091722, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
       propertyPath: attackRange
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5360250100783091722, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
+      propertyPath: attackDamage
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5360250100783091722, guid: f0f0746208d496448ad8a9a81d06b72e, type: 3}
       propertyPath: attackHitboxCollider

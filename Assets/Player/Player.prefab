@@ -345,6 +345,8 @@ MonoBehaviour:
   dashVelocity: 20
   dashTime: 0.2
   dashCooldown: 1
+  maxJumps: 1
+  coyoteTimeDuration: 0.15
   canDash: 1
   enableTeleport: 1
   leftX: -15
@@ -453,8 +455,8 @@ MonoBehaviour:
   baseHealthRegen: 0
   baseLives: 0
   baseDamageReduction: 0
-  baseAttackRange: 0.4
-  baseKnockbackForce: 10
+  baseAttackRange: 0.45
+  baseKnockbackForce: 2
   baseMaxStamina: 100
   baseComboBar: 080000000800000004000000
   baseIframesDuration: 0.5
@@ -482,7 +484,7 @@ MonoBehaviour:
   comboBar: 
   iframesDuration: 0.5
   movementSpeed: 5
-  maxGroundCombos: 0
+  maxGroundCombos: 3
   maxAirCombos: 0
   berserker: 0
   distantSlash: 0
