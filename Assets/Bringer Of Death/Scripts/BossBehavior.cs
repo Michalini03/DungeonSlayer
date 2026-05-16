@@ -58,6 +58,9 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private BossHealthBarUI bossHealthBarUI;
     [SerializeField] private string bossDisplayName = "Vratimor, the Shadow Lich";
 
+    [Header("Boss Shield")]
+    [SerializeField] private GameObject bossShield;
+
 
     void Start()
     {
@@ -160,6 +163,7 @@ public class BossBehavior : MonoBehaviour
         int aliveEnemies = GetAliveEnemiesCount();
         if (aliveEnemies == 0 && canSpawn == false)
         {
+            bossShield.SetActive(false);
             canSpawn = true;
         }
     }
@@ -286,6 +290,7 @@ public class BossBehavior : MonoBehaviour
         else
         {
             tileMapSpawnPointIndex = 0;
+            bossShield.SetActive(true);
             canSpawn = false;  
         }
     }
@@ -347,6 +352,7 @@ public class BossBehavior : MonoBehaviour
         if (health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
             bossState = EnumBossState.CastSpellState;
+            bossShield.SetActive(false);
             bossBehaviorGX.animator.SetTrigger("teleport");
             moveToNextPosition();
             flipBossDirection();
