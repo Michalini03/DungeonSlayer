@@ -9,10 +9,18 @@ public enum AugmentRarity
     Legendary
 }
 
-public enum AugmentEffectType
+public enum AugmentEffect
 {
     Passive,
     Instant
+}
+
+public enum AugmentType
+{
+    Offence,
+    Defence,
+    Mobility,
+    Other
 }
 
 [CreateAssetMenu(menuName = "Roguelike/Augment")]
@@ -28,7 +36,8 @@ public class AugmentDefinition : ScriptableObject
     public int baseWeight = 100;
     public int maxStacks = 1;
 
-    public AugmentEffectType effectType = AugmentEffectType.Passive;
+    public AugmentEffect effect;
+    public AugmentType type;
 
     public List<string> tags = new();
     public List<string> excludes = new();
