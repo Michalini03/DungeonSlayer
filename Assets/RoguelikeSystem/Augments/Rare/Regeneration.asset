@@ -22,6 +22,7 @@ MonoBehaviour:
   rarity: 2
   baseWeight: 100
   maxStacks: 1
-  effectType: 0
+  effect: 0
+  type: 1
   tags: []
   excludes: []

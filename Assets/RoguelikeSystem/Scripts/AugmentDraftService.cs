@@ -1,50 +1,82 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AugmentDraftService
 {
     private readonly System.Random rng;
 
-    private const int CommonChance = 45;
-    private const int UncommonChance = 30;
-    private const int RareChance = 20;
-    private const int LegendaryChance = 5;
+    private int[] forestChance = new int[4] { 49, 40, 10, 1 };
+    private int[] caveChance = new int[4] { 45, 30, 20, 5 };
+    private int[] castleChance = new int[4] { 30, 30, 20, 10 };
 
     public AugmentDraftService(int seed)
     {
         rng = new System.Random(seed);
     }
 
-    public List<AugmentDefinition> GenerateDraft(IReadOnlyList<AugmentDefinition> allAugments, RunState run, int count = 3)
+    public List<AugmentDefinition> GenerateDraft(IReadOnlyList<AugmentDefinition> allAugments, RunState run)
     {
         List<AugmentDefinition> validAugments = GetValidAugments(allAugments, run);
         List<AugmentDefinition> result = new();
 
-        while (result.Count < count && validAugments.Count > 0)
+        int otherSwitch = rng.Next(0, 5);
+        switch (otherSwitch)
         {
-            AugmentRarity rolledRarity = RollRarity();
-
-            List<AugmentDefinition> rarityPool = validAugments.Where(a => a.rarity == rolledRarity).ToList();
-
-            if (rarityPool.Count == 0)
-            {
-                rarityPool = validAugments;
-            }
-
-            AugmentDefinition picked = PickWeightedRandom(rarityPool);
-
-            if (picked == null)
-            {
+            case 0:
+                result.Add(PickAugment(AugmentType.Other, validAugments));
+                result.Add(PickAugment(AugmentType.Defence, validAugments));
+                result.Add(PickAugment(AugmentType.Mobility, validAugments));
                 break;
-            }
 
-            result.Add(picked);
-            validAugments.Remove(picked);
+            case 1:
+                result.Add(PickAugment(AugmentType.Offence, validAugments));
+                result.Add(PickAugment(AugmentType.Other, validAugments));
+                result.Add(PickAugment(AugmentType.Mobility, validAugments));
+                break;
+
+            case 2:
+                result.Add(PickAugment(AugmentType.Offence, validAugments));
+                result.Add(PickAugment(AugmentType.Defence, validAugments));
+                result.Add(PickAugment(AugmentType.Other, validAugments));
+                break;
+
+            default:
+                result.Add(PickAugment(AugmentType.Offence, validAugments));
+                result.Add(PickAugment(AugmentType.Defence, validAugments));
+                result.Add(PickAugment(AugmentType.Mobility, validAugments));
+                break;
         }
 
         return result;
+    }
+
+    private AugmentDefinition PickAugment(AugmentType type, List<AugmentDefinition> validAugments)
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        string[] parts = sceneName.Split('_');
+        string levelType = parts.Length > 1 ? parts[1].ToLower() : sceneName.ToLower();
+
+        AugmentRarity rolledRarity = RollRarity(levelType);
+
+        List<AugmentDefinition> typePool = validAugments.Where(a => a.type == type).ToList();
+
+        if (typePool.Count == 0)
+        {
+            typePool = validAugments;
+        }
+
+        List<AugmentDefinition> rarityPool = typePool.Where(a => a.rarity == rolledRarity).ToList();
+
+        if (rarityPool.Count == 0)
+        {
+            rarityPool = typePool;
+        }
+
+        return PickWeightedRandom(rarityPool);
     }
 
     private List<AugmentDefinition> GetValidAugments(IReadOnlyList<AugmentDefinition> allAugments, RunState run)
@@ -98,24 +130,57 @@ public class AugmentDraftService
         return false;
     }
 
-    private AugmentRarity RollRarity()
+    private AugmentRarity RollRarity(string curSceneName)
     {
-        int total = CommonChance + UncommonChance + RareChance + LegendaryChance;
+        int common, uncommon, rare, legendary;
+
+        switch (curSceneName)
+        {
+            case "forest":
+                common = forestChance[0];
+                uncommon = forestChance[1];
+                rare = forestChance[2];
+                legendary = forestChance[3];
+                break;
+
+            case "cave":
+                common = caveChance[0];
+                uncommon = caveChance[1];
+                rare = caveChance[2];
+                legendary = caveChance[3];
+                break;
+
+            case "castle":
+                common = castleChance[0];
+                uncommon = castleChance[1];
+                rare = castleChance[2];
+                legendary = castleChance[3];
+                break;
+
+            default:
+                common = 25;
+                uncommon = 25;
+                rare = 25;
+                legendary = 25;
+                break;
+        }
+
+        int total = common + uncommon + rare + legendary;
         int roll = rng.Next(0, total);
 
-        if (roll < CommonChance)
+        if (roll < common)
         {
             return AugmentRarity.Common;
         }
 
-        roll -= CommonChance;
-        if (roll < UncommonChance)
+        roll -= common;
+        if (roll < uncommon)
         {
             return AugmentRarity.Uncommon;
         }
 
-        roll -= UncommonChance;
-        if (roll < RareChance)
+        roll -= uncommon;
+        if (roll < rare)
         {
             return AugmentRarity.Rare;
         }

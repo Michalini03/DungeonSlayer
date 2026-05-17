@@ -161,7 +161,7 @@ public class RunController : MonoBehaviour
             return new List<AugmentDefinition>();
         }
 
-        return draftService.GenerateDraft(augmentDatabase.GetAll(), runState, 3);
+        return draftService.GenerateDraft(augmentDatabase.GetAll(), runState);
     }
 
     public void GiveAugment(AugmentDefinition augment)
@@ -187,7 +187,7 @@ public class RunController : MonoBehaviour
 
     private bool TryApplyInstantAugment(AugmentDefinition augment)
     {
-        if (augment.effectType != AugmentEffectType.Instant)
+        if (augment.effect != AugmentEffect.Instant)
         {
             return false;
         }
