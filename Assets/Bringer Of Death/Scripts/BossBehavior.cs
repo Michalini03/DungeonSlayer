@@ -66,6 +66,9 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private GameObject AttackPoint;
     [SerializeField] private int attackDiameter = 50;
     [SerializeField] private int bossCombatDamage = 20;
+    [Header("Boss Shield")]
+    [SerializeField] private GameObject bossShield;
+
 
     void Start()
     {
@@ -191,6 +194,8 @@ public class BossBehavior : MonoBehaviour
         if (isDead)
         {
             return;
+            bossShield.SetActive(false);
+            canSpawn = true;
         }
 
         UpdateWaveSet();
@@ -348,6 +353,7 @@ public class BossBehavior : MonoBehaviour
         else
         {
             tileMapSpawnPointIndex = 0;
+            bossShield.SetActive(true);
             canSpawn = false;  
         }
     }
@@ -421,6 +427,7 @@ public class BossBehavior : MonoBehaviour
         {
             // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do druhe faze
             bossState = EnumBossState.CastSpellState;
+            bossShield.SetActive(false);
             bossBehaviorGX.animator.SetTrigger("teleport");
             moveToNextPosition();
             flipBossDirection();
