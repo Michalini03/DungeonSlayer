@@ -14,7 +14,7 @@ public class RatBehavior : MonoBehaviour
     private Rigidbody2D rb;
     private int direction = 1;
     private bool isMoving = true;
-    [SerializeField] private int health = 100;
+    [SerializeField] public int health = 100;
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int healthRegenAmount = 30;
     [SerializeField] private string playerLayerName = "Player";

@@ -9,4 +9,14 @@ public class BossBehaviorGX : MonoBehaviour
     {
         bossBehavior.CastSpell();
     }
+
+    private void checkAndDamagePlayerParent()
+    {
+        bossBehavior.checkAndDamagePlayer();
+    }
+
+    private void DestroyBossAndAllEnemiesParent()
+    {
+        bossBehavior.DestroyBossAndAllEnemies();
+    }
 }
