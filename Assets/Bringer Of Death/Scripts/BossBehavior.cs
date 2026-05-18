@@ -121,7 +121,7 @@ public class BossBehavior : MonoBehaviour
     {
         if (player == null) return;
 
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        float distanceToPlayer = Vector2.Distance(AttackPoint.transform.position, player.transform.position);
         if (distanceToPlayer <= attackDiameter / 2)
         {
             if (player != null)
@@ -182,6 +182,7 @@ public class BossBehavior : MonoBehaviour
         {
             manageSpawn();
         }
+        manageAttack();
     }
 
     // UPDATE pro druhou fázi, kdy boss začíná útočit blesky
