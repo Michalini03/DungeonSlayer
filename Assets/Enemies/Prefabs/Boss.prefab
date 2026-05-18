@@ -888,6 +888,7 @@ MonoBehaviour:
   playerLayerName: Player
   bossBehaviorGX: {fileID: 0}
   foesStateHealthThreshold: 500
+  castSpellStateHealthThreshold: 500
   maxHealth: 1500
   health: 1500
   isDead: 0
@@ -901,6 +902,10 @@ MonoBehaviour:
   knockbackResistance: 1
   bossHealthBarUI: {fileID: 4024564346422227028}
   bossDisplayName: Vratimor, the Shadow Lich
+  attackInterval: 10
+  AttackPoint: {fileID: 0}
+  attackDiameter: 50
+  bossCombatDamage: 20
   bossShield: {fileID: 4538954830777706979}
 --- !u!1 &8682323522680214265
 GameObject:
@@ -936,8 +941,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.4370346, y: 0.87366056}
-  m_SizeDelta: {x: 633.4786, y: 45.8766}
+  m_AnchoredPosition: {x: 0.4370346, y: 0.00000667572}
+  m_SizeDelta: {x: 636.973, y: 54.6131}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5316964191566425497
 CanvasRenderer:

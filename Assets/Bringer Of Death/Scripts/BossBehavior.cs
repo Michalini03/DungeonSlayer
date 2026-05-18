@@ -193,9 +193,9 @@ public class BossBehavior : MonoBehaviour
     {
         if (isDead)
         {
-            return;
             bossShield.SetActive(false);
-            canSpawn = true;
+            //canSpawn = true;
+            return;
         }
 
         UpdateWaveSet();
@@ -233,6 +233,7 @@ public class BossBehavior : MonoBehaviour
         int aliveEnemies = GetAliveEnemiesCount();
         if (aliveEnemies == 0 && canSpawn == false)
         {
+            bossShield.SetActive(false);
             canSpawn = true;
         }
     }
