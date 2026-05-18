@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private int health = 200;
+    [SerializeField] public int health = 200;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject player;

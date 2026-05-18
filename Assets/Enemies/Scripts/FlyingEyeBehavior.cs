@@ -22,7 +22,7 @@ public class FlyingEyeBehavior : MonoBehaviour
     private bool isPatrolling = true;
 
     [Header("Stats")]
-    [SerializeField] private float health = 120f;
+    [SerializeField] public float health = 120f;
     [SerializeField] private int attackDamage = 20;
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private Transform attackPoint;

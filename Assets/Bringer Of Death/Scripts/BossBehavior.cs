@@ -7,6 +7,7 @@ public enum EnumBossState
 {
     FoesState,
     CastSpellState,
+    CombatState
 }
 
 public class BossBehavior : MonoBehaviour
@@ -24,9 +25,10 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private BossBehaviorGX bossBehaviorGX;
     
-    [SerializeField] private int foesStateHealthThreshold = 500;
+    [SerializeField] private int foesStateHealthThreshold = 1000;
+    [SerializeField] private int castSpellStateHealthThreshold = 500;
     [SerializeField] private int maxHealth = 1500;
-    [SerializeField] private int health = 1500;
+    [SerializeField] private int health;
     [SerializeField] private bool isDead = false;
 
     [Header("Spell Settings")]
@@ -58,6 +60,12 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private BossHealthBarUI bossHealthBarUI;
     [SerializeField] private string bossDisplayName = "Vratimor, the Shadow Lich";
 
+    [Header("Attack Settings")]
+    private float attackTimer = 0f;
+    [SerializeField] private float attackInterval = 10f;
+    [SerializeField] private GameObject AttackPoint;
+    [SerializeField] private int attackDiameter = 50;
+    [SerializeField] private int bossCombatDamage = 20;
 
     void Start()
     {
@@ -69,6 +77,8 @@ public class BossBehavior : MonoBehaviour
         spellTimer = spellInterval;
         ConfigureCollisionRules();
         getSpawnPointsLists();
+        
+        this.health = maxHealth;
 
         if (bossHealthBarUI != null)
         {
@@ -107,6 +117,20 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
+    public void checkAndDamagePlayer()
+    {
+        if (player == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        if (distanceToPlayer <= attackDiameter / 2)
+        {
+            if (player != null)
+            {
+                player.GetComponent<PlayerCombat>().takeDamage(bossCombatDamage);
+            }
+        }
+    }
+
     private void getSpawnPointsLists()
     {
         spawnPointsLists.Clear();
@@ -137,8 +161,13 @@ public class BossBehavior : MonoBehaviour
         {
             CastSpellStateUpdate();
         }
+        else if(bossState == EnumBossState.CombatState)
+        {
+            CombatStateUpdate();
+        }
     }
 
+    // UPDATE pro první fázi, kdy boss spawnuje nepřátele
     private void FoesStateUpdate()
     {
         if (isDead)
@@ -155,6 +184,44 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
+    // UPDATE pro druhou fázi, kdy boss začíná útočit blesky
+    private void CastSpellStateUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        UpdateWaveSet();
+        checkEnemySpawnConditions();
+
+        if (canSpawn)
+        {
+            manageSpawn();
+        }
+
+        adjustSpellTimerAndCast();
+    }
+
+    // UPDATE pro třetí fázi, kdy boss začíná mlátit
+    private void CombatStateUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+        
+        UpdateWaveSet();
+        checkEnemySpawnConditions();
+
+        if (canSpawn)
+        {
+            manageSpawn();
+        }
+
+        manageAttack();
+    }
+
     private void checkEnemySpawnConditions()
     {
         int aliveEnemies = GetAliveEnemiesCount();
@@ -164,22 +231,6 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
-    private void CastSpellStateUpdate()
-    {
-        if (isDead)
-        {
-            return;
-        }
-        adjustSpellTimerAndCast();
-
-        UpdateWaveSet();
-        checkEnemySpawnConditions();
-
-        if (canSpawn)
-        {
-            manageSpawn();
-        }
-    }
 
     public void CastSpell()
     {
@@ -274,7 +325,17 @@ public class BossBehavior : MonoBehaviour
     {
         float posX = this.transform.position.x;
         float posY = this.transform.position.y;
-        this.transform.position = new Vector3(posX - 7f, posY, 0f);
+
+        if(this.bossState == EnumBossState.CastSpellState)
+        {
+            // MICHAL - Tady pak muzes zmenit to kde se spwnou
+            this.transform.position = new Vector3(posX - 7f, posY, 0f);
+        }
+        else if(this.bossState == EnumBossState.CombatState)
+        {
+            // MICHAL - Tady pak muzes zmenit to kde se spwnou
+            this.transform.position = new Vector3(posX + 7f, posY, 0f);
+        }
     }
 
     private void MoveToNextList()
@@ -324,6 +385,17 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
+    private void manageAttack()
+    {
+        attackTimer += Time.deltaTime;
+        float attackPointAndPlayerDistance = Vector2.Distance(AttackPoint.transform.position, player.transform.position);
+        if (attackTimer >= attackInterval && attackPointAndPlayerDistance <= attackDiameter / 2)
+        {
+            attackTimer = 0f;
+            bossBehaviorGX.animator.SetTrigger("attack");
+        }
+    }
+
     public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
         if (isDead) return;
@@ -346,26 +418,54 @@ public class BossBehavior : MonoBehaviour
 
         if (health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
+            // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do druhe faze
             bossState = EnumBossState.CastSpellState;
             bossBehaviorGX.animator.SetTrigger("teleport");
             moveToNextPosition();
             flipBossDirection();
             Debug.Log("Boss přechází do CastSpellState!");
         }
+        else if (health <= castSpellStateHealthThreshold && bossState == EnumBossState.CastSpellState)
+        {
+            // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do treti faze
+            bossState = EnumBossState.CombatState;
+            bossBehaviorGX.animator.SetTrigger("teleport");
+            moveToNextPosition();
+            flipBossDirection();
+            Debug.Log("Boss přechází do CombatState!");
+        }
         else if (health <= 0)
         {
             isDead = true;
-            Debug.Log("Boss je mrtvý!");
 
             if (bossHealthBarUI != null)
             {
                 bossHealthBarUI.Hide();
             }
+            bossBehaviorGX.animator.SetTrigger("death");
         }
         else
         {
             bossBehaviorGX.animator.SetTrigger("tookHit");
         }
+    }
+
+    private void destroyAllEnemies()
+    {
+        foreach (GameObject enemy in waveSet)
+        {
+            if (enemy != null)
+            {
+                enemy.GetComponent<EnemyHitInfo>().manageEnemyHit(9999, transform.position, 0f);
+            }
+        }
+        waveSet.Clear();
+    }
+
+    public void DestroyBossAndAllEnemies()
+    {
+        destroyAllEnemies();
+        Destroy(gameObject);
     }
 
     public void ApplyKnockback(Vector2 sourcePosition, float force)
@@ -401,5 +501,14 @@ public class BossBehavior : MonoBehaviour
 
         isKnockedBack = false;
         knockbackCoroutine = null;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (AttackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(AttackPoint.transform.position, attackDiameter);
+        }
     }
 }
