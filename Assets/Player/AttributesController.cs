@@ -313,14 +313,13 @@ public class AttributesController : MonoBehaviour
 
         // PlayerUI
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        
     }
 
     private IEnumerator RegenHealthLoop()
     {
         WaitForSeconds wait = new WaitForSeconds(1f);
 
-        while (true)
+        while (currentHealth > 0)
         {
             if (martyrsBlood)
             {
@@ -370,7 +369,10 @@ public class AttributesController : MonoBehaviour
     public void AddMaxStamina(int amount)
     {
         if (amount <= 0)
+        {
             return;
+        }
+
 
         maxStamina += amount;
         currentStamina += amount;
@@ -383,7 +385,7 @@ public class AttributesController : MonoBehaviour
     {
         WaitForSeconds wait = new WaitForSeconds(0.1f);
 
-        while (true)
+        while (currentHealth > 0)
         {
             // 1. Check if the delay has passed
             if (Time.time - lastStaminaUseTime >= staminaRegenDelay)
