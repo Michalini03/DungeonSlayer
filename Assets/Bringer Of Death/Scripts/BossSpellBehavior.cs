@@ -9,6 +9,8 @@ public class BossSpellBeahvior : MonoBehaviour
     [SerializeField] private string spellLayerName = "Spell";
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private string enemyLayerName = "Enemy";
+    private string groundLayerName = "Ground";
+
 
     private void Awake()
     {
@@ -44,6 +46,12 @@ public class BossSpellBeahvior : MonoBehaviour
         if (enemyLayer != -1)
         {
             Physics2D.IgnoreLayerCollision(spellLayer, enemyLayer, true);
+        }
+
+        int groundLayer = LayerMask.NameToLayer(groundLayerName);
+        if (groundLayer != -1)
+        {
+            Physics2D.IgnoreLayerCollision(spellLayer, groundLayer, true);
         }
     }
 

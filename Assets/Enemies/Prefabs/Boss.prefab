@@ -168,7 +168,8 @@ Transform:
   m_LocalPosition: {x: -0.354, y: 0.202, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8936450114562613549}
   m_Father: {fileID: 8094515502749925217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7489191353783863011
@@ -393,12 +394,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4538954830777706979}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0044560074, y: 0.0033285306, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.35845634, y: -0.19867148, z: 0}
   m_LocalScale: {x: 0.14, y: 0.14, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8094515502749925217}
+  m_Father: {fileID: 8375271726146463965}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8463857889995490772
 SpriteRenderer:
@@ -768,7 +769,6 @@ Transform:
   m_Children:
   - {fileID: 8375271726146463965}
   - {fileID: 8564267516090360232}
-  - {fileID: 8936450114562613549}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8103384156531471652
@@ -888,6 +888,7 @@ MonoBehaviour:
   playerLayerName: Player
   bossBehaviorGX: {fileID: 0}
   foesStateHealthThreshold: 500
+  castSpellStateHealthThreshold: 800
   maxHealth: 1500
   health: 1500
   isDead: 0
@@ -901,6 +902,10 @@ MonoBehaviour:
   knockbackResistance: 1
   bossHealthBarUI: {fileID: 4024564346422227028}
   bossDisplayName: Vratimor, the Shadow Lich
+  attackInterval: 10
+  AttackPoint: {fileID: 0}
+  attackDiameter: 50
+  bossCombatDamage: 20
   bossShield: {fileID: 4538954830777706979}
 --- !u!1 &8682323522680214265
 GameObject:

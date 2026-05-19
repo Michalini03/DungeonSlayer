@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Collections;
+using System;
+using Unity.VisualScripting;
 
 public enum EnumBossState
 {
@@ -25,9 +27,9 @@ public class BossBehavior : MonoBehaviour
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private BossBehaviorGX bossBehaviorGX;
     
-    [SerializeField] private int foesStateHealthThreshold = 1000;
-    [SerializeField] private int castSpellStateHealthThreshold = 500;
-    [SerializeField] private int maxHealth = 1500;
+    [SerializeField] private int foesStateHealthThreshold = 400;
+    [SerializeField] private int castSpellStateHealthThreshold = 800;
+    [SerializeField] private int maxHealth = 1200;
     [SerializeField] private int health;
     [SerializeField] private bool isDead = false;
 
@@ -48,6 +50,7 @@ public class BossBehavior : MonoBehaviour
     private float spawnTimer = 0f;
     [SerializeField] private float spawnInterval = 2f;
     private bool canSpawn = true;
+    private Vector3 playerSpawnPosition;
 
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackDuration = 0.15f;
@@ -69,11 +72,29 @@ public class BossBehavior : MonoBehaviour
     [Header("Boss Shield")]
     [SerializeField] private GameObject bossShield;
 
+    [Header("Map settings")]
+    [SerializeField] private GameObject forestBackground;
+    [SerializeField] private GameObject caveBackground;
+    [SerializeField] private GameObject castleBackground;
+
+    [SerializeField] private GameObject forestTilemap;
+    [SerializeField] private GameObject caveTilemap;
+    [SerializeField] private GameObject castleTilemap;
+
+    [SerializeField] private GameObject fogRight;
+    [SerializeField] private GameObject fogLeft;
+
+    [Header("SpawnPoints")]
+    [SerializeField] private GameObject spawnPointCave;
+    [SerializeField] private GameObject spawnPointForest;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerMovement = player.GetComponent<PlayerMovement>();
+
+        playerSpawnPosition = player.transform.position;
 
         health = maxHealth;
 
@@ -185,7 +206,6 @@ public class BossBehavior : MonoBehaviour
         {
             manageSpawn();
         }
-        manageAttack();
     }
 
     // UPDATE pro druhou fázi, kdy boss začíná útočit blesky
@@ -193,9 +213,9 @@ public class BossBehavior : MonoBehaviour
     {
         if (isDead)
         {
-            return;
             bossShield.SetActive(false);
             canSpawn = true;
+            return;
         }
 
         UpdateWaveSet();
@@ -233,6 +253,7 @@ public class BossBehavior : MonoBehaviour
         int aliveEnemies = GetAliveEnemiesCount();
         if (aliveEnemies == 0 && canSpawn == false)
         {
+            bossShield.SetActive(false);
             canSpawn = true;
         }
     }
@@ -327,22 +348,44 @@ public class BossBehavior : MonoBehaviour
         }
     }
 
-    public void moveToNextPosition()
-    {
-        float posX = this.transform.position.x;
-        float posY = this.transform.position.y;
+    public void moveToNextPosition(GameObject spawnObject)
+{
+    // Check if the object we passed in has a Tilemap component
+    Tilemap tilemap = spawnObject.GetComponent<Tilemap>();
+    Vector2 targetPosition;
 
-        if(this.bossState == EnumBossState.CastSpellState)
-        {
-            // MICHAL - Tady pak muzes zmenit to kde se spwnou
-            this.transform.position = new Vector3(posX - 7f, posY, 0f);
-        }
-        else if(this.bossState == EnumBossState.CombatState)
-        {
-            // MICHAL - Tady pak muzes zmenit to kde se spwnou
-            this.transform.position = new Vector3(posX + 7f, posY, 0f);
-        }
+    if (tilemap != null)
+    {
+        // Compress bounds forces the tilemap to calculate exactly where tiles are painted
+        tilemap.CompressBounds(); 
+        
+        // Get the coordinate of the bottom-left-most painted tile
+        Vector3Int cellPosition = tilemap.cellBounds.min; 
+        
+        // Convert that grid coordinate into real-world Unity units
+        targetPosition = tilemap.GetCellCenterWorld(cellPosition);
+
+        targetPosition.y -= 0.25f;
     }
+    else
+    {
+        // Fallback: If it's just a normal GameObject, use its transform
+        targetPosition = spawnObject.transform.position;
+    }
+
+    Debug.Log($"Přesouvám se na pozici: {targetPosition}");
+
+    // Teleport using the Rigidbody
+    if (rb != null)
+    {
+        rb.position = targetPosition;
+        rb.linearVelocity = Vector2.zero; 
+    }
+    else
+    {
+        this.transform.position = new Vector3(targetPosition.x, targetPosition.y, this.transform.position.z);
+    }
+}
 
     private void MoveToNextList()
     {
@@ -423,14 +466,21 @@ public class BossBehavior : MonoBehaviour
 
         ApplyKnockback(sourcePosition, knockbackForce);
 
+        Debug.Log(health);
         if (health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
             // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do druhe faze
             bossState = EnumBossState.CastSpellState;
             bossShield.SetActive(false);
             bossBehaviorGX.animator.SetTrigger("teleport");
-            moveToNextPosition();
+            moveToNextPosition(spawnPointCave);
             flipBossDirection();
+            castleBackground.SetActive(false);
+            caveBackground.SetActive(true);
+            castleTilemap.SetActive(false);
+            caveTilemap.SetActive(true);
+
+            player.transform.position = playerSpawnPosition;
             Debug.Log("Boss přechází do CastSpellState!");
         }
         else if (health <= castSpellStateHealthThreshold && bossState == EnumBossState.CastSpellState)
@@ -438,8 +488,18 @@ public class BossBehavior : MonoBehaviour
             // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do treti faze
             bossState = EnumBossState.CombatState;
             bossBehaviorGX.animator.SetTrigger("teleport");
-            moveToNextPosition();
+            moveToNextPosition(spawnPointForest);
             flipBossDirection();
+
+            forestBackground.SetActive(true);
+            caveBackground.SetActive(false);
+            forestTilemap.SetActive(true);
+            caveTilemap.SetActive(false);
+
+            fogRight.SetActive(true) ;
+            fogLeft.SetActive(true) ;
+
+            player.transform.position = playerSpawnPosition;
             Debug.Log("Boss přechází do CombatState!");
         }
         else if (health <= 0)
