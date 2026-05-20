@@ -18028,7 +18028,7 @@ PrefabInstance:
       objectReference: {fileID: 1181333487}
     - target: {fileID: 1797016802862930450, guid: 193d2d5d8a9d2614a9f6e12eb5e1d933, type: 3}
       propertyPath: maxHealth
-      value: 300
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 1797016802862930450, guid: 193d2d5d8a9d2614a9f6e12eb5e1d933, type: 3}
       propertyPath: ratPrefab
@@ -18128,11 +18128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1797016802862930450, guid: 193d2d5d8a9d2614a9f6e12eb5e1d933, type: 3}
       propertyPath: foesStateHealthThreshold
-      value: 200
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 1797016802862930450, guid: 193d2d5d8a9d2614a9f6e12eb5e1d933, type: 3}
       propertyPath: castSpellStateHealthThreshold
-      value: 100
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 3129798392845357877, guid: 193d2d5d8a9d2614a9f6e12eb5e1d933, type: 3}
       propertyPath: m_Controller

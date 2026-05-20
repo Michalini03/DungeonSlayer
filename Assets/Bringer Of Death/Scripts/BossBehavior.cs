@@ -623,12 +623,12 @@ public class BossBehavior : MonoBehaviour
 
         if (bossManager != null)
         {
-            bossManager.FadeToLevel("main_menu");
+            bossManager.FadeToLevel("ending_menu");
         }
         else
         {
             Debug.LogWarning("BossManager wasn't assigned in the Inspector! Trying to find it...");
-            FindFirstObjectByType<BossManager>()?.FadeToLevel("main_menu");
+            FindFirstObjectByType<BossManager>()?.FadeToLevel("ending_menu");
         }
         Destroy(gameObject);
     }

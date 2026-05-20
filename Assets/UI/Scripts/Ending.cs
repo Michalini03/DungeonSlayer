@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -14,6 +15,8 @@ public class EndStory : MonoBehaviour
 
     [TextArea(3, 10)]
     [SerializeField] private string[] pages;
+
+    [SerializeField] private Image[] images;
 
     [SerializeField] private float characterDelay = 0.03f;
     [SerializeField] private float delayBeforeTyping = 0.2f;
@@ -46,6 +49,18 @@ public class EndStory : MonoBehaviour
         if (fadeOverlayCanvasGroup != null)
         {
             fadeOverlayCanvasGroup.alpha = 0f;
+        }
+
+        // --- FIX: Ensure all images are hidden at the very start ---
+        if (images != null)
+        {
+            for (int i = 0; i < images.Length; i++)
+            {
+                if (images[i] != null)
+                {
+                    images[i].gameObject.SetActive(false);
+                }
+            }
         }
 
         if (pages == null || pages.Length == 0)
@@ -138,6 +153,28 @@ public class EndStory : MonoBehaviour
         if (storyText != null)
         {
             storyText.text = "";
+        }
+
+        // --- FIX: Swap the image BEFORE the typing delay and typing loop starts ---
+        if (images != null)
+        {
+            // Safely hide the previous image
+            if (pageIndex > 0 && (pageIndex - 1) < images.Length)
+            {
+                if (images[pageIndex - 1] != null)
+                {
+                    images[pageIndex - 1].gameObject.SetActive(false);
+                }
+            }
+
+            // Safely show the new image
+            if (pageIndex < images.Length)
+            {
+                if (images[pageIndex] != null)
+                {
+                    images[pageIndex].gameObject.SetActive(true);
+                }
+            }
         }
 
         if (delayBeforeTyping > 0f)
