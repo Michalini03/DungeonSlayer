@@ -12,6 +12,7 @@ public class BossBehaviorGX : MonoBehaviour
 
     private void checkAndDamagePlayerParent()
     {
+        SoundManager.PlaySound(SoundType.BOSS_ATTACK);
         bossBehavior.checkAndDamagePlayer();
     }
 

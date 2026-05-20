@@ -96,6 +96,7 @@ public class BossBehavior : MonoBehaviour
     private bool isTransitioning = false;
     [Header("Boss Manager Reference")]
     [SerializeField] private BossManager bossManager;
+    [SerializeField] private BackgroundMusicManager backgroundMusicManager;
 
 
     void Start()
@@ -256,6 +257,7 @@ public class BossBehavior : MonoBehaviour
             manageSpawn();
         }
 
+        adjustSpellTimerAndCast();
         manageAttack();
     }
 
@@ -601,6 +603,15 @@ public class BossBehavior : MonoBehaviour
 
     public void DestroyBossAndAllEnemies()
     {
+        if (backgroundMusicManager != null)
+        {
+            backgroundMusicManager.PlayVictoryMusic();
+        }
+        else
+        {
+            Debug.LogWarning("BackgroundMusicManager wasn't assigned in the Inspector! Trying to find it...");
+            FindFirstObjectByType<BackgroundMusicManager>()?.PlayVictoryMusic();
+        }
         StartCoroutine(DestroyRoutine(1.5f));
     }
 

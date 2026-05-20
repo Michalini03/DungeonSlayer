@@ -26,7 +26,8 @@ public enum SoundType
     BOSS_TELEPORT,
     BOSS_SPELL,
     BOSS_ATTACK,
-    BOSS_SPAWN
+    BOSS_SPAWN,
+    BOSS_SHIELD
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

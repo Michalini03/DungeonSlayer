@@ -1,3 +1,5 @@
+using System;
+using System.Collections; // Required for IEnumerator (Coroutines)
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,6 +12,12 @@ public class BackgroundMusicManager : MonoBehaviour
     [Tooltip("Adjust the volume of the background music.")]
     [Range(0f, 1f)]
     [SerializeField] private float volume = 0.5f;
+
+    [Header("Optional Boss Settings")]
+    [Tooltip("The boss music track that can be triggered during gameplay.")]
+    [SerializeField] private AudioClip bossMusicClip;
+    [SerializeField] private AudioClip victoryClip;
+    [SerializeField] private bool isBoss = false;
 
     private AudioSource audioSource;
 
@@ -25,13 +33,59 @@ public class BackgroundMusicManager : MonoBehaviour
 
     private void Start()
     {
-        if (musicClip != null)
+        if (isBoss)
         {
-            PlayMusic(musicClip, volume);
+            if (bossMusicClip != null)
+            {
+                // Start the timeout coroutine for 1 second
+                StartCoroutine(PlayBossMusicWithDelay(1f));
+            }
+            else
+            {
+                Debug.LogWarning("No Boss AudioClip assigned to the BackgroundMusicManager!");
+            }
         }
         else
         {
-            Debug.LogWarning("No AudioClip assigned to the BackgroundMusicManager!");
+            if (musicClip != null)
+            {
+                PlayMusic(musicClip, volume);
+            }
+            else
+            {
+                Debug.LogWarning("No AudioClip assigned to the BackgroundMusicManager!");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Coroutine to handle the timeout before playing boss music.
+    /// </summary>
+    private IEnumerator PlayBossMusicWithDelay(float delay)
+    {
+        // Wait for the specified amount of seconds
+        yield return new WaitForSeconds(delay);
+
+        // Play the boss music after the wait is over
+        PlayMusic(bossMusicClip, volume);
+    }
+
+    /// <summary>
+    /// Stops the boss music and plays the victory fanfare.
+    /// </summary>
+    public void PlayVictoryMusic()
+    {
+        if (victoryClip != null)
+        {
+            // Turn off looping so the victory fanfare only plays once (optional)
+            audioSource.loop = false;
+
+            // Play the victory clip
+            PlayMusic(victoryClip, volume);
+        }
+        else
+        {
+            Debug.LogWarning("No Victory AudioClip assigned to the BackgroundMusicManager!");
         }
     }
 
