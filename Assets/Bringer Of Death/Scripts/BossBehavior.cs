@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
 using Unity.VisualScripting;
+using Pathfinding;
 
 public enum EnumBossState
 {
@@ -87,6 +89,13 @@ public class BossBehavior : MonoBehaviour
     [Header("SpawnPoints")]
     [SerializeField] private GameObject spawnPointCave;
     [SerializeField] private GameObject spawnPointForest;
+
+    [Header("Transition Settings")]
+    [SerializeField] private CanvasGroup fadeScreen;
+    [SerializeField] private float fadeDuration = 1f;
+    private bool isTransitioning = false;
+    [Header("Boss Manager Reference")]
+    [SerializeField] private BossManager bossManager;
 
 
     void Start()
@@ -176,6 +185,8 @@ public class BossBehavior : MonoBehaviour
         {
             return;
         }
+
+        if (isTransitioning) return;
 
         if (bossState == EnumBossState.FoesState)
         {
@@ -349,43 +360,43 @@ public class BossBehavior : MonoBehaviour
     }
 
     public void moveToNextPosition(GameObject spawnObject)
-{
-    // Check if the object we passed in has a Tilemap component
-    Tilemap tilemap = spawnObject.GetComponent<Tilemap>();
-    Vector2 targetPosition;
-
-    if (tilemap != null)
     {
-        // Compress bounds forces the tilemap to calculate exactly where tiles are painted
-        tilemap.CompressBounds(); 
+        // Check if the object we passed in has a Tilemap component
+        Tilemap tilemap = spawnObject.GetComponent<Tilemap>();
+        Vector2 targetPosition;
+
+        if (tilemap != null)
+        {
+            // Compress bounds forces the tilemap to calculate exactly where tiles are painted
+            tilemap.CompressBounds(); 
         
-        // Get the coordinate of the bottom-left-most painted tile
-        Vector3Int cellPosition = tilemap.cellBounds.min; 
+            // Get the coordinate of the bottom-left-most painted tile
+            Vector3Int cellPosition = tilemap.cellBounds.min; 
         
-        // Convert that grid coordinate into real-world Unity units
-        targetPosition = tilemap.GetCellCenterWorld(cellPosition);
+            // Convert that grid coordinate into real-world Unity units
+            targetPosition = tilemap.GetCellCenterWorld(cellPosition);
 
-        targetPosition.y -= 0.25f;
-    }
-    else
-    {
-        // Fallback: If it's just a normal GameObject, use its transform
-        targetPosition = spawnObject.transform.position;
-    }
+            targetPosition.y -= 0.25f;
+        }
+        else
+        {
+            // Fallback: If it's just a normal GameObject, use its transform
+            targetPosition = spawnObject.transform.position;
+        }
 
-    Debug.Log($"Přesouvám se na pozici: {targetPosition}");
+        Debug.Log($"Přesouvám se na pozici: {targetPosition}");
 
-    // Teleport using the Rigidbody
-    if (rb != null)
-    {
-        rb.position = targetPosition;
-        rb.linearVelocity = Vector2.zero; 
+        // Teleport using the Rigidbody
+        if (rb != null)
+        {
+            rb.position = targetPosition;
+            rb.linearVelocity = Vector2.zero; 
+        }
+        else
+        {
+            this.transform.position = new Vector3(targetPosition.x, targetPosition.y, this.transform.position.z);
+        }
     }
-    else
-    {
-        this.transform.position = new Vector3(targetPosition.x, targetPosition.y, this.transform.position.z);
-    }
-}
 
     private void MoveToNextList()
     {
@@ -448,12 +459,11 @@ public class BossBehavior : MonoBehaviour
 
     public void manageEnemyHit(int playerDamage, Vector2 sourcePosition, float knockbackForce)
     {
-        if (isDead) return;
+        if (isDead || isTransitioning) return; // Ignore hits while dying or transitioning maps
 
         if (!canSpawn)
         {
-            // Boss je ve fazi kdy nesspawnuje takze je nezranitelny
-            return;
+            return; // Boss is invulnerable
         }
 
         health -= playerDamage;
@@ -466,41 +476,16 @@ public class BossBehavior : MonoBehaviour
 
         ApplyKnockback(sourcePosition, knockbackForce);
 
-        Debug.Log(health);
+        // Check for Phase Transitions
         if (health <= foesStateHealthThreshold && bossState == EnumBossState.FoesState)
         {
-            // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do druhe faze
-            bossState = EnumBossState.CastSpellState;
-            bossShield.SetActive(false);
-            bossBehaviorGX.animator.SetTrigger("teleport");
-            moveToNextPosition(spawnPointCave);
-            flipBossDirection();
-            castleBackground.SetActive(false);
-            caveBackground.SetActive(true);
-            castleTilemap.SetActive(false);
-            caveTilemap.SetActive(true);
-
-            player.transform.position = playerSpawnPosition;
             Debug.Log("Boss přechází do CastSpellState!");
+            StartCoroutine(MapTransitionRoutine(EnumBossState.CastSpellState));
         }
         else if (health <= castSpellStateHealthThreshold && bossState == EnumBossState.CastSpellState)
         {
-            // MICHAL - Tady pak muzes logiku toho jak se boss chova, kdyz prechazi do treti faze
-            bossState = EnumBossState.CombatState;
-            bossBehaviorGX.animator.SetTrigger("teleport");
-            moveToNextPosition(spawnPointForest);
-            flipBossDirection();
-
-            forestBackground.SetActive(true);
-            caveBackground.SetActive(false);
-            forestTilemap.SetActive(true);
-            caveTilemap.SetActive(false);
-
-            fogRight.SetActive(true) ;
-            fogLeft.SetActive(true) ;
-
-            player.transform.position = playerSpawnPosition;
             Debug.Log("Boss přechází do CombatState!");
+            StartCoroutine(MapTransitionRoutine(EnumBossState.CombatState));
         }
         else if (health <= 0)
         {
@@ -510,12 +495,96 @@ public class BossBehavior : MonoBehaviour
             {
                 bossHealthBarUI.Hide();
             }
+
             bossBehaviorGX.animator.SetTrigger("death");
+
+            DestroyBossAndAllEnemies();
         }
         else
         {
             bossBehaviorGX.animator.SetTrigger("tookHit");
         }
+    }
+
+    private IEnumerator MapTransitionRoutine(EnumBossState nextState)
+    {
+        isTransitioning = true;
+
+        fadeScreen.blocksRaycasts = true;
+
+        bossBehaviorGX.animator.SetTrigger("teleport");
+
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeScreen.alpha = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeScreen.alpha = 1f;
+
+        if (nextState == EnumBossState.CastSpellState)
+        {
+            bossState = EnumBossState.CastSpellState;
+            bossShield.SetActive(false);
+            moveToNextPosition(spawnPointCave);
+            flipBossDirection();
+
+            castleBackground.SetActive(false);
+            caveBackground.SetActive(true);
+            castleTilemap.SetActive(false);
+            caveTilemap.SetActive(true);
+
+            player.transform.position = playerSpawnPosition;
+
+            if (AstarPath.active != null)
+            {
+                AstarPath.active.Scan();
+            }
+            else
+            {
+                Debug.LogWarning("A* Pathfinding není aktivní! Ujistěte se, že máte AstarPath komponentu ve scéně.");
+            }
+        }
+        else if (nextState == EnumBossState.CombatState)
+        {
+            bossState = EnumBossState.CombatState;
+            moveToNextPosition(spawnPointForest);
+            flipBossDirection();
+
+            caveBackground.SetActive(false);
+            forestBackground.SetActive(true);
+            caveTilemap.SetActive(false);
+            forestTilemap.SetActive(true);
+
+            fogRight.SetActive(true);
+            fogLeft.SetActive(true);
+
+            player.transform.position = playerSpawnPosition;
+
+            if (AstarPath.active != null)
+            {
+                AstarPath.active.Scan();
+            }
+            else
+            {
+                Debug.LogWarning("A* Pathfinding není aktivní! Ujistěte se, že máte AstarPath komponentu ve scéně.");
+            }
+        }
+
+        timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeScreen.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeScreen.alpha = 0f;
+        fadeScreen.blocksRaycasts = false;
+
+        isTransitioning = false;
     }
 
     private void destroyAllEnemies()
@@ -532,7 +601,24 @@ public class BossBehavior : MonoBehaviour
 
     public void DestroyBossAndAllEnemies()
     {
+        StartCoroutine(DestroyRoutine(1.5f));
+    }
+
+    private IEnumerator DestroyRoutine(float delay)
+    {
         destroyAllEnemies();
+
+        yield return new WaitForSeconds(delay);
+
+        if (bossManager != null)
+        {
+            bossManager.FadeToLevel("main_menu");
+        }
+        else
+        {
+            Debug.LogWarning("BossManager wasn't assigned in the Inspector! Trying to find it...");
+            FindFirstObjectByType<BossManager>()?.FadeToLevel("main_menu");
+        }
         Destroy(gameObject);
     }
 

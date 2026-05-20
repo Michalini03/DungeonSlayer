@@ -17,6 +17,6 @@ public class BossBehaviorGX : MonoBehaviour
 
     private void DestroyBossAndAllEnemiesParent()
     {
-        bossBehavior.DestroyBossAndAllEnemies();
+        // bossBehavior.DestroyBossAndAllEnemies();
     }
 }

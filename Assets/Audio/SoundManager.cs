@@ -20,7 +20,13 @@ public enum SoundType
     RAT_DEATH,
     GOBLIN_HIT,
     GOBLIN_DEATH,
-    RAT_ATTACK
+    RAT_ATTACK,
+    BOSS_HIT,
+    BOSS_DEATH,
+    BOSS_TELEPORT,
+    BOSS_SPELL,
+    BOSS_ATTACK,
+    BOSS_SPAWN
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

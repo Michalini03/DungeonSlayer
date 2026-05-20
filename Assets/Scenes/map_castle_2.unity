@@ -33145,7 +33145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6402274978950259527, guid: 73e9845fa6bfd9c4ba46da53a63c6c93, type: 3}
       propertyPath: nextSceneName
-      value: ending_menu
+      value: map_forest_boss
       objectReference: {fileID: 0}
     - target: {fileID: 6402274978950259527, guid: 73e9845fa6bfd9c4ba46da53a63c6c93, type: 3}
       propertyPath: skeletonPrefab
