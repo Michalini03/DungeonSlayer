@@ -226,7 +226,7 @@ public class BossBehavior : MonoBehaviour
         if (isDead)
         {
             bossShield.SetActive(false);
-            canSpawn = true;
+            //canSpawn = true;
             return;
         }
 
